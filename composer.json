@@ -1,0 +1,21 @@
+{
+  "name": "wabuehamm/membership",
+  "description": "Elgg plugin vor membership management of the Waldbuehne Heessen",
+  "type": "elgg-plugin",
+  "keywords": [
+    "elgg",
+    "plugin"
+  ],
+  "license": "Expat (MIT) License,",
+  
+  "support": {
+    "source": "https://github.com/wabuehamm/elgg-plugin-membership",
+    "issues": "https://github.com/wabuehamm/elgg-plugin-membership/issues"
+  },
+  "require": {
+    "composer/installers": "^1.0.8"
+  },
+  "conflict": {
+    "elgg/elgg": "<3.0.0"
+  }
+}
