@@ -52,7 +52,7 @@ elgg_register_menu_item('title', [
     'href' => elgg_generate_url('add:object:production', [
         'season_guid' => $season_guid
     ]),
-    'text' => elgg_echo('membership:production:add'),
+    'text' => elgg_echo('membership:season:production:add'),
     'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
 ]);
 

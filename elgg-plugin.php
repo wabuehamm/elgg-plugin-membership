@@ -2,12 +2,12 @@
 
 /**
  * ELGG plugin descriptor.
- * 
+ *
  * Please check out http://learn.elgg.org/en/stable/guides/plugins.html#elgg-plugin-php for details
  */
 
 return [
-    'bootstrap' =>  Wabue\Membership\Bootstrap::class,
+    'bootstrap' => Wabue\Membership\Bootstrap::class,
     'entities' => [
         [
             'type' => 'object',
@@ -73,6 +73,31 @@ return [
     ],
     'widgets' => [
         // Register custom widgets here
+    ],
+    'settings' => [
+        'departments_participations' => "
+            mk:Marketing
+            gp:Geländepflege
+            bb:Bühnenbau
+            ng:Nähgruppe
+            fu:Fundus
+            ko:Kostüme
+            rq:Requisite
+            vs:Vorstand
+        ",
+        'production_participations' => "
+            ra:Regie/Assistenz
+            sp:Spieler
+            ms:Maske
+            tk:Technik
+            py:Pyrotechnik
+            ks:Kasse
+            or:Ordner
+            vk:Verkaufsbuden
+            kk:Kaffeeküche
+            th:Theke Studio
+            kü:Küche Studio
+        "
     ],
     'user_settings' => [
         // Register user settings for your plugin here

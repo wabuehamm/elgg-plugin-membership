@@ -1,5 +1,6 @@
 <?php
 
+use Wabue\Membership\Entities\ParticipationObject;
 use Wabue\Membership\Entities\Production;
 use Wabue\Membership\Entities\Season;
 
@@ -31,7 +32,22 @@ echo elgg_view_field([
 echo elgg_view_field([
     '#type' => 'text',
     'name' => 'title',
-    'value' => $guid ? $entity->title : ''
+    'value' => $guid ? $entity->title : '',
+    '#label' => elgg_echo('membership:production:form:label'),
+    '#help' => elgg_echo('membership:production:form:help'),
+]);
+
+$participationTypes = ParticipationObject::cleanParticipationSetting($guid ? $departments->getParticipationTypesAsString() : elgg_get_plugin_setting('production_participations', 'membership'));
+
+echo elgg_view_field([
+    '#type' => 'longtext',
+    '#label' => elgg_echo('membership:production:form:participationtypes:label'),
+    '#help' => elgg_echo('membership:production:form:participationtypes:help'),
+    'editor' => false,
+    'name' => 'participationTypes',
+    'required' => true,
+    'value' => $participationTypes,
+    'disabled' => $guid
 ]);
 
 $mode = elgg_extract('mode', $vars, 'add');

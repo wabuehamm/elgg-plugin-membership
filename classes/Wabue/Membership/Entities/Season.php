@@ -74,4 +74,20 @@ class Season extends ElggObject
         ]);
     }
 
+    public function getDepartments(): Departments
+    {
+        $departments = elgg_get_entities([
+            'type' => 'object',
+            'subtype' => 'departments',
+            'container_guid' => $this->guid,
+        ]);
+
+        if (count($departments) == 0) {
+            return null;
+        }
+
+        assert($departments[0] instanceof Departments);
+        return $departments[0];
+    }
+
 }

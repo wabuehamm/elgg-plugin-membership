@@ -1,21 +1,17 @@
 <?php
 
-use Wabue\Membership\Entities\Departments;
 use Wabue\Membership\Entities\ParticipationObject;
-use Wabue\Membership\Entities\Season;
+use Wabue\Membership\Entities\Production;
 
 $guid = intval(get_input('guid', -1));
-$year = intval(get_input('year', 0));
-$lockdate = get_input('lockdate', '');
-$enddate = get_input('enddate', '');
+$seasonGuid = intval(get_input('season_guid', null));
+$title = get_input('title', '');
 $participationTypes = get_input('participationTypes', '');
 
 if (
     !is_int($guid) ||
-    !is_int($year) ||
-    $year == 0 ||
-    $lockdate == '' ||
-    $enddate == '' ||
+    !is_int($seasonGuid) ||
+    $title == '' ||
     $participationTypes == ''
 ) {
     return elgg_error_response(elgg_echo('BadRequestException'));
@@ -27,26 +23,19 @@ if (!ParticipationObject::validateParticipationSetting($participationTypes)) {
 
 if ($guid != -1) {
     $entity = get_entity($guid);
-    assert($entity instanceof Season);
+    assert($entity instanceof Production);
 } else {
-    $entity = new Season();
+    $entity = new Production();
 }
 
-$entity->year = $year;
-$entity->lockdate = $lockdate;
-$entity->enddate = $enddate;
-$entity->save();
-
-// Add departments to the new season
-
+$entity->title = $title;
+$entity->container_guid = $seasonGuid;
 if ($guid == -1) {
-    $departments = new Departments();
-    $departments->container_guid = $entity->guid;
-    $departments->setParticipationTypes(
+    $entity->setParticipationTypes(
         ParticipationObject::participationSettingToArray($participationTypes)
     );
-    $departments->save();
 }
+$entity->save();
 
 return elgg_ok_response(
     ['entity' => $entity],

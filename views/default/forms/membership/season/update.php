@@ -1,5 +1,6 @@
 <?php
 
+use Wabue\Membership\Entities\ParticipationObject;
 use Wabue\Membership\Entities\Season;
 
 $guid = elgg_extract('guid', $vars, null);
@@ -7,6 +8,7 @@ $guid = elgg_extract('guid', $vars, null);
 if ($guid) {
     $entity = get_entity($guid);
     assert($entity instanceof Season);
+    $departments = $entity->getDepartments();
 }
 
 echo elgg_view_field([
@@ -17,7 +19,7 @@ echo elgg_view_field([
 
 echo elgg_view_field([
         '#type' => 'number',
-        '#label' => elgg_echo('membership:season:form:year'),
+        '#label' => elgg_echo('membership:season:form:year:label'),
         '#help' => elgg_echo('membership:season:form:year:help'),
         'name' => 'year',
         'required' => true,
@@ -26,7 +28,7 @@ echo elgg_view_field([
 
 echo elgg_view_field([
         '#type' => 'date',
-        '#label' => elgg_echo('membership:season:form:lockdate'),
+        '#label' => elgg_echo('membership:season:form:lockdate:label'),
         '#help' => elgg_echo('membership:season:form:lockdate:help'),
         'name' => 'lockdate',
         'required' => true,
@@ -35,11 +37,24 @@ echo elgg_view_field([
 
 echo elgg_view_field([
         '#type' => 'date',
-        '#label' => elgg_echo('membership:season:form:enddate'),
+        '#label' => elgg_echo('membership:season:form:enddate:label'),
         '#help' => elgg_echo('membership:season:form:enddate:help'),
         'name' => 'enddate',
         'required' => true,
         'value' => $guid ? $entity->enddate : '',
+]);
+
+$participationTypes = ParticipationObject::cleanParticipationSetting($guid ? $departments->getParticipationTypesAsString() : elgg_get_plugin_setting('departments_participations', 'membership'));
+
+echo elgg_view_field([
+    '#type' => 'longtext',
+    '#label' => elgg_echo('membership:season:form:participationtypes:label'),
+    '#help' => elgg_echo('membership:season:form:participationtypes:help'),
+    'editor' => false,
+    'name' => 'participationTypes',
+    'required' => true,
+    'value' => $participationTypes,
+    'disabled' => $guid
 ]);
 
 $mode = elgg_extract('mode', $vars, 'add');

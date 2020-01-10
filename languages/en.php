@@ -13,18 +13,32 @@ return [
 
     'membership:season:title' => 'Season %s',
 
-    'membership:season:form:year' => 'Season year',
+    'membership:season:form:year:label' => 'Season year',
     'membership:season:form:year:help' => 'Type in the year of the season',
-    'membership:season:form:lockdate' => 'Lock date',
+    'membership:season:form:lockdate:label' => 'Lock date',
     'membership:season:form:lockdate:help' => 'Enter the date after which members are not allowed to enter the season anymore and will be locked',
-    'membership:season:form:enddate' => 'End date',
+    'membership:season:form:enddate:label' => 'End date',
     'membership:season:form:enddate:help' => 'Enter the date when the season ends and members will be unlocked',
+    'membership:season:form:participationtypes:label' => 'Participation types',
+    'membership:season:form:participationtypes:help' => 'Participation types for departments in this season (one type per line in the form of key:label)',
 
     'membership:productions' => 'Productions',
     'membership:season:no_productions' => 'No production added to the season yet',
-    'membership:production:add' => 'Add production',
+    'membership:season:production:add' => 'Add production',
+
+    'membership:production:form:label' => 'Title',
+    'membership:production:form:help' => 'Title of the production',
+    'membership:production:form:participationtypes:label' => 'Participation types',
+    'membership:production:form:participationtypes:help' => 'Participation types for this production (one type per line in the form of key:label)',
 
     'membership:departments' => 'Departments',
     'membership:departments:add' => 'Add departments',
+
+    'membership:settings:departments:participations:label' => 'Department participation types',
+    'membership:settings:departments:participations:help' => 'Default participation types for departments in a new season (one type per line in the form of key:label)',
+    'membership:settings:production:participations:label' => 'Production participation types',
+    'membership:settings:production:participations:help' => 'Default participation types for new productions in a season (one type per line in the form of key:label)',
+
+    'membership:errors:wrongParticipationTypes' => 'The provided list of participation types is not valid. Please ensure a value of one type per line in the form of key:label'
 
 ];
