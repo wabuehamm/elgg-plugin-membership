@@ -82,11 +82,10 @@ class Season extends ElggObject
             'container_guid' => $this->guid,
         ]);
 
-        if (count($departments) == 0) {
+        if (count($departments) == 0 || !$departments[0] instanceof Departments) {
             return null;
         }
 
-        assert($departments[0] instanceof Departments);
         return $departments[0];
     }
 

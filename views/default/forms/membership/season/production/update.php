@@ -3,18 +3,19 @@
 use Wabue\Membership\Entities\ParticipationObject;
 use Wabue\Membership\Entities\Production;
 use Wabue\Membership\Entities\Season;
+use Wabue\Membership\Tools;
 
-$season_guid = elgg_extract('season_guid', $vars, null);
-assert($season_guid != null);
+$season_guid = elgg_extract('container_guid', $vars, null);
+Tools::assert(!is_null($season_guid));
 
 $season = get_entity($season_guid);
-assert($season instanceof Season);
+Tools::assert($season instanceof Season);
 
 $guid = elgg_extract('guid', $vars, null);
 
 if ($guid != null) {
     $entity = get_entity($guid);
-    assert($entity instanceof Production);
+    Tools::assert($entity instanceof Production);
 }
 
 echo elgg_view_field([

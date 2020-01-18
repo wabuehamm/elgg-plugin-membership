@@ -27,7 +27,9 @@ if (!ParticipationObject::validateParticipationSetting($participationTypes)) {
 
 if ($guid != -1) {
     $entity = get_entity($guid);
-    assert($entity instanceof Season);
+    if (!$entity instanceof Season) {
+        return elgg_error_response();
+    }
 } else {
     $entity = new Season();
 }

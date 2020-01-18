@@ -2,12 +2,13 @@
 
 use Wabue\Membership\Entities\ParticipationObject;
 use Wabue\Membership\Entities\Season;
+use Wabue\Membership\Tools;
 
 $guid = elgg_extract('guid', $vars, null);
 
 if ($guid) {
     $entity = get_entity($guid);
-    assert($entity instanceof Season);
+    Tools::assert($entity instanceof Season);
     $departments = $entity->getDepartments();
 }
 

@@ -23,7 +23,9 @@ if (!ParticipationObject::validateParticipationSetting($participationTypes)) {
 
 if ($guid != -1) {
     $entity = get_entity($guid);
-    assert($entity instanceof Production);
+    if (!$entity instanceof Production) {
+        return elgg_error_response();
+    }
 } else {
     $entity = new Production();
 }

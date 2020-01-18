@@ -33,6 +33,9 @@ return [
     'actions' => [
         'membership/season/update' => [
             'access' => 'admin',
+        ],
+        'membership/season/production/update' => [
+            'access' => 'admin',
         ]
     ],
     'routes' => [
@@ -54,7 +57,7 @@ return [
             ]
         ],
         'add:object:production' => [
-            'path' => '/season/{season_guid}/production/add',
+            'path' => '/season/{container_guid}/production/add',
             'resource' => 'membership/season/production/update',
             'middleware' => [
                 \Elgg\Router\Middleware\AdminGatekeeper::class,
