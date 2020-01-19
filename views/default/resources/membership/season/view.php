@@ -7,17 +7,14 @@ $season_guid = elgg_extract('guid', $vars, null);
 
 Tools::assert(!is_null($season_guid));
 
+/** @var $season Season */
 $season = get_entity($season_guid);
 
 Tools::assert($season instanceof Season);
 
-$department_entities = elgg_get_entities([
-    'type' => 'object',
-    'subtype' => 'departments',
-    'container_guid' => $season_guid
-]);
+$department_entity = $season->getDepartments();
 
-Tools::assert(count($department_entities) == 1);
+Tools::assert(!is_null($department_entity));
 
 $departments = elgg_view_module(
     'info',
@@ -25,16 +22,12 @@ $departments = elgg_view_module(
     elgg_view(
         'page/components/membership/participationOverview',
         [
-            'entities' => $department_entities,
+            'entities' => [$department_entity],
         ]
     )
 );
 
-$production_entities = elgg_get_entities([
-    'type' => 'object',
-    'subtype' => 'production',
-    'container_guid' => $season_guid
-]);
+$production_entities = $season->getProductions();
 
 $productions = elgg_view_module(
     'info',

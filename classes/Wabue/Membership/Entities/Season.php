@@ -89,4 +89,13 @@ class Season extends ElggObject
         return $departments[0];
     }
 
+    public function getProductions(): Array
+    {
+        return elgg_get_entities([
+            'type' => 'object',
+            'subtype' => 'production',
+            'container_guid' => $this->guid,
+        ]);
+    }
+
 }

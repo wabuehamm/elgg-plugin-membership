@@ -6,6 +6,10 @@
  * Please check out http://learn.elgg.org/en/stable/guides/plugins.html#elgg-plugin-php for details
  */
 
+use Elgg\Router\Middleware\AdminGatekeeper;
+use Elgg\Router\Middleware\UserPageOwnerCanEditGatekeeper;
+use Wabue\Membership\Entities\Departments;
+
 return [
     'bootstrap' => Wabue\Membership\Bootstrap::class,
     'entities' => [
@@ -27,7 +31,7 @@ return [
         [
             'type' => 'object',
             'subtype' => 'departments',
-            'class' => \Wabue\Membership\Entities\Departments::class
+            'class' => Departments::class
         ]
     ],
     'actions' => [
@@ -43,14 +47,14 @@ return [
             'path' => '/season/list',
             'resource' => 'membership/season/list',
             'middleware' => [
-                \Elgg\Router\Middleware\AdminGatekeeper::class,
+                AdminGatekeeper::class,
             ],
         ],
         'add:object:season' => [
             'path' => '/season/add',
             'resource' => 'membership/season/update',
             'middleware' => [
-                \Elgg\Router\Middleware\AdminGatekeeper::class,
+                AdminGatekeeper::class,
             ],
             'defaults' => [
                 'mode' => 'add',
@@ -60,7 +64,7 @@ return [
             'path' => '/season/{container_guid}/production/add',
             'resource' => 'membership/season/production/update',
             'middleware' => [
-                \Elgg\Router\Middleware\AdminGatekeeper::class,
+                AdminGatekeeper::class,
             ],
             'defaults' => [
                 'mode' => 'add',
@@ -70,8 +74,15 @@ return [
             'path' => '/season/view/{guid}',
             'resource' => 'membership/season/view',
             'middleware' => [
-                \Elgg\Router\Middleware\AdminGatekeeper::class
+                AdminGatekeeper::class
             ]
+        ],
+        'view:participations:seasons' => [
+            'path' => '/participations/{guid}',
+            'resource' => 'membership/participations/view',
+            'middleware' => [
+                UserPageOwnerCanEditGatekeeper::class
+            ],
         ]
     ],
     'widgets' => [

@@ -7,7 +7,12 @@ namespace Wabue\Membership;
  * Check out http://learn.elgg.org/en/stable/guides/plugins/bootstrap.html for details
  */
 
+use Elgg\Collections\Collection;
 use Elgg\DefaultPluginBootstrap;
+use Elgg\Hook;
+use ElggMenuItem;
+use ElggUser;
+use Wabue\Membership\Entities\Season;
 
 class Bootstrap extends DefaultPluginBootstrap
 {
@@ -16,10 +21,59 @@ class Bootstrap extends DefaultPluginBootstrap
         elgg_extend_view('elements/components.css', 'elements/membership/components/progressbar.css');
     }
 
+    public function registerHooks()
+    {
+        elgg_register_plugin_hook_handler('register', 'menu:title', 'Wabue\Membership\Bootstrap::titleMenuHook');
+        elgg_register_plugin_hook_handler('register', 'menu:season_participate', 'Wabue\Membership\Bootstrap::seasonParticpateMenuHook');
+    }
+
+    public static function titleMenuHook(Hook $hook)
+    {
+        $user = $hook->getEntityParam();
+        if (!($user instanceof ElggUser) || !$user->canEdit()) {
+            return null;
+        }
+
+        $return = $hook->getValue();
+
+        $return[] = ElggMenuItem::factory([
+            'name' => 'participations',
+            'href' => elgg_generate_url('view:participations:seasons', [
+                'guid' => $user->guid,
+            ]),
+            'text' => elgg_echo('membership:participations:button'),
+            'icon' => 'theater-masks',
+            'class' => ['elgg-button', 'elgg-button-action'],
+            'contexts' => ['profile', 'profile_edit'],
+        ]);
+
+        return $return;
+    }
+
+    public static function seasonParticpateMenuHook(Hook $hook)
+    {
+        $entity = $hook->getEntityParam();
+
+        if ($entity instanceof Season) {
+            /** @var $menuItems Collection */
+            $menuItems = $hook->getValue();
+            $menuItems->add(ElggMenuItem::factory([
+                'name' => 'participate',
+                'text' => elgg_echo('membership:participations:participate'),
+                'href' => '',
+                'link_class' => 'elgg-button elgg-button-action',
+            ]));
+            return $menuItems;
+        }
+
+        return $hook->getValue();
+    }
+
     public function init()
     {
         parent::init();
         $this->extendViews();
+        $this->registerHooks();
     }
 
 }

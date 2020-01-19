@@ -13,6 +13,8 @@ return [
 
     'membership:season:title' => 'Season %s',
 
+    'membership:no_seasons' => 'No seasons have been added',
+
     'membership:season:form:year:label' => 'Season year',
     'membership:season:form:year:help' => 'Type in the year of the season',
     'membership:season:form:lockdate:label' => 'Lock date',
@@ -39,6 +41,14 @@ return [
     'membership:settings:production:participations:label' => 'Production participation types',
     'membership:settings:production:participations:help' => 'Default participation types for new productions in a season (one type per line in the form of key:label)',
 
-    'membership:errors:wrongParticipationTypes' => 'The provided list of participation types is not valid. Please ensure a value of one type per line in the form of key:label'
+    'membership:errors:wrongParticipationTypes' => 'The provided list of participation types is not valid. Please ensure a value of one type per line in the form of key:label',
 
+    'membership:participations:button' => 'Participations',
+    'membership:participations:title' => 'Participations',
+
+    'membership:participations:departments' => 'Participation in departments',
+    'membership:participations:productions' => 'Participation in productions',
+    'membership:participations:none' => 'No participations',
+
+    'membership:participations:participate' => 'Participate',
 ];
