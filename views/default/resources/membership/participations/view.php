@@ -24,7 +24,7 @@ $body = elgg_view_layout(
     [
         'title' => elgg_echo('membership:participations:title'),
         'content' => $seasons,
-        'sidebar' => false
+        'sidebar' => false,
     ]
 );
 

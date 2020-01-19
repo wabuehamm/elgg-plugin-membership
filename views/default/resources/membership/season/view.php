@@ -55,7 +55,7 @@ $body = elgg_view_layout(
     [
         'title' => elgg_echo('membership:season:title', [$season->getYear()]),
         'content' => $departments . $productions,
-        'sidebar' => false
+        'sidebar' => false,
     ]
 );
 

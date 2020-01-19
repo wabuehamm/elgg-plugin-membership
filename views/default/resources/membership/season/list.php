@@ -3,6 +3,7 @@
 $seasons = elgg_list_entities([
     'type' => 'object',
     'subtype' => 'season',
+    'show_social_menu' => false,
 ]);
 
 elgg_register_menu_item('title', [
@@ -16,7 +17,8 @@ $body = elgg_view_layout(
     'default',
     [
         'title' => elgg_echo('membership:seasons'),
-        'content' => $seasons
+        'content' => $seasons,
+        'sidebar' => false,
     ]
 );
 

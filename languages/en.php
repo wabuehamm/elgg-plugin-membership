@@ -51,4 +51,7 @@ return [
     'membership:participations:none' => 'No participations',
 
     'membership:participations:participate' => 'Participate',
+
+    'membership:participations:season:title' => 'Participate in Season %s',
+
 ];

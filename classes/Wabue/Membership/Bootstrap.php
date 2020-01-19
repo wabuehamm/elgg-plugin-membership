@@ -39,7 +39,7 @@ class Bootstrap extends DefaultPluginBootstrap
         $return[] = ElggMenuItem::factory([
             'name' => 'participations',
             'href' => elgg_generate_url('view:participations:seasons', [
-                'guid' => $user->guid,
+                'guid' => $user->getGUID(),
             ]),
             'text' => elgg_echo('membership:participations:button'),
             'icon' => 'theater-masks',
@@ -60,7 +60,10 @@ class Bootstrap extends DefaultPluginBootstrap
             $menuItems->add(ElggMenuItem::factory([
                 'name' => 'participate',
                 'text' => elgg_echo('membership:participations:participate'),
-                'href' => '',
+                'href' => elgg_generate_url('edit:participations:seasons', [
+                    'guid' => elgg_get_page_owner_guid(),
+                    'season_guid' => $entity->getGUID()
+                ]),
                 'link_class' => 'elgg-button elgg-button-action',
             ]));
             return $menuItems;

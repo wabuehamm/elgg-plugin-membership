@@ -6,7 +6,8 @@ $body = elgg_view_layout(
     'default',
     [
         'title' => elgg_echo("membership:season:$mode"),
-        'content' => elgg_view_form('membership/season/update')
+        'content' => elgg_view_form('membership/season/update'),
+        'sidebar' => false,
     ]
 );
 

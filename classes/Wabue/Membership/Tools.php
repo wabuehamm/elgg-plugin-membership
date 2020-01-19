@@ -41,5 +41,17 @@ class Tools
         }
         return $content;
     }
+
+    public static function participationUpdate(string $part, Array $participationTypes, Array $participations) : string {
+        return elgg_view(
+            'input/checkboxes',
+            [
+                'name' => $part,
+                'options' => $participationTypes,
+                'value' => array_keys($participations),
+                'align' => 'horizontal',
+            ]
+        );
+    }
 }
 

@@ -34,6 +34,8 @@ if ($guid != -1) {
     $entity = new Season();
 }
 
+$entity->owner_guid = 0;
+$entity->access_id = ACCESS_LOGGED_IN;
 $entity->year = $year;
 $entity->lockdate = $lockdate;
 $entity->enddate = $enddate;
@@ -43,6 +45,8 @@ $entity->save();
 
 if ($guid == -1) {
     $departments = new Departments();
+    $departments->owner_guid = 0;
+    $departments->access_id = ACCESS_LOGGED_IN;
     $departments->container_guid = $entity->guid;
     $departments->setParticipationTypes(
         ParticipationObject::participationSettingToArray($participationTypes)

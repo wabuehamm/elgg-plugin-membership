@@ -5,14 +5,14 @@ namespace Wabue\Membership\Entities;
 use ElggObject;
 
 /**
- * @property array participationTypes The types the member wishes to participate
+ * @property string participationTypes The types the member wishes to participate
  */
 abstract class ParticipationObject extends ElggObject
 {
     protected function initializeAttributes()
     {
         parent::initializeAttributes();
-        $this->participationTypes = [];
+        $this->participationTypes = serialize([]);
     }
 
     /**
@@ -20,7 +20,7 @@ abstract class ParticipationObject extends ElggObject
      */
     public function getParticipationTypes()
     {
-        return $this->participationTypes;
+        return unserialize($this->participationTypes);
     }
 
     /**
@@ -31,7 +31,7 @@ abstract class ParticipationObject extends ElggObject
     public function getParticipationTypesAsString() {
         $return = [];
 
-        foreach ($this->participationTypes as $key => $label) {
+        foreach ($this->getParticipationTypes() as $key => $label) {
             array_push($return, "$key:$label");
         }
 
@@ -43,7 +43,7 @@ abstract class ParticipationObject extends ElggObject
      */
     public function addParticipationTypes($participationTypes)
     {
-        $this->participationTypes = array_merge($this->participationTypes, [$participationTypes]);
+        $this->setParticipationTypes(array_merge($this->getParticipationTypes(), [$participationTypes]));
     }
 
     /**
@@ -51,7 +51,7 @@ abstract class ParticipationObject extends ElggObject
      */
     public function setParticipationTypes(array $participationTypes)
     {
-        $this->participationTypes = $participationTypes;
+        $this->participationTypes = serialize($participationTypes);
     }
 
     public function getParticipations($owner_guid = null)

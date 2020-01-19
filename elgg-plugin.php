@@ -83,6 +83,13 @@ return [
             'middleware' => [
                 UserPageOwnerCanEditGatekeeper::class
             ],
+        ],
+        'edit:participations:seasons' => [
+            'path' => '/participations/{guid}/{season_guid}',
+            'resource' => 'membership/participations/update',
+            'middleware' => [
+                UserPageOwnerCanEditGatekeeper::class
+            ],
         ]
     ],
     'widgets' => [

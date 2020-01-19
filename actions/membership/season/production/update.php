@@ -30,6 +30,8 @@ if ($guid != -1) {
     $entity = new Production();
 }
 
+$entity->owner_guid = 0;
+$entity->access_id = ACCESS_LOGGED_IN;
 $entity->title = $title;
 $entity->container_guid = $seasonGuid;
 if ($guid == -1) {
@@ -42,5 +44,10 @@ $entity->save();
 return elgg_ok_response(
     ['entity' => $entity],
     elgg_echo('save:success'),
-    elgg_generate_url('default:object:season')
+    elgg_generate_url(
+        'view:object:season',
+        [
+            'guid' => $seasonGuid,
+        ]
+    )
 );
