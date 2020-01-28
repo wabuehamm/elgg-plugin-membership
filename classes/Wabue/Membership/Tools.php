@@ -22,33 +22,40 @@ class Tools
     {
         if (!$assertion) {
             $tmpException = new BadRequestException($message, $code);
-            elgg_log("BadRequestException: Assertion failed.".$tmpException->getTraceAsString(), LogLevel::ERROR);
+            elgg_log("BadRequestException: Assertion failed." . $tmpException->getTraceAsString(), LogLevel::ERROR);
             throw $tmpException;
         }
     }
 
-    public static function participationList(Array $participations) : string {
+    public static function participationList(ParticipationObject $participationObject, Array $participations): string
+    {
         $content = '';
         if (count($participations) == 0) {
             $content .= elgg_echo('membership:participations:none');
         } else {
             $participation_lists = '';
             $participation = $participations[0];
-            foreach ($participation->getParticipationTypes() as $key => $label) {
-                $participation_lists .= elgg_format_element('li', [], elgg_view_icon('check').$label);
+            foreach ($participation->getParticipationTypes() as $key) {
+                $label = $participationObject->getParticipationTypes()[$key];
+                $participation_lists .= elgg_format_element('li', [], elgg_view_icon('check') . ' ' . $label);
             }
-            $content .= elgg_format_element('ul', [], $participation_lists);
+            $content .= elgg_format_element(
+                'ul',
+                ['class' => 'elgg-input-checkboxes elgg-horizontal'],
+                $participation_lists
+            );
         }
         return $content;
     }
 
-    public static function participationUpdate(string $part, Array $participationTypes, Array $participations) : string {
+    public static function participationUpdate(string $part, Array $participationTypes, Array $participations): string
+    {
         return elgg_view(
             'input/checkboxes',
             [
                 'name' => $part,
                 'options' => $participationTypes,
-                'value' => array_keys($participations),
+                'value' => $participations,
                 'align' => 'horizontal',
             ]
         );

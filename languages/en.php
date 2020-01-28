@@ -10,6 +10,7 @@ return [
 
     'membership:seasons' => 'Seasons',
     'membership:season:add' => 'Add season',
+    'membership:season:edit' => 'Edit season',
 
     'membership:season:title' => 'Season %s',
 
@@ -18,7 +19,7 @@ return [
     'membership:season:form:year:label' => 'Season year',
     'membership:season:form:year:help' => 'Type in the year of the season',
     'membership:season:form:lockdate:label' => 'Lock date',
-    'membership:season:form:lockdate:help' => 'Enter the date after which members are not allowed to enter the season anymore and will be locked',
+    'membership:season:form:lockdate:help' => 'Enter the date after which members are not allowed to participate anymore and will be locked',
     'membership:season:form:enddate:label' => 'End date',
     'membership:season:form:enddate:help' => 'Enter the date when the season ends and members will be unlocked',
     'membership:season:form:participationtypes:label' => 'Participation types',
@@ -53,5 +54,7 @@ return [
     'membership:participations:participate' => 'Participate',
 
     'membership:participations:season:title' => 'Participate in Season %s',
+
+    'membership:participations:saved' => 'Participations saved',
 
 ];

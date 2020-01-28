@@ -8,7 +8,12 @@ Tools::assert(!is_null($owner_guid));
 
 $season_entities = elgg_get_entities([
     'type' => 'object',
-    'subtype' => 'season'
+    'subtype' => 'season',
+    'order_by_metadata' => [
+        'name' => 'year',
+        'direction' => 'DESC',
+        'as' => 'integer'
+    ]
 ]);
 
 $seasons = elgg_view(

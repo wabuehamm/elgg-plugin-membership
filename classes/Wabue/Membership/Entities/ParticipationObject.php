@@ -57,19 +57,18 @@ abstract class ParticipationObject extends ElggObject
     public function getParticipations($owner_guid = null)
     {
         $season_guid = $this->container_guid;
-        $relationship = [
-            'subject_guids' => [$this->guid],
-            'names' => 'participate'
-        ];
-        if (!is_null($owner_guid)) {
-            $relationship['object_guids'] = [$owner_guid];
-        }
-        return elgg_get_entities([
+        $options = [
             'type' => 'object',
             'subtype' => 'participation',
             'container_guid' => $season_guid,
-            'relationship_pairs' => [$relationship],
-        ]);
+            'relationship_guid' => $this->guid,
+            'relationship' => 'participate',
+            'inverse_relationship' => true,
+        ];
+        if (!is_null($owner_guid)) {
+            $options['owner_guids'] = [$owner_guid];
+        }
+        return elgg_get_entities($options);
     }
 
     /**

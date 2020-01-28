@@ -42,6 +42,15 @@ $productions = elgg_view_module(
 );
 
 elgg_register_menu_item('title', [
+    'name' => 'edit_season',
+    'href' => elgg_generate_url('edit:object:season', [
+        'guid' => $season_guid
+    ]),
+    'text' => elgg_echo('membership:season:edit'),
+    'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
+]);
+
+elgg_register_menu_item('title', [
     'name' => 'add_production',
     'href' => elgg_generate_url('add:object:production', [
         'container_guid' => $season_guid

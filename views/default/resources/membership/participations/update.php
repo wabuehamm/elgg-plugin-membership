@@ -1,6 +1,5 @@
 <?php
 
-use Wabue\Membership\Entities\Departments;
 use Wabue\Membership\Entities\Season;
 use Wabue\Membership\Tools;
 
@@ -25,6 +24,7 @@ $content = elgg_view_form(
     [],
     [
         'season' => $season,
+        'owner_guid' => $owner_guid,
     ]
 );
 

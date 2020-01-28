@@ -32,6 +32,7 @@ echo elgg_view_field([
         '#label' => elgg_echo('membership:season:form:lockdate:label'),
         '#help' => elgg_echo('membership:season:form:lockdate:help'),
         'name' => 'lockdate',
+        'timestamp' => true,
         'required' => true,
         'value' => $guid ? $entity->lockdate : '',
 ]);
@@ -41,6 +42,7 @@ echo elgg_view_field([
         '#label' => elgg_echo('membership:season:form:enddate:label'),
         '#help' => elgg_echo('membership:season:form:enddate:help'),
         'name' => 'enddate',
+        'timestamp' => true,
         'required' => true,
         'value' => $guid ? $entity->enddate : '',
 ]);
@@ -52,11 +54,19 @@ echo elgg_view_field([
     '#label' => elgg_echo('membership:season:form:participationtypes:label'),
     '#help' => elgg_echo('membership:season:form:participationtypes:help'),
     'editor' => false,
-    'name' => 'participationTypes',
+    'name' => $guid ? 'participationTypesReadOnly' : 'participationTypes',
     'required' => true,
     'value' => $participationTypes,
     'disabled' => $guid
 ]);
+
+if ($guid) {
+    echo elgg_view_field([
+        '#type' => 'hidden',
+        'name' => 'participationTypes',
+        'value' => $participationTypes,
+    ]);
+}
 
 $mode = elgg_extract('mode', $vars, 'add');
 

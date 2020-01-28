@@ -40,6 +40,9 @@ return [
         ],
         'membership/season/production/update' => [
             'access' => 'admin',
+        ],
+        'membership/participation/update' => [
+            'access' => 'logged_in'
         ]
     ],
     'routes' => [
@@ -58,6 +61,16 @@ return [
             ],
             'defaults' => [
                 'mode' => 'add',
+            ]
+        ],
+        'edit:object:season' => [
+            'path' => '/season/{guid}/edit',
+            'resource' => 'membership/season/update',
+            'middleware' => [
+                AdminGatekeeper::class,
+            ],
+            'defaults' => [
+                'mode' => 'edit',
             ]
         ],
         'add:object:production' => [

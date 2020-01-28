@@ -15,12 +15,15 @@ $departments = $entity->getDepartments();
 
 Tools::assert(!is_null($departments));
 
-$content ='';
+$content = '';
 
 $content .= elgg_view_module(
     'info',
     elgg_echo('membership:participations:departments'),
-    Tools::participationList($departments->getParticipations($owner_guid))
+    Tools::participationList(
+        $departments,
+        $departments->getParticipations($owner_guid)
+    )
 );
 
 /** @var $productions Production[] */
@@ -35,7 +38,10 @@ if (count($productions) == 0) {
         Tools::assert($production instanceof Production);
         $module_content .= elgg_format_element('h3', [
         ], $production->getDisplayName());
-        $module_content .= Tools::participationList($production->getParticipations($owner_guid));
+        $module_content .= Tools::participationList(
+            $production,
+            $production->getParticipations($owner_guid)
+        );
     }
 }
 
@@ -46,16 +52,33 @@ $content .= elgg_view_module(
     []
 );
 
+$titleprefix = '';
+$class = '';
+
+if ($entity->getEnddate() < time()) {
+    $titleprefix .= elgg_view('object/elements/moduleAccordion', [
+        'id' => 'season' . $entity->guid,
+        'classes' => 'seasonModule'
+    ]);
+    $class = 'seasonModule';
+}
+
+if ($entity->getLockdate() < time()) {
+    $titleprefix .= elgg_view_icon('lock') . ' ';
+}
+
 echo elgg_view_module(
     'info',
-    $entity->getDisplayName(),
+    $titleprefix . $entity->getDisplayName(),
     $content,
     [
-        'menu' => elgg_view_menu(
+        'id' => 'season' . $entity->guid,
+        'class' => $class,
+        'menu' => $entity->getLockdate() < time() ? null : elgg_view_menu(
             'season_participate',
             [
                 'entity' => $entity
             ]
-        )
+        ),
     ]
 );

@@ -8,9 +8,9 @@ use ElggObject;
  * Class Season
  * Membership participation records for a specific season
  * @package Wabue\Membership
- * @property int    year
- * @property string lockdate
- * @property string enddate
+ * @property int year
+ * @property int lockdate
+ * @property int enddate
  */
 class Season extends ElggObject
 {
@@ -36,33 +36,33 @@ class Season extends ElggObject
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getLockdate(): string
+    public function getLockdate(): int
     {
         return $this->lockdate;
     }
 
     /**
-     * @param string $lockdate
+     * @param int $lockdate
      */
-    public function setLockdate(string $lockdate)
+    public function setLockdate(int $lockdate)
     {
         $this->lockdate = $lockdate;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getEnddate(): string
+    public function getEnddate(): int
     {
         return $this->enddate;
     }
 
     /**
-     * @param string $enddate
+     * @param int $enddate
      */
-    public function setEnddate(string $enddate)
+    public function setEnddate(int $enddate)
     {
         $this->enddate = $enddate;
     }
@@ -95,6 +95,11 @@ class Season extends ElggObject
             'type' => 'object',
             'subtype' => 'production',
             'container_guid' => $this->guid,
+            'order_by_metadata' => [
+                'name' => 'title',
+                'direction' => 'ASC',
+                'as' => 'string'
+            ]
         ]);
     }
 

@@ -6,16 +6,16 @@ use Wabue\Membership\Entities\Season;
 
 $guid = intval(get_input('guid', -1));
 $year = intval(get_input('year', 0));
-$lockdate = get_input('lockdate', '');
-$enddate = get_input('enddate', '');
+$lockdate = intval(get_input('lockdate', 0));
+$enddate = intval(get_input('enddate', 0));
 $participationTypes = get_input('participationTypes', '');
 
 if (
     !is_int($guid) ||
     !is_int($year) ||
     $year == 0 ||
-    $lockdate == '' ||
-    $enddate == '' ||
+    $lockdate == 0 ||
+    $enddate == 0 ||
     $participationTypes == ''
 ) {
     return elgg_error_response(elgg_echo('BadRequestException'));
@@ -36,9 +36,9 @@ if ($guid != -1) {
 
 $entity->owner_guid = 0;
 $entity->access_id = ACCESS_LOGGED_IN;
-$entity->year = $year;
-$entity->lockdate = $lockdate;
-$entity->enddate = $enddate;
+$entity->setYear($year);
+$entity->setEnddate($enddate);
+$entity->setLockdate($lockdate);
 $entity->save();
 
 // Add departments to the new season

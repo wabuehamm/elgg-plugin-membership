@@ -4,6 +4,11 @@ $seasons = elgg_list_entities([
     'type' => 'object',
     'subtype' => 'season',
     'show_social_menu' => false,
+    'order_by_metadata' => [
+        'name' => 'year',
+        'direction' => 'DESC',
+        'as' => 'integer'
+    ]
 ]);
 
 elgg_register_menu_item('title', [

@@ -2,7 +2,6 @@
 
 namespace Wabue\Membership\Entities;
 
-use ElggObject;
 use ElggUser;
 
 /**
@@ -24,8 +23,10 @@ class Participation extends ParticipationObject
         $participation = new Participation();
         $participation->owner_guid = $user->guid;
         $participation->container_guid = $season->guid;
-        $participation->addRelationship($participationObject->guid, 'participate');
+        $participation->access_id = ACCESS_PRIVATE;
         $participation->setParticipationTypes([]);
+        $participation->save();
+        $participation->addRelationship($participationObject->guid, 'participate');
         return $participation;
     }
 }
