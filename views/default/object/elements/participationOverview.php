@@ -13,6 +13,8 @@ Tools::assert($entity instanceof ParticipationObject);
 $participations = $entity->getParticipations();
 $users = elgg_get_entities([
     'type' => 'user',
+    'limit' => 0,
+    'count' => true,
     'metadata_name_value_pairs' => [
         [
             'name' => 'banned',
@@ -25,8 +27,8 @@ $users = elgg_get_entities([
 
 $items = '';
 
-foreach ($entity->getParticipationTypes() as $participationType) {
-    $item = "$participationType: ";
+foreach ($entity->getParticipationTypes() as $participationType => $label) {
+    $item = "$label: ";
     $count = 0;
     foreach ($participations as $participation) {
         Tools::assert($participation instanceof ParticipationObject);
@@ -50,8 +52,15 @@ $content .= elgg_format_element(
         'id' => 'participationProgressbar',
         'class' => 'progressbar',
         'data-value' => count($participations),
-        'data-max' => count($users)
-    ]
+        'data-max' => $users
+    ],
+    elgg_format_element(
+        'div',
+        [
+            'class' => 'progress-label'
+        ],
+        count($participations) . '/' . $users
+    )
 );
 
 elgg_require_js('membership/progressbar');

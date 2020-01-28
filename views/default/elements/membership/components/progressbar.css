@@ -1,10 +1,20 @@
 .progressbar {
+    position: relative;
     border: 1px solid black;
     border-radius: .5rem;
     margin: 1rem;
-    height: 1rem;
+    height: 2rem;
 }
 
 .progressbar .ui-progressbar-value {
     margin: 0;
+    height: 2rem;
+}
+
+.progressbar .progress-label {
+    position: absolute;
+    left: 50%;
+    top: 4px;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #fff;
 }
