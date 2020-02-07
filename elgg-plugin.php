@@ -47,14 +47,14 @@ return [
     ],
     'routes' => [
         'default:object:season' => [
-            'path' => '/season/list',
-            'resource' => 'membership/season/list',
+            'path' => '/membership',
+            'resource' => 'membership/season/overview',
             'middleware' => [
                 AdminGatekeeper::class,
             ],
         ],
         'add:object:season' => [
-            'path' => '/season/add',
+            'path' => '/membership/season/add',
             'resource' => 'membership/season/update',
             'middleware' => [
                 AdminGatekeeper::class,
@@ -64,7 +64,7 @@ return [
             ]
         ],
         'edit:object:season' => [
-            'path' => '/season/{guid}/edit',
+            'path' => '/membership/season/{guid}/edit',
             'resource' => 'membership/season/update',
             'middleware' => [
                 AdminGatekeeper::class,
@@ -74,7 +74,7 @@ return [
             ]
         ],
         'add:object:production' => [
-            'path' => '/season/{container_guid}/production/add',
+            'path' => '/membership/season/{container_guid}/production/add',
             'resource' => 'membership/season/production/update',
             'middleware' => [
                 AdminGatekeeper::class,
@@ -84,25 +84,42 @@ return [
             ]
         ],
         'view:object:season' => [
-            'path' => '/season/view/{guid}',
+            'path' => '/membership/season/view/{guid}',
             'resource' => 'membership/season/view',
             'middleware' => [
                 AdminGatekeeper::class
             ]
         ],
         'view:participations:seasons' => [
-            'path' => '/participations/{guid}',
+            'path' => '/membership/participations/{guid}',
             'resource' => 'membership/participations/view',
             'middleware' => [
                 UserPageOwnerCanEditGatekeeper::class
             ],
         ],
         'edit:participations:seasons' => [
-            'path' => '/participations/{guid}/{season_guid}',
+            'path' => '/membership/participations/{guid}/{season_guid}',
             'resource' => 'membership/participations/update',
             'middleware' => [
                 UserPageOwnerCanEditGatekeeper::class
             ],
+        ],
+        'report:object:departments' => [
+            'path' => '/membership/reports/season/{season_guid}/departments/{participation_type}',
+            'resource' => 'membership/reports/departments',
+            'middleware' => [
+                AdminGatekeeper::class
+            ]
+        ],
+        'report:object:production' => [
+            'path' => '/membership/reports/season/{season_guid}/production/{production_guid}/{participation_type}',
+            'resource' => 'membership/reports/production',
+            'default' => [
+                'production_guid' => 0,
+            ],
+            'middleware' => [
+                AdminGatekeeper::class
+            ]
         ]
     ],
     'widgets' => [

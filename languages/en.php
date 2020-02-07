@@ -2,11 +2,15 @@
 
 /**
  * English localization
- * 
+ *
  * Check out http://learn.elgg.org/en/stable/guides/i18n.html for details
  */
 
 return [
+
+    'membership:title' => 'Membership management',
+    'membership:overview:tabs:reports' => 'Reports',
+    'membership:overview:tabs:seasons' => 'Seasons',
 
     'membership:seasons' => 'Seasons',
     'membership:season:add' => 'Add season',
@@ -26,6 +30,7 @@ return [
     'membership:season:form:participationtypes:help' => 'Participation types for departments in this season (one type per line in the form of key:label)',
 
     'membership:productions' => 'Productions',
+    'membership:productions:all' => 'All productions',
     'membership:season:no_productions' => 'No production added to the season yet',
     'membership:season:production:add' => 'Add production',
 

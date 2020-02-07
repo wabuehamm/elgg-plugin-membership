@@ -21,7 +21,7 @@ $content .= elgg_view_module(
     'info',
     elgg_echo('membership:participations:departments'),
     Tools::participationList(
-        $departments,
+        $departments->getParticipationTypes(),
         $departments->getParticipations($owner_guid)
     )
 );
@@ -39,7 +39,7 @@ if (count($productions) == 0) {
         $module_content .= elgg_format_element('h3', [
         ], $production->getDisplayName());
         $module_content .= Tools::participationList(
-            $production,
+            $production->getParticipationTypes(),
             $production->getParticipations($owner_guid)
         );
     }

@@ -27,7 +27,7 @@ class Tools
         }
     }
 
-    public static function participationList(ParticipationObject $participationObject, Array $participations): string
+    public static function participationList(Array $participationTypes, Array $participations, callable $linkGenerator = null): string
     {
         $content = '';
         if (count($participations) == 0) {
@@ -36,8 +36,27 @@ class Tools
             $participation_lists = '';
             $participation = $participations[0];
             foreach ($participation->getParticipationTypes() as $key) {
-                $label = $participationObject->getParticipationTypes()[$key];
-                $participation_lists .= elgg_format_element('li', [], elgg_view_icon('check') . ' ' . $label);
+                $label = $participationTypes[$key];
+                $link = null;
+                if ($linkGenerator) {
+                    $link = call_user_func($linkGenerator, $key);
+                }
+                if ($link) {
+                    $participation_lists .= elgg_format_element(
+                        'a',
+                        [
+                            'href' => $link,
+                        ],
+                        elgg_format_element(
+                            'li',
+                            [],
+                            elgg_view_icon('check') . ' ' . $label
+                        )
+                    );
+                } else {
+                    $participation_lists .= elgg_format_element('li', [], elgg_view_icon('check') . ' ' . $label);
+                }
+
             }
             $content .= elgg_format_element(
                 'ul',

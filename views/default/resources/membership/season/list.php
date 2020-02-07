@@ -18,16 +18,11 @@ elgg_register_menu_item('title', [
     'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
 ]);
 
-$body = elgg_view_layout(
+echo elgg_view_layout(
     'default',
     [
-        'title' => elgg_echo('membership:seasons'),
+        'title' => elgg_echo('membership:overview:tabs:seasons'),
         'content' => $seasons,
         'sidebar' => false,
     ]
-);
-
-echo elgg_view_page(
-    elgg_echo('membership:seasons'),
-    $body
 );
