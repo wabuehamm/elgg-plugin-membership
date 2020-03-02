@@ -13,13 +13,13 @@ $owner_guid = get_input('owner_guid');
 
 Tools::assert(!is_null($owner_guid));
 
-/** @var $owner ElggUser */
+/** @var ElggUser $owner */
 $owner = get_entity($owner_guid);
 
 Tools::assert(!is_null($owner));
 Tools::assert($owner instanceof ElggUser);
 
-/** @var $season Season */
+/** @var Season $season */
 $season = get_entity($season_guid);
 
 Tools::assert(!is_null($season));
@@ -41,7 +41,7 @@ if (count($departments_participation) == 0) {
 $departments_participation->setParticipationTypes(get_input('departments', []));
 $departments_participation->save();
 
-/** @var $productions Production[] */
+/** @var Production[] $productions */
 $productions = $season->getProductions();
 
 foreach ($productions as $production) {

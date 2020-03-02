@@ -41,6 +41,7 @@ return [
 
     'membership:departments' => 'Departments',
     'membership:departments:add' => 'Add departments',
+    'membership:departments:title' => 'Departments',
 
     'membership:settings:departments:participations:label' => 'Department participation types',
     'membership:settings:departments:participations:help' => 'Default participation types for departments in a new season (one type per line in the form of key:label)',
@@ -61,5 +62,21 @@ return [
     'membership:participations:season:title' => 'Participate in Season %s',
 
     'membership:participations:saved' => 'Participations saved',
+
+    'membership:reports:profileFields:name' => 'Name',
+    'membership:reports:profileFields:username' => 'Benutzername',
+    'membership:reports:profileFields:email' => 'E-Mail',
+
+    'membership:reports:export:csv' => 'Export',
+
+    'membership:reports:members' => 'Members',
+    'membership:reports:departments' => 'Departments',
+
+    'membership:reports:profileFields:street' => 'Street',
+    'membership:reports:profileFields:zip' => 'ZIP',
+    'membership:reports:profileFields:city' => 'City',
+    'membership:reports:profileFields:telephone' => 'Telephone',
+    'membership:reports:profileFields:mobile' => 'Mobile',
+
 
 ];

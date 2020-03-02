@@ -4,7 +4,7 @@ use Wabue\Membership\Entities\Production;
 use Wabue\Membership\Entities\Season;
 use Wabue\Membership\Tools;
 
-/** @var $entity Season */
+/** @var Season $entity */
 $entity = elgg_extract('entity', $vars, null);
 
 $owner_guid = elgg_get_page_owner_guid();
@@ -35,7 +35,7 @@ $content .= elgg_view_module(
     )
 );
 
-/** @var $productions Production[] */
+/** @var Production[] $productions */
 $productions = $entity->getProductions();
 
 $module_content = '';

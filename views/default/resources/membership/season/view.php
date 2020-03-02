@@ -7,7 +7,7 @@ $season_guid = elgg_extract('guid', $vars, null);
 
 Tools::assert(!is_null($season_guid));
 
-/** @var $season Season */
+/** @var Season $season */
 $season = get_entity($season_guid);
 
 Tools::assert($season instanceof Season);

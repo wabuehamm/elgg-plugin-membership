@@ -1,0 +1,45 @@
+table.membershipReport {
+    border: 2px solid #2C681B;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+table.membershipReport td, table.membershipReport th {
+    border: 1px solid #2C681B;
+    padding: 3px 2px;
+}
+table.membershipReport tbody td {
+    font-size: 13px;
+    color: #000000;
+}
+table.membershipReport tr:nth-child(even) td {
+    background: #F8920A;
+}
+table.membershipReport thead {
+    background: #80B522;
+    border-bottom: 2px solid #2C681B;
+}
+table.membershipReport thead th {
+    font-size: 19px;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-align: center;
+    border-left: 2px solid #2C681B;
+}
+table.membershipReport thead th:first-child {
+    border-left: none;
+}
+
+table.membershipReport tfoot td {
+    font-size: 13px;
+}
+table.membershipReport tfoot .links {
+    text-align: right;
+}
+table.membershipReport tfoot .links a{
+    display: inline-block;
+    background: #FFFFFF;
+    color: #A40808;
+    padding: 2px 8px;
+    border-radius: 5px;
+}

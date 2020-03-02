@@ -105,14 +105,14 @@ return [
             ],
         ],
         'report:object:departments' => [
-            'path' => '/membership/reports/season/{season_guid}/departments/{participation_type}',
+            'path' => '/membership/reports/season/{season_guid}/departments/{participation_types}',
             'resource' => 'membership/reports/departments',
             'middleware' => [
                 AdminGatekeeper::class
             ]
         ],
         'report:object:production' => [
-            'path' => '/membership/reports/season/{season_guid}/production/{production_guid}/{participation_type}',
+            'path' => '/membership/reports/season/{season_guid}/production/{production_guid}/{participation_types}',
             'resource' => 'membership/reports/production',
             'default' => [
                 'production_guid' => 0,
@@ -148,7 +148,14 @@ return [
             kk:Kaffeeküche
             th:Theke Studio
             kü:Küche Studio
-        "
+        ",
+        'reportProfileFields' => [
+            "street",
+            "zip",
+            "city",
+            "telephone",
+            "mobile"
+        ]
     ],
     'user_settings' => [
         // Register user settings for your plugin here

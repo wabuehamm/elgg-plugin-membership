@@ -25,4 +25,9 @@ class Departments extends ParticipationObject {
         return null;
     }
 
+    public function getDisplayName(): string
+    {
+        return elgg_echo("membership:departments:title");
+    }
+
 }

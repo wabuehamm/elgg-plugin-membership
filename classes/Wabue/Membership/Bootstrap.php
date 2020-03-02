@@ -19,6 +19,7 @@ class Bootstrap extends DefaultPluginBootstrap
     public function extendViews()
     {
         elgg_extend_view('elements/components.css', 'elements/membership/components/progressbar.css');
+        elgg_extend_view('elements/components.css', 'elements/membership/components/reporttable.css');
     }
 
     public function registerHooks()
@@ -55,7 +56,7 @@ class Bootstrap extends DefaultPluginBootstrap
         $entity = $hook->getEntityParam();
 
         if ($entity instanceof Season) {
-            /** @var $menuItems Collection */
+            /** @var Collection $menuItems */
             $menuItems = $hook->getValue();
             $menuItems->add(ElggMenuItem::factory([
                 'name' => 'participate',

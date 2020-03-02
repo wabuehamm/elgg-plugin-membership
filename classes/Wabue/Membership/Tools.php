@@ -3,7 +3,9 @@
 namespace Wabue\Membership;
 
 use Elgg\BadRequestException;
+use ElggUser;
 use Psr\Log\LogLevel;
+use Wabue\Membership\Entities\Participation;
 use Wabue\Membership\Entities\ParticipationObject;
 
 class Tools
@@ -78,6 +80,64 @@ class Tools
                 'align' => 'horizontal',
             ]
         );
+    }
+
+    /**
+     * Generates a multidimensional report array like this:
+     *
+     * username => [
+     *   _userInfo => Array with relevant user profile fields,
+     *   participationObject => Array of participation keys the user participated in for the participation object
+     * ]
+     * @param ParticipationObject[] $participationObjects
+     * @param string[] $participationTypes
+     * @return array The report
+     * @throws BadRequestException Wrong data structure
+     */
+    public static function generateReport(array $participationObjects, array $participationTypes): array
+    {
+        $report = [];
+        $reportProfileFields = elgg_get_plugin_setting("reportProfileFields", "membership", []);
+
+        foreach ($participationObjects as $participationObject) {
+            /** @var Participation[] $participations */
+            $participations = $participationObject->getParticipations();
+            foreach ($participations as $participation) {
+                $reportParticipations = [];
+
+                foreach ($participationTypes as $filterParticipationType) {
+                    if (in_array($filterParticipationType, array_keys($participation->getParticipationTypes()))) {
+                        array_push($reportParticipations, $filterParticipationType);
+                    }
+                }
+
+                if (count($reportParticipations) > 0) {
+                    /** @var ElggUser $owner */
+                    $owner = $participation->getOwnerEntity();
+                    self::assert(!is_null($owner));
+                    self::assert($owner instanceof ElggUser);
+                    if (!array_key_exists($owner->username, $report)) {
+                        $userInfo = [
+                            "name" => $owner->getDisplayName(),
+                            "username" => $owner->username,
+                            "email" => $owner->email,
+                        ];
+
+                        foreach ($reportProfileFields as $reportProfileField) {
+                            $userInfo[$reportProfileField] = $owner->getProfileData($reportProfileField);
+                        }
+
+                        $report[$owner->username] = [
+                            "_userInfo" => $userInfo
+                        ];
+                    }
+
+                    $report[$owner->username][$participationObject->getDisplayName()] = $reportParticipations;
+                }
+            }
+        }
+
+        return $report;
     }
 }
 

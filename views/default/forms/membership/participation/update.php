@@ -6,7 +6,7 @@ use Wabue\Membership\Entities\Production;
 use Wabue\Membership\Entities\Season;
 use Wabue\Membership\Tools;
 
-/** @var $season Season */
+/** @var Season $season */
 $season = elgg_extract('season', $vars, null);
 
 Tools::assert(!is_null($season));
@@ -30,13 +30,13 @@ echo elgg_view_field([
 
 $content = '';
 
-/** @var $departments Departments */
+/** @var Departments $departments */
 $departments = $season->getDepartments();
 
 Tools::assert(!is_null($departments));
 Tools::assert($departments instanceof Departments);
 
-/** @var $departments_participations Participation */
+/** @var Participation $departments_participations */
 $departments_participations = $departments->getParticipations($owner_guid)[0];
 
 $content .= elgg_view_module(
@@ -49,7 +49,7 @@ $content .= elgg_view_module(
     )
 );
 
-/** @var $productions Production[] */
+/** @var Production[] $productions */
 $productions = $season->getProductions();
 
 $productions_content = '';
@@ -57,7 +57,7 @@ $productions_content = '';
 foreach ($productions as $production) {
     Tools::assert($production instanceof Production);
 
-    /** @var $production_participations Participation */
+    /** @var Participation $production_participations */
     $production_participations = $production->getParticipations($owner_guid)[0];
 
     $productions_content .= elgg_format_element(

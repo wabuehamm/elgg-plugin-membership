@@ -4,7 +4,7 @@ use Wabue\Membership\Entities\Departments;
 use Wabue\Membership\Entities\ParticipationObject;
 use Wabue\Membership\Tools;
 
-/** @var $entity ParticipationObject */
+/** @var ParticipationObject $entity */
 $entity = elgg_extract('entity', $vars, null);
 
 Tools::assert(!is_null($entity));
