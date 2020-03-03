@@ -104,23 +104,17 @@ return [
                 UserPageOwnerCanEditGatekeeper::class
             ],
         ],
-        'report:object:departments' => [
-            'path' => '/membership/reports/season/{season_guid}/departments/{participation_types}',
-            'resource' => 'membership/reports/departments',
+        'view:report' => [
+            'path' => '/membership/reports/season/{season_guid}/{participation_object_guids}/{participation_types}',
+            'resource' => 'membership/reports',
             'middleware' => [
                 AdminGatekeeper::class
+            ],
+            'defaults' => [
+                'participation_object_guids' => '',
+                'participation_types' => '',
             ]
         ],
-        'report:object:production' => [
-            'path' => '/membership/reports/season/{season_guid}/production/{production_guid}/{participation_types}',
-            'resource' => 'membership/reports/production',
-            'default' => [
-                'production_guid' => 0,
-            ],
-            'middleware' => [
-                AdminGatekeeper::class
-            ]
-        ]
     ],
     'widgets' => [
         // Register custom widgets here

@@ -103,7 +103,7 @@ abstract class ParticipationObject extends ElggObject
      */
     public static function validateParticipationSetting(string $setting): bool {
         $cleanedSetting = self::cleanParticipationSetting($setting);
-        if ($cleanedSetting == null || $cleanedSetting == '') {
+        if (is_null($cleanedSetting) || $cleanedSetting == '') {
             return false;
         }
 

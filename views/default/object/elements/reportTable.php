@@ -19,12 +19,18 @@ use Wabue\Membership\Entities\ParticipationObject;
 $participationObjects = elgg_extract('participationObjects', $vars, []);
 $columns = elgg_extract('columns', $vars, []);
 $column_filter = elgg_extract('column_filter', $vars, []);
+
+if (count($column_filter) == 0) {
+    $column_filter = array_keys($columns);
+}
+
 $report = elgg_extract('report', $vars, []);
 
 $reportProfileFields = elgg_get_plugin_setting("reportProfileFields", "membership", []);
 
 ?>
-<table class="membershipReport">
+<div class="membershipReport">
+<table>
     <thead>
     <tr>
         <th colspan="<?php echo count(array_merge(['name', 'username', 'email'], $reportProfileFields)); ?>"></th>
@@ -39,9 +45,11 @@ $reportProfileFields = elgg_get_plugin_setting("reportProfileFields", "membershi
         foreach (array_merge(['name', 'username', 'email'], $reportProfileFields) as $key) {
             echo '<th>' . elgg_echo('membership:reports:profileFields:'.$key) . '</th>';
         }
-        foreach ($columns as $key => $label) {
-            if (in_array($key, $column_filter)) {
-                echo "<th>$label</th>";
+        foreach ($participationObjects as $participationObject) {
+            foreach ($columns as $key => $label) {
+                if (in_array($key, $column_filter)) {
+                    echo "<th>$label</th>";
+                }
             }
         }
         ?>
@@ -58,6 +66,8 @@ $reportProfileFields = elgg_get_plugin_setting("reportProfileFields", "membershi
                 foreach (array_keys($columns) as $key) {
                     if (in_array($key, $user_report[$participationObject->getDisplayName()])) {
                         echo '<td style="text-align:center">'.elgg_view_icon('check').'</td>';
+                    } else {
+                        echo '<td></td>';
                     }
                 }
             }
@@ -66,3 +76,4 @@ $reportProfileFields = elgg_get_plugin_setting("reportProfileFields", "membershi
     ?>
     </tbody>
 </table>
+</div>

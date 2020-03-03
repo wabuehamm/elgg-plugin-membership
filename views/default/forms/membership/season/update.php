@@ -6,7 +6,7 @@ use Wabue\Membership\Tools;
 
 $guid = elgg_extract('guid', $vars, null);
 
-if ($guid) {
+if (!is_null($guid)) {
     $entity = get_entity($guid);
     Tools::assert($entity instanceof Season);
     $departments = $entity->getDepartments();

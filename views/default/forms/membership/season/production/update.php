@@ -13,7 +13,7 @@ Tools::assert($season instanceof Season);
 
 $guid = elgg_extract('guid', $vars, null);
 
-if ($guid != null) {
+if (!is_null($guid)) {
     $entity = get_entity($guid);
     Tools::assert($entity instanceof Production);
 }

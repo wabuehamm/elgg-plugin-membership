@@ -70,7 +70,7 @@ return [
     'membership:reports:export:csv' => 'Export',
 
     'membership:reports:members' => 'Members',
-    'membership:reports:departments' => 'Departments',
+    'membership:reports:title' => 'Report',
 
     'membership:reports:profileFields:street' => 'Street',
     'membership:reports:profileFields:zip' => 'ZIP',

@@ -105,11 +105,18 @@ class Tools
             foreach ($participations as $participation) {
                 $reportParticipations = [];
 
-                foreach ($participationTypes as $filterParticipationType) {
-                    if (in_array($filterParticipationType, array_keys($participation->getParticipationTypes()))) {
-                        array_push($reportParticipations, $filterParticipationType);
+                if (count($participationTypes) == 0) {
+                    foreach ($participation->getParticipationTypes() as $participationType) {
+                        array_push($reportParticipations, $participationType);
+                    }
+                } else {
+                    foreach ($participationTypes as $filterParticipationType) {
+                        if (in_array($filterParticipationType, array_keys($participation->getParticipationTypes()))) {
+                            array_push($reportParticipations, $filterParticipationType);
+                        }
                     }
                 }
+
 
                 if (count($reportParticipations) > 0) {
                     /** @var ElggUser $owner */
