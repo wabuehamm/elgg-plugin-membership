@@ -66,41 +66,12 @@ if ($participationTypesVar) {
     $participationTypes = preg_split('/,/', $participationTypesVar);
 }
 
+header('Content-Type: text/csv');
 
-elgg_register_menu_item('title', [
-    'name' => 'export_csv',
-    'href' => elgg_generate_url(
-        'view:report',
-        [
-            'season_guid' => $season_guid,
-            'participation_object_guids' => $participationObjectGuidsVar,
-            'participation_types' => $participationTypesVar,
-            'view' => 'csv'
-        ]
-    ),
-    'icon' => 'file-csv',
-    'text' => elgg_echo('membership:reports:export:csv'),
-    'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
-]);
-
-$body = elgg_view_layout(
-    'default',
+echo elgg_view(
+    'page/components/reports/reportPage',
     [
-        'title' => elgg_echo('membership:reports:title', [
-            $participationTypes[$participationTypes]
-        ]),
-        'content' => elgg_view(
-            'page/components/reports/reportPage',
-            [
-                'participationTypes' => $participationTypes,
-                'participationObjects' => $participationObjects
-            ]
-        ),
-        'sidebar' => false,
+        'participationTypes' => $participationTypes,
+        'participationObjects' => $participationObjects
     ]
-);
-
-echo elgg_view_page(
-    elgg_echo('membership:reports:title'),
-    $body
 );
