@@ -47,7 +47,7 @@ elgg_register_menu_item('title', [
         'guid' => $season_guid
     ]),
     'text' => elgg_echo('membership:season:edit'),
-    'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
+    'link_class' => 'elgg-button elgg-button-action',
 ]);
 
 elgg_register_menu_item('title', [
@@ -56,7 +56,16 @@ elgg_register_menu_item('title', [
         'container_guid' => $season_guid
     ]),
     'text' => elgg_echo('membership:season:production:add'),
-    'link_class' => 'elgg-button elgg-button-action event-calendar-button-add',
+    'link_class' => 'elgg-button elgg-button-action',
+]);
+
+elgg_register_menu_item('title', [
+    'name' => 'batch',
+    'href' => elgg_generate_url('view:season:batch', [
+        'container_guid' => $season_guid
+    ]),
+    'text' => elgg_echo('membership:season:batch'),
+    'link_class' => 'elgg-button elgg-button-action',
 ]);
 
 $body = elgg_view_layout(

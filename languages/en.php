@@ -78,5 +78,9 @@ return [
     'membership:reports:profileFields:telephone' => 'Telephone',
     'membership:reports:profileFields:mobile' => 'Mobile',
 
-
+    'membership:season:batch' => 'Batch-Entry',
+    'membership:season:batch:title' => 'Batch-Entry for Season %s',
+    'membership:season:batch:member' => 'Member',
+    'membership:season:batch:save' => 'Save',
+    'membership:season:batch:add' => 'Add line',
 ];

@@ -84,7 +84,7 @@ return [
             ]
         ],
         'view:object:season' => [
-            'path' => '/membership/season/view/{guid}',
+            'path' => '/membership/season/{guid}',
             'resource' => 'membership/season/view',
             'middleware' => [
                 AdminGatekeeper::class
@@ -115,6 +115,13 @@ return [
                 'participation_types' => '',
             ]
         ],
+        'view:season:batch' => [
+            'path' => '/membership/season/{container_guid}/batch',
+            'resource' => 'membership/season/batch',
+            'middleware' => [
+                AdminGatekeeper::class
+            ]
+        ]
     ],
     'widgets' => [
         // Register custom widgets here
