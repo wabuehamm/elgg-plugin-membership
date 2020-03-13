@@ -7,8 +7,10 @@
  */
 
 use Elgg\Router\Middleware\AdminGatekeeper;
+use Elgg\Router\Middleware\Gatekeeper;
 use Elgg\Router\Middleware\UserPageOwnerCanEditGatekeeper;
 use Wabue\Membership\Entities\Departments;
+use Wabue\Membership\ReportGatekeeper;
 
 return [
     'bootstrap' => Wabue\Membership\Bootstrap::class,
@@ -108,7 +110,8 @@ return [
             'path' => '/membership/reports/season/{season_guid}/{participation_object_guids}/{participation_types}',
             'resource' => 'membership/reports',
             'middleware' => [
-                AdminGatekeeper::class
+                Gatekeeper::class,
+                ReportGatekeeper::class
             ],
             'defaults' => [
                 'participation_object_guids' => '',
