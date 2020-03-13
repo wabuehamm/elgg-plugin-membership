@@ -59,6 +59,7 @@ define(function(require) {
     require('jquery.ui.autocomplete.html')
 
     elgg.register_hook_handler('ready', 'system', () => {
+        $('.elgg-layout-one-column').css('overflow', 'auto')
         membershipAddLine($)
     })
 })
