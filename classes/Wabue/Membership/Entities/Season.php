@@ -29,6 +29,7 @@ class Season extends ElggObject
     {
         $this->year = $year;
     }
+
     protected function initializeAttributes()
     {
         parent::initializeAttributes();
@@ -101,6 +102,27 @@ class Season extends ElggObject
                 'as' => 'string'
             ]
         ]);
+    }
+
+    public static function factory($year, $enddate, $lockdate, $participationTypes): Season
+    {
+        $season = new Season();
+        $season->owner_guid = 0;
+        $season->access_id = ACCESS_LOGGED_IN;
+        $season->setYear($year);
+        $season->setEnddate($enddate);
+        $season->setLockdate($lockdate);
+        $season->save();
+
+        $departments = new Departments();
+        $departments->owner_guid = 0;
+        $departments->access_id = ACCESS_LOGGED_IN;
+        $departments->container_guid = $season->guid;
+        $departments->setParticipationTypes(
+            ParticipationObject::participationSettingToArray($participationTypes)
+        );
+        $departments->save();
+        return $season;
     }
 
 }

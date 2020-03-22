@@ -18,51 +18,52 @@ use Wabue\Membership\Entities\ParticipationObject;
 /** @var ParticipationObject[] $participationObjects */
 $participationObjects = elgg_extract('participationObjects', $vars, []);
 $columns = elgg_extract('columns', $vars, []);
-$column_filter = elgg_extract('column_filter', $vars, []);
-
-if (count($column_filter) == 0) {
-    $column_filter = array_keys($columns);
-}
 
 $report = elgg_extract('report', $vars, []);
 
+$basicInfoFields = ['displayname', 'name', 'givenname', 'username', 'email'];
+
 $reportProfileFields = elgg_get_plugin_setting("reportProfileFields", "membership", []);
 
-$delimiter = ',';
-$newline = "\n";
+$f = fopen('php://memory', 'r+');
 
-echo str_repeat($delimiter, count(array_merge(['name', 'username', 'email'], $reportProfileFields)) - 1);
-foreach ($participationObjects as $participationObject) {
-    echo $participationObject->getDisplayName() . str_repeat($delimiter, count($column_filter) - 1);
-}
-echo $newline;
+$line = array_fill(0, count(array_merge($basicInfoFields, $reportProfileFields)), '');
 
-$header = [];
-foreach (array_merge(['name', 'username', 'email'], $reportProfileFields) as $key) {
-    array_push($header, elgg_echo('membership:reports:profileFields:' . $key));
+foreach ($participationObjects as $participationObject) {
+    $line[] = $participationObject->getDisplayName();
+    $line = array_merge($line, array_fill(0, count($columns[$participationObject->getGUID()]) - 1, ''));
+}
+
+fputcsv($f, $line);
+
+$line = [];
+foreach (array_merge($basicInfoFields, $reportProfileFields) as $key) {
+    array_push($line, elgg_echo('membership:reports:profileFields:' . $key));
 }
 foreach ($participationObjects as $participationObject) {
-    foreach ($columns as $key => $label) {
-        if (in_array($key, $column_filter)) {
-            array_push($header, $label);
-        }
+    foreach ($columns[$participationObject->getGUID()] as $key => $label) {
+        array_push($line, $label);
     }
 }
-echo join($delimiter, $header) . $newline;
+
+fputcsv($f, $line);
 
 foreach ($report as $username => $user_report) {
-    $row = [];
-    foreach (array_merge(['name', 'username', 'email'], $reportProfileFields) as $key) {
-        array_push($row, $user_report['_userInfo'][$key]);
+    $line = [];
+    foreach (array_merge($basicInfoFields, $reportProfileFields) as $key) {
+        array_push($line, $user_report['_userInfo'][$key]);
     }
     foreach ($participationObjects as $participationObject) {
-        foreach (array_keys($columns) as $key) {
+        foreach (array_keys($columns[$participationObject->getGUID()]) as $key) {
             if (in_array($key, $user_report[$participationObject->getDisplayName()])) {
-                array_push($row, 'X');
+                array_push($line, 'X');
             } else {
-                array_push($row, '');
+                array_push($line, '');
             }
         }
     }
-    echo join(',', $row) . $newline;
+    fputcsv($f, $line);
 }
+
+rewind($f);
+print(stream_get_contents($f));

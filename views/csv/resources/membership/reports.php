@@ -22,9 +22,9 @@ Tools::assert(
 );
 
 /** @var string[] $participationObjectGuids */
-$participationObjectGuidsVar = elgg_extract('participation_object_guids', $vars, null);
+$participationObjectGuidsVar = elgg_extract('participation_object_guids', $vars, '');
 
-if (!is_null($participationObjectGuidsVar)) {
+if ($participationObjectGuidsVar != '') {
     $participationObjectGuids = preg_split('/,/', $participationObjectGuidsVar);
 } else {
     $participationObjectGuids = [];

@@ -64,7 +64,9 @@ return [
     'membership:participations:saved' => 'Participations saved',
 
     'membership:reports:profileFields:name' => 'Name',
-    'membership:reports:profileFields:username' => 'Benutzername',
+    'membership:reports:profileFields:displayname' => 'Display name',
+    'membership:reports:profileFields:givenname' => 'Given name',
+    'membership:reports:profileFields:username' => 'Username',
     'membership:reports:profileFields:email' => 'E-Mail',
 
     'membership:reports:export:csv' => 'Export',

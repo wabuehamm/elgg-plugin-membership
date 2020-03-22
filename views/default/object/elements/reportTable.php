@@ -18,54 +18,49 @@ use Wabue\Membership\Entities\ParticipationObject;
 /** @var ParticipationObject[] $participationObjects */
 $participationObjects = elgg_extract('participationObjects', $vars, []);
 $columns = elgg_extract('columns', $vars, []);
-$column_filter = elgg_extract('column_filter', $vars, []);
-
-if (count($column_filter) == 0) {
-    $column_filter = array_keys($columns);
-}
 
 $report = elgg_extract('report', $vars, []);
+
+$basicInfoFields = ['displayname', 'name', 'givenname', 'username', 'email'];
 
 $reportProfileFields = elgg_get_plugin_setting("reportProfileFields", "membership", []);
 
 ?>
 <div class="membershipReport">
-<table>
-    <thead>
-    <tr>
-        <th colspan="<?php echo count(array_merge(['name', 'username', 'email'], $reportProfileFields)); ?>"></th>
-        <?php
-        foreach ($participationObjects as $participationObject) {
-            echo '<th colspan="' . count($column_filter) . '">' . $participationObject->getDisplayName() . '</th>';
-        }
-        ?>
-    </tr>
-    <tr>
-        <?php
-        foreach (array_merge(['name', 'username', 'email'], $reportProfileFields) as $key) {
-            echo '<th>' . elgg_echo('membership:reports:profileFields:'.$key) . '</th>';
-        }
-        foreach ($participationObjects as $participationObject) {
-            foreach ($columns as $key => $label) {
-                if (in_array($key, $column_filter)) {
+    <table>
+        <thead>
+        <tr>
+            <th colspan="<?php echo count(array_merge($basicInfoFields, $reportProfileFields)); ?>"></th>
+            <?php
+            foreach ($participationObjects as $participationObject) {
+                echo '<th colspan="' . count($columns[$participationObject->getGUID()]) . '">' . $participationObject->getDisplayName() . '</th>';
+            }
+            ?>
+        </tr>
+        <tr>
+            <?php
+            foreach (array_merge($basicInfoFields, $reportProfileFields) as $key) {
+                echo '<th>' . elgg_echo('membership:reports:profileFields:' . $key) . '</th>';
+            }
+            foreach ($participationObjects as $participationObject) {
+                foreach ($columns[$participationObject->getGUID()] as $key => $label) {
                     echo "<th>$label</th>";
                 }
             }
-        }
-        ?>
-    </tr>
-    </thead>
-    <tbody>
-    <?php
+            ?>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
         foreach ($report as $username => $user_report) {
             echo '<tr>';
-            foreach (array_merge(['name', 'username', 'email'], $reportProfileFields) as $key) {
+            foreach (array_merge($basicInfoFields, $reportProfileFields) as $key) {
                 echo '<td>' . $user_report['_userInfo'][$key] . '</td>';
             }
             foreach ($participationObjects as $participationObject) {
-                foreach (array_keys($columns) as $key) {
+                foreach (array_keys($columns[$participationObject->getGUID()]) as $key) {
                     if (in_array($key, $user_report[$participationObject->getDisplayName()])) {
-                        echo '<td style="text-align:center">'.elgg_view_icon('check').'</td>';
+                        echo '<td style="text-align:center">' . elgg_view_icon('check') . '</td>';
                     } else {
                         echo '<td></td>';
                     }
@@ -73,7 +68,7 @@ $reportProfileFields = elgg_get_plugin_setting("reportProfileFields", "membershi
             }
             echo '</tr>';
         }
-    ?>
-    </tbody>
-</table>
+        ?>
+        </tbody>
+    </table>
 </div>

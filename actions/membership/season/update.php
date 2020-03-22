@@ -1,6 +1,5 @@
 <?php
 
-use Wabue\Membership\Entities\Departments;
 use Wabue\Membership\Entities\ParticipationObject;
 use Wabue\Membership\Entities\Season;
 
@@ -30,28 +29,14 @@ if ($guid != -1) {
     if (!$entity instanceof Season) {
         return elgg_error_response();
     }
+    $entity->owner_guid = 0;
+    $entity->access_id = ACCESS_LOGGED_IN;
+    $entity->setYear($year);
+    $entity->setEnddate($enddate);
+    $entity->setLockdate($lockdate);
+    $entity->save();
 } else {
-    $entity = new Season();
-}
-
-$entity->owner_guid = 0;
-$entity->access_id = ACCESS_LOGGED_IN;
-$entity->setYear($year);
-$entity->setEnddate($enddate);
-$entity->setLockdate($lockdate);
-$entity->save();
-
-// Add departments to the new season
-
-if ($guid == -1) {
-    $departments = new Departments();
-    $departments->owner_guid = 0;
-    $departments->access_id = ACCESS_LOGGED_IN;
-    $departments->container_guid = $entity->guid;
-    $departments->setParticipationTypes(
-        ParticipationObject::participationSettingToArray($participationTypes)
-    );
-    $departments->save();
+    $entity = Season::factory($year, $enddate, $lockdate, $participationTypes);
 }
 
 return elgg_ok_response(

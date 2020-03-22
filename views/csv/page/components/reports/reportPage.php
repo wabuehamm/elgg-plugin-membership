@@ -19,32 +19,28 @@ Tools::assert(
     !is_null($participationObjects)
 );
 
-$columnHeaders = [];
-
-foreach ($participationObjects as $participationObject) {
-    Tools::assert(
-        $participationObject instanceof ParticipationObject
-    );
-    foreach($participationObject->getParticipationTypes() as $key => $label) {
-        if (count($participationTypes) == 0 || in_array($key, $participationTypes)) {
-            if (!array_key_exists($key, $columnHeaders)) {
-                $columnHeaders[$key] = $label;
-            }
-        }
-    }
-}
-
 $report_array = Tools::generateReport(
     $participationObjects,
     $participationTypes
 );
 
+$columns = [];
+
+foreach ($participationObjects as $participationObject) {
+    Tools::assert($participationObject instanceof ParticipationObject);
+    $columns[$participationObject->getGUID()] = [];
+    foreach ($participationObject->getParticipationTypes() as $key => $label) {
+        if (count($participationTypes) == 0 || in_array($key, $participationTypes)) {
+            $columns[$participationObject->getGUID()][$key] = $label;
+        }
+    }
+}
+
 echo elgg_view(
     'object/elements/reportTable',
     [
         'participationObjects' => $participationObjects,
-        'columns' => $columnHeaders,
-        'column_filter' => $participationTypes,
+        'columns' => $columns,
         'report' => $report_array
     ]
 );

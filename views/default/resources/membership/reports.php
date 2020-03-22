@@ -66,7 +66,6 @@ if ($participationTypesVar) {
     $participationTypes = preg_split('/,/', $participationTypesVar);
 }
 
-
 elgg_register_menu_item('title', [
     'name' => 'export_csv',
     'href' => elgg_generate_url(

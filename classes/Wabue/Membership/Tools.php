@@ -7,6 +7,7 @@ use ElggUser;
 use Psr\Log\LogLevel;
 use Wabue\Membership\Entities\Participation;
 use Wabue\Membership\Entities\ParticipationObject;
+use Wabue\Membership\Entities\Season;
 
 class Tools
 {
@@ -111,12 +112,11 @@ class Tools
                     }
                 } else {
                     foreach ($participationTypes as $filterParticipationType) {
-                        if (in_array($filterParticipationType, array_keys($participation->getParticipationTypes()))) {
+                        if (in_array($filterParticipationType, array_values($participation->getParticipationTypes()))) {
                             array_push($reportParticipations, $filterParticipationType);
                         }
                     }
                 }
-
 
                 if (count($reportParticipations) > 0) {
                     /** @var ElggUser $owner */
@@ -124,8 +124,13 @@ class Tools
                     self::assert(!is_null($owner));
                     self::assert($owner instanceof ElggUser);
                     if (!array_key_exists($owner->username, $report)) {
+                        $username_parts = preg_split("/\./", $owner->username);
+                        $name = $username_parts[count($username_parts) - 1];
+                        $givenName = join(' ', array_slice($username_parts, 0, count($username_parts) - 1));
                         $userInfo = [
-                            "name" => $owner->getDisplayName(),
+                            "displayname" => $owner->getDisplayName(),
+                            "name" => ucfirst($name),
+                            "givenname" => ucfirst($givenName),
                             "username" => $owner->username,
                             "email" => $owner->email,
                         ];
@@ -144,7 +149,104 @@ class Tools
             }
         }
 
+        usort($report, function ($a, $b) {
+            return strcmp($a['_userInfo']['name'], $b['_userInfo']['name']);
+        });
+
         return $report;
+    }
+
+    /**
+     * Get all seasons in the database
+     * @return Season[]
+     */
+    public static function getAllSeasons(): array
+    {
+        return elgg_get_entities([
+            'type' => 'object',
+            'subtype' => 'season',
+            'limit' => 999,
+        ]);
+    }
+
+    /**
+     * Get a season by the year it took place
+     * @param string $year The season's year
+     * @return Season
+     */
+    public static function getSeasonByYear(string $year)
+    {
+        $seasons = elgg_get_entities([
+            'type' => 'object',
+            'subtype' => 'season',
+            'metadata_name_value_pairs' => [
+                'name' => 'year',
+                'value' => $year
+            ]
+        ]);
+
+        if (count($seasons) != 1) {
+            return null;
+        }
+
+        return $seasons[0];
+    }
+
+    /**
+     * Return a user by it's display name
+     * @param string $displayName The display name to search for
+     * @return ElggUser|null User matching the display name
+     */
+    public static function getUserByDisplayname(string $displayName)
+    {
+        $users = elgg_get_entities([
+            'type' => 'user',
+            'metadata_name_value_pairs' => [
+                'name' => 'name',
+                'value' => $displayName
+            ]
+        ]);
+
+        if (count($users) == 1) {
+            return $users[0];
+        }
+
+        return null;
+    }
+
+    /**
+     * Get a user by a combination of birthday, street and zip
+     *
+     * @param string $birthday The birthday of the user
+     * @param string $street The street address of the user
+     * @param string $zip The zip of the user
+     * @return ElggUser|null Matching user
+     */
+    public static function getUserByPrivateData(string $birthday, string $street, string $zip)
+    {
+        $users = elgg_get_entities([
+            'type' => 'user',
+            'metadata_name_value_pairs' => [
+                [
+                    'name' => 'birthday',
+                    'value' => $birthday
+                ],
+                [
+                    'name' => 'street',
+                    'value' => $street
+                ],
+                [
+                    'name' => 'zip',
+                    'value' => $zip
+                ]
+            ]
+        ]);
+
+        if (count($users) == 1) {
+            return $users[0];
+        }
+
+        return null;
     }
 }
 

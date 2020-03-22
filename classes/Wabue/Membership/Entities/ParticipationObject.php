@@ -39,11 +39,11 @@ abstract class ParticipationObject extends ElggObject
     }
 
     /**
-     * @param array $participationTypes
+     * @param array $participationType
      */
-    public function addParticipationTypes($participationTypes)
+    public function addParticipationType($participationType)
     {
-        $this->setParticipationTypes(array_merge($this->getParticipationTypes(), [$participationTypes]));
+        $this->setParticipationTypes(array_merge($this->getParticipationTypes(), [$participationType]));
     }
 
     /**
@@ -64,6 +64,7 @@ abstract class ParticipationObject extends ElggObject
             'relationship_guid' => $this->guid,
             'relationship' => 'participate',
             'inverse_relationship' => true,
+            'limit' => 999,
         ];
         if (!is_null($owner_guid)) {
             $options['owner_guids'] = [$owner_guid];
