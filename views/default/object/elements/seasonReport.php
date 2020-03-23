@@ -168,7 +168,18 @@ if ($entity->getLockdate() < time()) {
 
 echo elgg_view_module(
     'info',
-    $titleprefix . $entity->getDisplayName(),
+    $titleprefix . $entity->getDisplayName() . elgg_format_element(
+        'a',
+        [
+            'href' => elgg_generate_url(
+                'view:report',
+                [
+                    'season_guid' => $entity->getGUID(),
+                ]
+            )
+        ],
+        ' ' . elgg_echo('membership:reports:completeseason')
+    ),
     $content,
     [
         'id' => 'season' . $entity->guid,

@@ -37,9 +37,15 @@ class Tools
             $content .= elgg_echo('membership:participations:none');
         } else {
             $participation_lists = '';
-            $participation = $participations[0];
-            foreach ($participation->getParticipationTypes() as $key) {
-                $label = $participationTypes[$key];
+            $all_participations = [];
+            foreach ($participations as $participation) {
+                foreach ($participation->getParticipationTypes() as $key) {
+                    if (!array_key_exists($key, $all_participations)) {
+                        $all_participations[$key] = $participationTypes[$key];
+                    }
+                }
+            }
+            foreach ($all_participations as $key => $label) {
                 $link = null;
                 if ($linkGenerator) {
                     $link = call_user_func($linkGenerator, $key);

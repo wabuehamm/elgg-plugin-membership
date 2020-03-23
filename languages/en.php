@@ -75,6 +75,8 @@ return [
     'membership:reports:title' => 'Report',
     'membership:reports:gatekeeper:error' => 'Your user does not have access to this report',
 
+    'membership:reports:completeseason' => 'Show participations for complete season',
+
     'membership:reports:profileFields:street' => 'Street',
     'membership:reports:profileFields:zip' => 'ZIP',
     'membership:reports:profileFields:city' => 'City',
