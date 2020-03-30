@@ -40,7 +40,6 @@ return [
     'membership:production:form:participationtypes:help' => 'Participation types for this production (one type per line in the form of key:label)',
 
     'membership:departments' => 'Departments',
-    'membership:departments:add' => 'Add departments',
     'membership:departments:title' => 'Departments',
 
     'membership:settings:departments:participations:label' => 'Department participation types',
