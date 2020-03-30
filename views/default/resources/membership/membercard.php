@@ -30,8 +30,10 @@ if ($member == false) {
 $options = [
     'type' => 'object',
     'subtype' => 'season',
-    'order_by' => [
-        new OrderByClause('e.time_created', 'desc')
+    'order_by_metadata' => [
+        'name' => 'year',
+        'direction' => 'DESC',
+        'as' => 'integer',
     ],
     'limit' => 2
 ];
