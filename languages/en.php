@@ -97,4 +97,5 @@ return [
     'membership:membercard:noseason' => 'No season found',
     'membership:membercard:participation:invalid' => 'The member currently does not participate in the current season',
     'membership:membercard:participation:valid' => 'The membership is valid',
+    'membership:membercard:forbidden' => 'Viewing another members membership card is forbidden',
 ];

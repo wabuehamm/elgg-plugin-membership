@@ -97,4 +97,5 @@ return [
     'membership:membercard:noseason' => 'Keine Saison gefunden',
     'membership:membercard:participation:invalid' => 'Dieses Mitglied nimmt derzeit nicht an einer Saison teil',
     'membership:membercard:participation:valid' => 'Die Mitgliedschaft ist gültig',
+    'membership:membercard:forbidden' => 'Der Aufruf eines fremden Mitgliederausweises ist nicht erlaubt',
 ];

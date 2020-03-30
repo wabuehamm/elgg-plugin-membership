@@ -1,6 +1,5 @@
 <?php
 
-use Elgg\Database\Clauses\OrderByClause;
 use Endroid\QrCode\QrCode;
 use Wabue\Membership\Entities\Season;
 use Wabue\Membership\Tools;
@@ -54,7 +53,7 @@ if (!$currentSeason->didMemberParticipate($member)) {
     showError(elgg_echo('membership:membercard:participation:invalid'));
 }
 
-if (!elgg_is_logged_in()) {
+if (!elgg_is_logged_in() || (elgg_get_logged_in_user_guid() != $member->getGUID() && !elgg_is_admin_logged_in())) {
     echo elgg_view(
         'page/error',
         [
