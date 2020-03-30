@@ -23,7 +23,7 @@ class Participation extends ParticipationObject
         $participation = new Participation();
         $participation->owner_guid = $user->guid;
         $participation->container_guid = $season->guid;
-        $participation->access_id = ACCESS_PRIVATE;
+        $participation->access_id = ACCESS_PUBLIC;
         $participation->setParticipationTypes([]);
         $participation->save();
         $participation->addRelationship($participationObject->guid, 'participate');

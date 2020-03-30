@@ -21,6 +21,7 @@ class Bootstrap extends DefaultPluginBootstrap
     {
         elgg_extend_view('elements/components.css', 'elements/membership/components/progressbar.css');
         elgg_extend_view('elements/components.css', 'elements/membership/components/reporttable.css');
+        elgg_extend_view('profile/fields', 'membership/profile/awayYears');
     }
 
     public function registerHooks()
@@ -28,7 +29,7 @@ class Bootstrap extends DefaultPluginBootstrap
         elgg_register_plugin_hook_handler('register', 'menu:title', 'Wabue\Membership\Bootstrap::titleMenuHook');
         elgg_register_plugin_hook_handler('register', 'menu:season_participate', 'Wabue\Membership\Bootstrap::seasonParticpateMenuHook');
 
-        elgg_register_plugin_hook_handler('commands', 'cli' , function($hook, $type, $return) {
+        elgg_register_plugin_hook_handler('commands', 'cli', function ($hook, $type, $return) {
             $return[] = ImportSeasons::class;
             return $return;
         });
@@ -52,6 +53,16 @@ class Bootstrap extends DefaultPluginBootstrap
             'icon' => 'theater-masks',
             'class' => ['elgg-button', 'elgg-button-action'],
             'contexts' => ['profile', 'profile_edit'],
+        ]);
+
+        $return[] = \ElggMenuItem::factory([
+            'name' => 'membership',
+            'text' => elgg_echo('membership:membercard'),
+            'href' => elgg_generate_url('view:user:membercard', [
+                'username' => $user->username
+            ]),
+            'link_class' => 'elgg-button elgg-button-action',
+            'icon' => 'address-card',
         ]);
 
         return $return;

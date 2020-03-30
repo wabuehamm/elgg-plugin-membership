@@ -15,4 +15,17 @@ class Production extends ParticipationObject
         $this->attributes['subtype'] = 'production';
     }
 
+    static public function factory($title, $seasonGuid, $participationTypes) {
+        $entity = new Production();
+        $entity->owner_guid = 0;
+        $entity->access_id = ACCESS_PUBLIC;
+        $entity->title = $title;
+        $entity->container_guid = $seasonGuid;
+        $entity->setParticipationTypes(
+            ParticipationObject::participationSettingToArray($participationTypes)
+        );
+        $entity->save();
+        return $entity;
+    }
+
 }

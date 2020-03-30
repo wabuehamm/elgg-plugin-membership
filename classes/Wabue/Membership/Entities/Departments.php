@@ -30,4 +30,15 @@ class Departments extends ParticipationObject {
         return elgg_echo("membership:departments:title");
     }
 
+    public static function factory($seasonGuid, $participationTypes) {
+        $departments = new Departments();
+        $departments->owner_guid = 0;
+        $departments->access_id = ACCESS_PUBLIC;
+        $departments->container_guid = $seasonGuid;
+        $departments->setParticipationTypes(
+            ParticipationObject::participationSettingToArray($participationTypes)
+        );
+        $departments->save();
+        return $departments;
+    }
 }

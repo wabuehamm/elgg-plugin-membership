@@ -26,20 +26,11 @@ if ($guid != -1) {
     if (!$entity instanceof Production) {
         return elgg_error_response();
     }
+    $entity->title = $title;
+    $entity->save();
 } else {
-    $entity = new Production();
+    $entity = Production::factory($title, $seasonGuid, $participationTypes);
 }
-
-$entity->owner_guid = 0;
-$entity->access_id = ACCESS_LOGGED_IN;
-$entity->title = $title;
-$entity->container_guid = $seasonGuid;
-if ($guid == -1) {
-    $entity->setParticipationTypes(
-        ParticipationObject::participationSettingToArray($participationTypes)
-    );
-}
-$entity->save();
 
 return elgg_ok_response(
     ['entity' => $entity],

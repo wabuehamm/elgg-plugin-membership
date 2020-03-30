@@ -3,6 +3,8 @@
 namespace Wabue\Membership;
 
 use Elgg\BadRequestException;
+use Elgg\Cache\SimpleCache;
+use Elgg\Database\QueryBuilder;
 use ElggUser;
 use Psr\Log\LogLevel;
 use Wabue\Membership\Entities\Participation;
@@ -11,6 +13,7 @@ use Wabue\Membership\Entities\Season;
 
 class Tools
 {
+
     /**
      * Validate a given assertion and throw a BadRequestException if it's not
      * valid. Used for basic sanity and security checks, which should be valid
@@ -253,6 +256,36 @@ class Tools
         }
 
         return null;
+    }
+
+    /**
+     * Calculate the number of years the user hasn't participated in a season
+     * @param ElggUser $user User object to calculate for
+     * @return int Number of years
+     */
+    public static function calculateAwayYears($user)
+    {
+        $startAwayYears = $user->getProfileData('away_years') ? $user->getProfileData('away_years') : 0;
+
+        $numberOfSeasons = elgg_count_entities([
+            'type' => 'object',
+            'subtype' => 'season',
+            'limit' => 999,
+        ]);
+
+        $options = [
+            'type' => 'object',
+            'subtype' => 'participation',
+            'limit' => 999,
+            'owner_guid' => $user->getGUID(),
+            'group_by' => [
+                function (QueryBuilder $qb, $main_alias) {
+                    return "$main_alias.container_guid";
+                }
+            ]
+        ];
+
+        return $startAwayYears + $numberOfSeasons - count(elgg_get_entities($options));
     }
 }
 

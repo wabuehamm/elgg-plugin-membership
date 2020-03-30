@@ -88,4 +88,14 @@ return [
     'membership:season:batch:member' => 'Member',
     'membership:season:batch:save' => 'Save',
     'membership:season:batch:add' => 'Add line',
+
+    'membership:profile:member_since:label' => 'Member since',
+    'membership:profile:away_years:label' => 'Years away',
+    'membership:profile:title' => 'Membership',
+
+    'membership:membercard' => 'Membership card',
+    'membership:membercard:notfound' => 'Member with username %s not found',
+    'membership:membercard:noseason' => 'No season found',
+    'membership:membercard:participation:invalid' => 'The member currently does not participate in the current season',
+    'membership:membercard:participation:valid' => 'The membership is valid',
 ];

@@ -3,11 +3,11 @@
 namespace Wabue\Membership\Commands;
 
 use Elgg\Cli\Command;
+use ElggUser;
 use SQLite3;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Wabue\Membership\Entities\Participation;
-use Wabue\Membership\Entities\ParticipationObject;
 use Wabue\Membership\Entities\Production;
 use Wabue\Membership\Entities\Season;
 use Wabue\Membership\Tools;
@@ -28,7 +28,13 @@ class ImportSeasons extends Command
 
     protected function command()
     {
+        $this->getLogger()->setLevel('debug');
+        $this->notice(
+            sprintf('Connecting to database %s', $this->argument('databaseFile'))
+        );
         $database = new SQLite3($this->argument('databaseFile'));
+
+        $this->notice('Querying seasons');
 
         $seasons = $database->query("select DISTINCT season, participationObject from participations where participationObject != 'Departments'");
 
@@ -41,7 +47,13 @@ class ImportSeasons extends Command
             /** @var Season[] $existingSeasons */
             $existingSeasons = Tools::getAllSeasons();
 
+            $this->notice('Deleting Seasons');
+
             foreach ($existingSeasons as $season) {
+                $this->notice(
+                    sprintf('Deleting Season %s', $season->getYear())
+                );
+
                 $season->delete();
             }
         }
@@ -49,6 +61,9 @@ class ImportSeasons extends Command
         foreach ($seasonProductions as $seasonProduction) {
             $season = Tools::getSeasonByYear($seasonProduction['season']);
             if (is_null($season)) {
+                $this->notice(
+                    sprintf('Creating season %s', $seasonProduction['season'])
+                );
                 $season = Season::factory(
                     $seasonProduction['season'],
                     0,
@@ -57,37 +72,78 @@ class ImportSeasons extends Command
                 );
             }
 
-            $production = new Production();
-            $production->title = $seasonProduction['participationObject'];
-            $production->owner_guid = 0;
-            $production->access_id = ACCESS_LOGGED_IN;
-            $production->container_guid = $season->getGUID();
-            $production->setParticipationTypes(
-                ParticipationObject::participationSettingToArray(elgg_get_plugin_setting('production_participations', 'membership'))
+            $this->notice(
+                sprintf(
+                    'Creating production %s',
+                    $seasonProduction['participationObject']
+                )
             );
-            $production->save();
+
+            Production::factory(
+                $seasonProduction['participationObject'],
+                $season->getGUID(),
+                elgg_get_plugin_setting('production_participations', 'membership')
+            );
         }
 
-        $participations = $database->query("SELECT displayname, strftime('%d.%m.%Y', birthday) as birthday, street, zip, mail, season, participationObject, participationType FROM participations");
+        $this->notice('Fetching participations');
+
+        $participations = $database->query("SELECT displayname, strftime('%d.%m.%Y', birthday) as birthday, timeout, street, zip, mail, season, participationObject, participationType FROM participations");
 
         $unknownUsers = [];
 
         while ($participation = $participations->fetchArray(SQLITE3_ASSOC)) {
+            $this->notice(
+                sprintf(
+                    'Searching for user %s',
+                    $participation['displayname']
+                )
+            );
+            /** @var ElggUser $user */
             $user = Tools::getUserByDisplayname($participation['displayname']);
 
             if (is_null($user)) {
+                $this->notice(
+                    sprintf('Not found. Searching for mail %s', $participation['mail'])
+                );
                 $users = get_user_by_email($participation['mail']);
 
                 if (count($users) == 1) {
                     $users = $users[0];
                 } else {
-                    $user = Tools::getUserByPrivateData($participation['birthday'], $participation['street'], $participation['zip']);
+                    $this->notice(
+                        sprintf(
+                            'Not found. Searching for private data %s, %s, %s',
+                            $participation['birthday'],
+                            $participation['street'],
+                            $participation['zip']
+                        )
+                    );
+                    $user = Tools::getUserByPrivateData(
+                        $participation['birthday'] || '',
+                        $participation['street'] || '',
+                        $participation['zip'] || ''
+                    );
                 }
             }
 
             if (is_null($user)) {
+                $this->notice(
+                    sprintf(
+                        'User %s not found',
+                        $participation['displayname']
+                    )
+                );
                 $unknownUsers[] = $participation;
             } else {
+                $this->notice(
+                    sprintf(
+                        'Setting away_years to %s',
+                        $participation['timeout']
+                    )
+                );
+                $user->setProfileData('away_years', $participation['timeout']);
+
                 /** @var Season $season */
                 $season = Tools::getSeasonByYear($participation['season']);
                 $participationObject = $season->getDepartments();
@@ -101,6 +157,15 @@ class ImportSeasons extends Command
                         }
                     }
                 }
+
+                $this->notice(
+                    sprintf(
+                        'Participating in %s of %s in season %s',
+                        $participation['participationType'],
+                        $participation['participationObject'],
+                        $participation['season']
+                    )
+                );
 
                 /** @var Participation $existingParticipation */
                 $existingParticipation = null;

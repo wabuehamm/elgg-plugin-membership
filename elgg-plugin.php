@@ -124,7 +124,12 @@ return [
             'middleware' => [
                 AdminGatekeeper::class
             ]
-        ]
+        ],
+        'view:user:membercard' => [
+            'path' => '/membership/membercard/{username}',
+            'resource' => 'membership/membercard',
+            'walled' => false,
+        ],
     ],
     'widgets' => [
         // Register custom widgets here

@@ -3,14 +3,15 @@
 namespace Wabue\Membership\Entities;
 
 use ElggObject;
+use ElggUser;
 
 /**
  * Class Season
  * Membership participation records for a specific season
  * @package Wabue\Membership
- * @property int year
- * @property int lockdate
- * @property int enddate
+ * @property int year The seasons year
+ * @property int lockdate The date (as a Unix epoch) where the season is locked
+ * @property int enddate The date (as a Unix epoch) where the season ends
  */
 class Season extends ElggObject
 {
@@ -104,24 +105,42 @@ class Season extends ElggObject
         ]);
     }
 
+    /**
+     * Did the given member participate in this season in any way?
+     * @param $member ElggUser member to check
+     * @return bool wether the user participated or not
+     */
+    public function didMemberParticipate($member): bool {
+        $didParticipate = false;
+        if (count($this->getDepartments()->getParticipations($member->getGUID())) > 0) {
+            $didParticipate = true;
+        }
+
+        if (!$didParticipate) {
+            /** @var Production[] $productions */
+            $productions = $this->getProductions();
+            foreach ($productions as $production) {
+                if (count($production->getParticipations($member->getGUID())) > 0) {
+                    $didParticipate = true;
+                    break;
+                }
+            }
+        }
+
+        return $didParticipate;
+    }
+
     public static function factory($year, $enddate, $lockdate, $participationTypes): Season
     {
         $season = new Season();
         $season->owner_guid = 0;
-        $season->access_id = ACCESS_LOGGED_IN;
+        $season->access_id = ACCESS_PUBLIC;
         $season->setYear($year);
         $season->setEnddate($enddate);
         $season->setLockdate($lockdate);
         $season->save();
 
-        $departments = new Departments();
-        $departments->owner_guid = 0;
-        $departments->access_id = ACCESS_LOGGED_IN;
-        $departments->container_guid = $season->guid;
-        $departments->setParticipationTypes(
-            ParticipationObject::participationSettingToArray($participationTypes)
-        );
-        $departments->save();
+        Departments::factory($season->getGUID(), $participationTypes);
         return $season;
     }
 

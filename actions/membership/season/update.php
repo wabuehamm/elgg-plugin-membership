@@ -29,8 +29,6 @@ if ($guid != -1) {
     if (!$entity instanceof Season) {
         return elgg_error_response();
     }
-    $entity->owner_guid = 0;
-    $entity->access_id = ACCESS_LOGGED_IN;
     $entity->setYear($year);
     $entity->setEnddate($enddate);
     $entity->setLockdate($lockdate);
