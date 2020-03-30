@@ -271,6 +271,14 @@ class Tools
             'type' => 'object',
             'subtype' => 'season',
             'limit' => 999,
+            'search_name_value_pairs' => [
+                [
+                    'name' => 'year',
+                    'value' => $user->getProfileData('member_since'),
+                    'operand' => '>=',
+                    'case_sensitive' => false,
+                ],
+            ]
         ]);
 
         $options = [
