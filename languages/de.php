@@ -46,6 +46,8 @@ return [
     'membership:settings:departments:participations:help' => 'Standard-Teilnahmebereiche in den Gewerken einer neuen Saison (ein Bereich pro Zeile in der Form Schlüssel:Bezeichnung)',
     'membership:settings:production:participations:label' => 'Teilnahmebereiche (Produktion)',
     'membership:settings:production:participations:help' => 'Standard-Teilnahmebereiche für eine Produktion in einer Saison (ein Bereich pro Zeile in der Form Schlüssel:Bezeichnung)',
+    'membership:settings:acl:label' => 'Zugriff zu Teilnahmeberichten',
+    'membership:settings:acl:help' => 'Regeln für den Zugriff auf die Teilnahmeberichte (vgl. ReportGatekeeper-Quelltext)',
 
     'membership:errors:wrongParticipationTypes' => 'Die angegebene Liste von Teilnahmebereichen ist nicht gültig. Bitte überprüfe, dass diese in der Form Schlüssel:Bezeichnung eingegeben worden ist',
 
