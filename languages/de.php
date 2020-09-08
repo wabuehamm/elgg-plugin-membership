@@ -73,7 +73,7 @@ return [
     'membership:reports:export:csv' => 'Exportieren',
 
     'membership:reports:members' => 'Mitglieder',
-    'membership:reports:title' => 'Bereicht',
+    'membership:reports:title' => 'Bericht',
     'membership:reports:gatekeeper:error' => 'Du hast keinen Zugriff auf diesen Bericht',
 
     'membership:reports:completeseason' => 'Teilnahmen für die gesamte Saison anzeigen',
