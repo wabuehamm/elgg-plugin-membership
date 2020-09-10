@@ -83,6 +83,7 @@ return [
     'membership:reports:profileFields:city' => 'City',
     'membership:reports:profileFields:telephone' => 'Telephone',
     'membership:reports:profileFields:mobile' => 'Mobile',
+    'membership:reports:profileFields:birthday' => 'Birthday',
 
     'membership:season:batch' => 'Batch-Entry',
     'membership:season:batch:title' => 'Batch-Entry for Season %s',

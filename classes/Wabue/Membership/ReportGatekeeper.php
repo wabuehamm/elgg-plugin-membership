@@ -95,7 +95,7 @@ class ReportGatekeeper
         /** @var ElggUser $user */
         $user = elgg_get_logged_in_user_entity();
 
-        if (is_null($user) || (!array_key_exists($user->username, $this->userToRoles) && !array_key_exists('*', $this->rules))) {
+        if (is_null($user) || (!array_key_exists($user->username, $this->userToRoles) && !array_key_exists($user->username, $this->rules) && !array_key_exists('*', $this->rules))) {
             throw new HttpException(elgg_echo('membership:reports:gatekeeper:error'), 403);
         }
 

@@ -158,6 +158,10 @@ class ImportSeasons extends Command
                     }
                 }
 
+                if ($participation['participationType'] == 'rg') {
+                    $participation['participationType'] = 'ra';
+                }
+
                 $this->notice(
                     sprintf(
                         'Participating in %s of %s in season %s',

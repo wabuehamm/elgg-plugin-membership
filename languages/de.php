@@ -83,6 +83,7 @@ return [
     'membership:reports:profileFields:city' => 'Stadt',
     'membership:reports:profileFields:telephone' => 'Telefon',
     'membership:reports:profileFields:mobile' => 'Mobil',
+    'membership:reports:profileFields:birthday' => 'Geburtstag',
 
     'membership:season:batch' => 'Masseneintrag',
     'membership:season:batch:title' => 'Masseneintrag für Saison %s',

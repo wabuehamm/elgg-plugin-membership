@@ -163,7 +163,8 @@ return [
             "zip",
             "city",
             "telephone",
-            "mobile"
+            "mobile",
+            "birthday"
         ]
     ],
     'user_settings' => [

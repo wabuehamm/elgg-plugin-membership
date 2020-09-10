@@ -40,5 +40,5 @@ if ($guid != -1) {
 return elgg_ok_response(
     ['entity' => $entity],
     elgg_echo('save:success'),
-    elgg_generate_url('default:object:season')
+    elgg_generate_entity_url($entity)
 );
