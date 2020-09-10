@@ -85,7 +85,7 @@ $qrcode->setWriterByExtension('svg');
             <div id="qr">
                 <?php echo $qrcode->writeString(); ?>
             </div>
-            <div id="year">Spielzeit <?php echo $year; ?></div>
+            <div id="year">gültig in der Spielzeit <?php echo $year; ?></div>
         </div>
     </div>
 </div>

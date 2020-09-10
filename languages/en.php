@@ -93,6 +93,7 @@ return [
 
     'membership:profile:member_since:label' => 'Member since',
     'membership:profile:away_years:label' => 'Years away',
+    'membership:profile:active_years:label' => 'Membership years',
     'membership:profile:title' => 'Membership',
 
     'membership:membercard' => 'Membership card',

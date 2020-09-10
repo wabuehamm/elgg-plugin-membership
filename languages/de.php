@@ -93,6 +93,7 @@ return [
 
     'membership:profile:member_since:label' => 'Mitglied seit',
     'membership:profile:away_years:label' => 'Aussetzjahre',
+    'membership:profile:active_years:label' => 'Aktive Jahre',
     'membership:profile:title' => 'Mitgliedschaft',
 
     'membership:membercard' => 'Mitgliederausweis',

@@ -293,7 +293,23 @@ class Tools
             ]
         ];
 
-        return $startAwayYears + $numberOfSeasons - count(elgg_get_entities($options));
+        // Calculate years since the member is considered a senior to substract from the inactive years
+
+        $seniorSince = $user->getProfileData('senior_since');
+        $yearsSinceSenior = 0;
+
+        if ($seniorSince != null) {
+            $yearsSinceSenior = intval(date("Y"))-intval($seniorSince );
+        }
+
+        return $startAwayYears + $numberOfSeasons - count(elgg_get_entities($options)) - $yearsSinceSenior;
+    }
+
+    public static function calculateActiveYears($user)
+    {
+        $since = intval($user->getProfileData('member_since'));
+        $away = self::calculateAwayYears($user);
+        return intval(date("Y"))-$since-$away;
     }
 }
 
