@@ -33,7 +33,7 @@ class Tools
         }
     }
 
-    public static function participationList(Array $participationTypes, Array $participations, callable $linkGenerator = null): string
+    public static function participationList(array $participationTypes, array $participations, callable $linkGenerator = null): string
     {
         $content = '';
         if (count($participations) == 0) {
@@ -79,7 +79,7 @@ class Tools
         return $content;
     }
 
-    public static function participationUpdate(string $part, Array $participationTypes, Array $participations): string
+    public static function participationUpdate(string $part, array $participationTypes, array $participations): string
     {
         return elgg_view(
             'input/checkboxes',
@@ -299,7 +299,7 @@ class Tools
         $yearsSinceSenior = 0;
 
         if ($seniorSince != null) {
-            $yearsSinceSenior = intval(date("Y"))-intval($seniorSince );
+            $yearsSinceSenior = intval(date("Y")) - intval($seniorSince);
         }
 
         return $startAwayYears + $numberOfSeasons - count(elgg_get_entities($options)) - $yearsSinceSenior;
@@ -309,7 +309,7 @@ class Tools
     {
         $since = intval($user->getProfileData('member_since'));
         $away = self::calculateAwayYears($user);
-        return intval(date("Y"))-$since-$away;
+        return intval(date("Y")) - $since - $away + 1;
     }
 }
 

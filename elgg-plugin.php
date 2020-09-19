@@ -144,6 +144,9 @@ return [
             ko:Kostüme
             rq:Requisite
             vs:Vorstand
+            bj:Babyjahr
+            sj:Sabbatjahr
+            so:Sonstigesx
         ",
         'production_participations' => "
             ra:Regie/Assistenz
@@ -157,6 +160,7 @@ return [
             kk:Kaffeeküche
             th:Theke Studio
             kü:Küche Studio
+            so:Sonstigesx
         ",
         'reportProfileFields' => [
             "street",

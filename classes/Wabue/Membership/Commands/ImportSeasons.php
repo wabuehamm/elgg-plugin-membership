@@ -142,7 +142,18 @@ class ImportSeasons extends Command
                         $participation['timeout']
                     )
                 );
-                $user->setProfileData('away_years', $participation['timeout']);
+
+                $statement = $database->prepare('select count from participationCount where displayname=:name');
+                $statement->bindValue(':name', $participation['displayname']);
+                $participationCount = $statement->execute()->fetchArray(SQLITE3_ASSOC);
+
+                $alreadyCalculated = 0;
+                if(count($participationCount) > 0) {
+                    $alreadyCalculated = 10 - intval($participationCount['count']);
+                }
+
+                $awayYears = $participation['timeout'] - $alreadyCalculated;
+                $user->setProfileData('away_years', $awayYears >= 0 ? $awayYears : 0);
 
                 /** @var Season $season */
                 $season = Tools::getSeasonByYear($participation['season']);
