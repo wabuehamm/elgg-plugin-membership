@@ -109,7 +109,7 @@ class ImportSeasons extends Command
                 $users = get_user_by_email($participation['mail']);
 
                 if (count($users) == 1) {
-                    $users = $users[0];
+                    $user = $users[0];
                 } else {
                     $this->notice(
                         sprintf(
@@ -134,7 +134,7 @@ class ImportSeasons extends Command
                         $participation['displayname']
                     )
                 );
-                $unknownUsers[] = $participation;
+                $unknownUsers[] = join(',', $participation);
             } else {
                 $this->notice(
                     sprintf(
@@ -143,16 +143,7 @@ class ImportSeasons extends Command
                     )
                 );
 
-                $statement = $database->prepare('select count from participationCount where displayname=:name');
-                $statement->bindValue(':name', $participation['displayname']);
-                $participationCount = $statement->execute()->fetchArray(SQLITE3_ASSOC);
-
-                $alreadyCalculated = 0;
-                if(count($participationCount) > 0) {
-                    $alreadyCalculated = 10 - intval($participationCount['count']);
-                }
-
-                $awayYears = $participation['timeout'] - $alreadyCalculated;
+                $awayYears = $participation['timeout'];
                 $user->setProfileData('away_years', $awayYears >= 0 ? $awayYears : 0);
 
                 /** @var Season $season */
@@ -196,6 +187,10 @@ class ImportSeasons extends Command
                 }
                 $existingParticipation->addParticipationType($participation['participationType']);
             }
+        }
+
+        if (count($unknownUsers) > 0) {
+            $this->error(sprintf("The following users were not found: \n%s", join("\n", $unknownUsers)));
         }
 
     }

@@ -17,6 +17,49 @@ Tools::assert(!is_null($departments));
 
 $content = '';
 
+$commonContent = elgg_format_element(
+    'ul',
+    [],
+    elgg_format_element(
+        'li',
+        [],
+        elgg_format_element(
+            'a',
+            [
+                'href' => elgg_generate_url(
+                    'view:report',
+                    [
+                        'season_guid' => $entity->getGUID(),
+                    ]
+                )
+            ],
+            elgg_echo('membership:reports:completeseason')
+        )
+    ).
+    elgg_format_element(
+        'li',
+        [],
+        elgg_format_element(
+            'a',
+            [
+                'href' => elgg_generate_url(
+                    'view:jubileereport',
+                    [
+                        'season_guid' => $entity->getGUID()
+                    ]
+                )
+            ],
+            elgg_echo('membership:reports:jubilees')
+        )
+    )
+);
+
+$content .= elgg_view_module(
+    'info',
+    elgg_echo('membership:reports:common'),
+    $commonContent
+);
+
 $content .= elgg_view_module(
     'info',
     elgg_format_element(
@@ -168,18 +211,7 @@ if ($entity->getLockdate() < time()) {
 
 echo elgg_view_module(
     'info',
-    $titleprefix . $entity->getDisplayName() . elgg_format_element(
-        'a',
-        [
-            'href' => elgg_generate_url(
-                'view:report',
-                [
-                    'season_guid' => $entity->getGUID(),
-                ]
-            )
-        ],
-        ' ' . elgg_echo('membership:reports:completeseason')
-    ),
+    $titleprefix . $entity->getDisplayName(),
     $content,
     [
         'id' => 'season' . $entity->guid,

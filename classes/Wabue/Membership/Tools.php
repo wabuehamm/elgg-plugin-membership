@@ -14,6 +14,8 @@ use Wabue\Membership\Entities\Season;
 class Tools
 {
 
+    const JUBILEE_YEARS = [5,10,15,20];
+
     /**
      * Validate a given assertion and throw a BadRequestException if it's not
      * valid. Used for basic sanity and security checks, which should be valid
@@ -260,10 +262,19 @@ class Tools
 
     /**
      * Calculate the number of years the user hasn't participated in a season
+     *
+     * The calculation is as follows
+     *
+     * <the fixed number of away years before 2012 in the profile field away_years> + <count of seasons in the database> - <count of seasons the user has no participation in>
+     *
+     * If the user is a senior (the member is not active anymore, but is honored nonetheless), the years since the user became a senior is added
+     * again to the number.
+     *
      * @param ElggUser $user User object to calculate for
+     * @param int|null $year The year to consider for
      * @return int Number of years
      */
-    public static function calculateAwayYears($user)
+    public static function calculateAwayYears(ElggUser $user, int $year = null)
     {
         $startAwayYears = $user->getProfileData('away_years') ? $user->getProfileData('away_years') : 0;
 
@@ -299,17 +310,67 @@ class Tools
         $yearsSinceSenior = 0;
 
         if ($seniorSince != null) {
-            $yearsSinceSenior = intval(date("Y")) - intval($seniorSince);
+            $yearsSinceSenior = $year ? $year : intval(date("Y")) - intval($seniorSince) + 1;
         }
 
         return $startAwayYears + $numberOfSeasons - count(elgg_get_entities($options)) - $yearsSinceSenior;
     }
 
-    public static function calculateActiveYears($user)
+    /**
+     * Calculate the years the user was active.
+     *
+     * Calculation is as follows:
+     *
+     * Active years = <year to consider> - <year the user entered> - <years the user wasn't active> + 1 <for the first season>
+     *
+     * @param $user ElggUser user to count for
+     * @param int|null $year The year to calculate for
+     * @return int the number of years the user was active
+     */
+
+    public static function calculateActiveYears(ElggUser $user, int $year = null)
     {
         $since = intval($user->getProfileData('member_since'));
-        $away = self::calculateAwayYears($user);
-        return intval(date("Y")) - $since - $away + 1;
+        $away = self::calculateAwayYears($user, $year);
+        return ($year ? $year : intval(date("Y"))) - $since - $away + 1;
+    }
+
+    /**
+     * Calculate the rows of a jubilees report. Jubilees are members who are active for:
+     *
+     * @param int $year The year to generate the report for
+     */
+    public static function generateJubileesReport(int $year) {
+        /** @var ElggUser[] $allUnbannedUsers */
+        $allUnbannedUsers = elgg_get_entities([
+            'type' => 'user',
+            'subtype' => 'user',
+            'metadata_name_value_pairs' => [
+                [
+                    'name' => 'banned',
+                    'value' => 'no',
+                    'operand' => '='
+                ]
+            ],
+            'limit' => '0'
+        ]);
+        $report = [];
+        foreach ($allUnbannedUsers as $user) {
+            $activeYears = self::calculateActiveYears($user, $year);
+            //if (in_array($activeYears, self::JUBILEE_YEARS)) {
+                $report[$user->getDisplayName()] = [
+                    'member_since' => $user->getProfileData('member_since'),
+                    'away_years' => self::calculateAwayYears($user),
+                    'active_years' => $activeYears
+                ];
+            //}
+        }
+        uasort($report, function ($a, $b) {
+            $aActive = $a['active_years'];
+            $bActive = $b['active_years'];
+            return $bActive - $aActive;
+        });
+        return $report;
     }
 }
 

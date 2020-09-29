@@ -118,6 +118,14 @@ return [
                 'participation_types' => '',
             ]
         ],
+        'view:jubileereport' => [
+            'path' => '/membership/reports/jubilees/{season_guid}',
+            'resource' => 'membership/jubilees',
+            'middleware' => [
+                Gatekeeper::class,
+                ReportGatekeeper::class
+            ]
+        ],
         'view:season:batch' => [
             'path' => '/membership/season/{container_guid}/batch',
             'resource' => 'membership/season/batch',
