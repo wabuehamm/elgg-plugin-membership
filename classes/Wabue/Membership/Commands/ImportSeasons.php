@@ -88,7 +88,7 @@ class ImportSeasons extends Command
 
         $this->notice('Fetching participations');
 
-        $participations = $database->query("SELECT displayname, strftime('%d.%m.%Y', birthday) as birthday, timeout, street, zip, mail, season, participationObject, participationType FROM participations");
+        $participations = $database->query("SELECT displayname, strftime('%d.%m.%Y', birthday) as birthday, strftime('%d.%m.%Y', anniversary) as anniversary, timeout, street, zip, mail, season, participationObject, participationType FROM participations");
 
         $unknownUsers = [];
 
@@ -145,6 +145,16 @@ class ImportSeasons extends Command
 
                 $awayYears = $participation['timeout'];
                 $user->setProfileData('away_years', $awayYears >= 0 ? $awayYears : 0);
+
+                if ($participation['anniversary']) {
+                    $this->notice(
+                        sprintf(
+                            'Setting anniversary to %s',
+                            $participation['anniversary']
+                        )
+                    );
+                    $user->setProfileData('anniversary', $participation['anniversary']);
+                }
 
                 /** @var Season $season */
                 $season = Tools::getSeasonByYear($participation['season']);
