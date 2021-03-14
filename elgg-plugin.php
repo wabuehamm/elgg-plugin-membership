@@ -126,6 +126,14 @@ return [
                 ReportGatekeeper::class
             ]
         ],
+        'view:anniversaryreport' => [
+            'path' => '/membership/reports/anniversary/{season_guid}',
+            'resource' => 'membership/anniversary',
+            'middleware' => [
+                Gatekeeper::class,
+                ReportGatekeeper::class
+            ]
+        ],
         'view:season:batch' => [
             'path' => '/membership/season/{container_guid}/batch',
             'resource' => 'membership/season/batch',

@@ -51,6 +51,22 @@ $commonContent = elgg_format_element(
             ],
             elgg_echo('membership:reports:jubilees')
         )
+    ).
+    elgg_format_element(
+        'li',
+        [],
+        elgg_format_element(
+            'a',
+            [
+                'href' => elgg_generate_url(
+                    'view:anniversaryreport',
+                    [
+                        'season_guid' => $entity->getGUID()
+                    ]
+                )
+            ],
+            elgg_echo('membership:reports:anniversary')
+        )
     )
 );
 

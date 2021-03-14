@@ -84,8 +84,12 @@ return [
     'membership:reports:profileFields:telephone' => 'Telephone',
     'membership:reports:profileFields:mobile' => 'Mobile',
     'membership:reports:profileFields:birthday' => 'Birthday',
+    'membership:reports:profileFields:anniversary' => 'Anniversary',
+    'membership:reports:profileFields:years' => 'Years',
 
+    'membership:reports:common' => 'Common',
     'membership:reports:jubilees' => 'Jubilees',
+    'membership:reports:anniversary' => 'Anniversary',
 
     'membership:season:batch' => 'Batch-Entry',
     'membership:season:batch:title' => 'Batch-Entry for Season %s',

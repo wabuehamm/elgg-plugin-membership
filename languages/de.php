@@ -85,8 +85,12 @@ return [
     'membership:reports:profileFields:telephone' => 'Telefon',
     'membership:reports:profileFields:mobile' => 'Mobil',
     'membership:reports:profileFields:birthday' => 'Geburtstag',
+    'membership:reports:profileFields:anniversary' => 'Hochzeitstag',
+    'membership:reports:profileFields:years' => 'Jahre',
 
+    'membership:reports:common' => 'Allgemein',
     'membership:reports:jubilees' => 'Jubiläen',
+    'membership:reports:anniversary' => 'Hochzeitstag',
 
     'membership:season:batch' => 'Masseneintrag',
     'membership:season:batch:title' => 'Masseneintrag für Saison %s',

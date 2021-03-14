@@ -24,7 +24,7 @@ Tools::assert(
 elgg_register_menu_item('title', [
     'name' => 'export_csv',
     'href' => elgg_generate_url(
-        'view:jubileereport',
+        'view:anniversaryreport',
         [
             'season_guid' => $season_guid,
             'view' => 'csv'
@@ -38,11 +38,11 @@ elgg_register_menu_item('title', [
 $body = elgg_view_layout(
     'default',
     [
-        'title' => elgg_echo('membership:reports:jubilees', [
+        'title' => elgg_echo('membership:reports:anniversary', [
             $season->getYear()
         ]),
         'content' => elgg_view(
-            'page/components/reports/jubileesReportPage',
+            'page/components/reports/anniversaryReportPage',
             [
                 'year' => $season->getYear()
             ]
@@ -52,6 +52,6 @@ $body = elgg_view_layout(
 );
 
 echo elgg_view_page(
-    elgg_echo('membership:reports:jubilees'),
+    elgg_echo('membership:reports:anniversary'),
     $body
 );

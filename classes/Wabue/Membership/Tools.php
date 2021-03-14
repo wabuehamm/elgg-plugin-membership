@@ -14,7 +14,7 @@ use Wabue\Membership\Entities\Season;
 class Tools
 {
 
-    const JUBILEE_YEARS = [5,10,15,20];
+    const JUBILEE_YEARS = [5, 10, 15, 20];
 
     /**
      * Validate a given assertion and throw a BadRequestException if it's not
@@ -336,11 +336,13 @@ class Tools
     }
 
     /**
-     * Calculate the rows of a jubilees report. Jubilees are members who are active for:
+     * Calculate the rows of a jubilees report.
      *
      * @param int $year The year to generate the report for
+     * @return array The jubilees report
      */
-    public static function generateJubileesReport(int $year) {
+    public static function generateJubileesReport(int $year)
+    {
         /** @var ElggUser[] $allUnbannedUsers */
         $allUnbannedUsers = elgg_get_entities([
             'type' => 'user',
@@ -358,16 +360,56 @@ class Tools
         foreach ($allUnbannedUsers as $user) {
             $activeYears = self::calculateActiveYears($user, $year);
             //if (in_array($activeYears, self::JUBILEE_YEARS)) {
-                $report[$user->getDisplayName()] = [
-                    'member_since' => $user->getProfileData('member_since'),
-                    'away_years' => self::calculateAwayYears($user),
-                    'active_years' => $activeYears
-                ];
+            $report[$user->getDisplayName()] = [
+                'member_since' => $user->getProfileData('member_since'),
+                'away_years' => self::calculateAwayYears($user),
+                'active_years' => $activeYears
+            ];
             //}
         }
         uasort($report, function ($a, $b) {
             $aActive = $a['active_years'];
             $bActive = $b['active_years'];
+            return $bActive - $aActive;
+        });
+        return $report;
+    }
+
+    /**
+     * Calculate the rows of an anniversary report.
+     *
+     * @param int $year The year to generate the report for
+     * @return array The anniversary report
+     */
+    public static function generateAnniversaryReport(int $year)
+    {
+        /** @var ElggUser[] $allUnbannedUsers */
+        $allUnbannedUsers = elgg_get_entities([
+            'type' => 'user',
+            'subtype' => 'user',
+            'metadata_name_value_pairs' => [
+                [
+                    'name' => 'banned',
+                    'value' => 'no',
+                    'operand' => '='
+                ]
+            ],
+            'limit' => '0'
+        ]);
+        $report = [];
+        foreach ($allUnbannedUsers as $user) {
+            $anniversary = date_create_from_format("d.m.Y", $user->getProfileData('anniversary'));
+            $diff = date_diff($anniversary, date_create_from_format("d.m.Y", "01.01.$year"));
+            if ($diff) {
+                $report[$user->getDisplayName()] = [
+                    'anniversary' => $user->getProfileData('anniversary'),
+                    'years' => $diff->y + 1
+                ];
+            }
+        }
+        uasort($report, function ($a, $b) {
+            $aActive = $a['years'];
+            $bActive = $b['years'];
             return $bActive - $aActive;
         });
         return $report;
