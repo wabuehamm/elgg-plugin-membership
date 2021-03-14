@@ -6,6 +6,7 @@
  * Check out http://learn.elgg.org/en/stable/guides/i18n.html for details
  */
 
+
 return [
 
     'membership:title' => 'Mitgliederverwaltung',
@@ -84,6 +85,8 @@ return [
     'membership:reports:profileFields:telephone' => 'Telefon',
     'membership:reports:profileFields:mobile' => 'Mobil',
     'membership:reports:profileFields:birthday' => 'Geburtstag',
+
+    'membership:reports:jubilees' => 'Jubiläen',
 
     'membership:season:batch' => 'Masseneintrag',
     'membership:season:batch:title' => 'Masseneintrag für Saison %s',

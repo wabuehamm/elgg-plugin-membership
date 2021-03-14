@@ -85,6 +85,8 @@ return [
     'membership:reports:profileFields:mobile' => 'Mobile',
     'membership:reports:profileFields:birthday' => 'Birthday',
 
+    'membership:reports:jubilees' => 'Jubilees',
+
     'membership:season:batch' => 'Batch-Entry',
     'membership:season:batch:title' => 'Batch-Entry for Season %s',
     'membership:season:batch:member' => 'Member',
