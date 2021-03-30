@@ -109,4 +109,23 @@ return [
     'membership:membercard:participation:invalid' => 'Dieses Mitglied nimmt derzeit nicht an einer Saison teil',
     'membership:membercard:participation:valid' => 'Die Mitgliedschaft ist gültig',
     'membership:membercard:forbidden' => 'Der Aufruf eines fremden Mitgliederausweises ist nicht erlaubt',
+
+    'membership:anniversaryReport:noAnniversaries' => 'Keine Jubiläen gefunden',
+    'membership:jubileesReport:noJubilees' => 'Keine Jubliare gefunden',
+
+    'membership:reports:insurance:title' => 'Versicherungsbericht',
+    'membership:reports:insurance:date' => 'Stichtagmeldung per %s',
+    'membership:reports:insurance:year' => 'Jahr',
+    'membership:reports:insurance:common' => 'Allgemein',
+    'membership:reports:insurance:teens' => 'Jugendliche',
+    'membership:reports:insurance:board' => 'Vorstandsmitglieder',
+    'membership:reports:insurance:total' => 'Gesamt',
+    'membership:reports:insurance' => 'Versicherung',
+    'membership:settings:insuranceTheatre:label' => 'Theater',
+    'membership:settings:insuranceTheatre:help' => 'Name des Theaters',
+    'membership:settings:insuranceAddress:label' => 'Versicherung',
+    'membership:settings:insuranceAddress:help' => 'Adresse der Versicherung',
+    'membership:settings:insuranceMember:label' => 'Mitgliedschaft',
+    'membership:settings:insuranceMember:help' => 'Mitgliedschaftsdaten der Versicherung',
+
 ];

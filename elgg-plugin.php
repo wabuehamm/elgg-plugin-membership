@@ -134,6 +134,14 @@ return [
                 ReportGatekeeper::class
             ]
         ],
+        'view:insurancereport' => [
+            'path' => '/membership/reports/insurance/{season_guid}',
+            'resource' => 'membership/insurance',
+            'middleware' => [
+                Gatekeeper::class,
+                ReportGatekeeper::class
+            ]
+        ],
         'view:season:batch' => [
             'path' => '/membership/season/{container_guid}/batch',
             'resource' => 'membership/season/batch',
@@ -162,7 +170,7 @@ return [
             vs:Vorstand
             bj:Babyjahr
             sj:Sabbatjahr
-            so:Sonstigesx
+            so:Sonstiges
         ",
         'production_participations' => "
             ra:Regie/Assistenz

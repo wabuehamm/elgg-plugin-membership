@@ -15,7 +15,7 @@ Tools::assert(
 );
 
 if (count($report) == 0) {
-    echo elgg_view_message('notice', elgg_echo('membership:anniversaryReport:noJubilees'));
+    echo elgg_view_message('notice', elgg_echo('membership:anniversaryReport:noAnniversaries'));
     exit;
 }
 

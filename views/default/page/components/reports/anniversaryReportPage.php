@@ -3,7 +3,7 @@
 /**
  * Show an anniversary report as a tabular page
  *
- * @uses $vars['year'] the year to calculate the jubilees for
+ * @uses $vars['year'] the year to calculate the anniversary for
  */
 
 use Wabue\Membership\Entities\ParticipationObject;

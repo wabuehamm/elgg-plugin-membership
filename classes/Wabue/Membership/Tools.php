@@ -10,6 +10,7 @@ use Psr\Log\LogLevel;
 use Wabue\Membership\Entities\Participation;
 use Wabue\Membership\Entities\ParticipationObject;
 use Wabue\Membership\Entities\Season;
+use Zend\Mime\Part;
 
 class Tools
 {
@@ -406,6 +407,66 @@ class Tools
                     'years' => $diff->y + 1
                 ];
             }
+        }
+        uasort($report, function ($a, $b) {
+            $aActive = $a['years'];
+            $bActive = $b['years'];
+            return $bActive - $aActive;
+        });
+        return $report;
+    }
+
+    /**
+     * Calculate the rows of an anniversary report.
+     *
+     * @param Season $season The season to generate the report for
+     * @return array The anniversary report
+     */
+    public static function generateInsuranceReport(Season $season)
+    {
+        /** @var ElggUser[] $allUnbannedUsers */
+        $allUnbannedUsers = elgg_get_entities([
+            'type' => 'user',
+            'subtype' => 'user',
+            'metadata_name_value_pairs' => [
+                [
+                    'name' => 'banned',
+                    'value' => 'no',
+                    'operand' => '='
+                ]
+            ],
+            'limit' => '0'
+        ]);
+        $report = [
+            $season->year => [
+                'common' => 0,
+                'teens' => 0,
+                'board' => 0,
+                'total' => count($allUnbannedUsers),
+            ]
+        ];
+        foreach ($allUnbannedUsers as $user) {
+            $userType = 'common';
+
+            // Check if the member is a boardmember
+            /* @var Participation[] $participations */
+            $participations = $season->getDepartments()->getParticipations($user->getGUID());
+            foreach ($participations as $participation) {
+                if (in_array('vs', $participation->getParticipationTypes())) {
+                    $userType = 'board';
+                }
+            }
+
+            // Check if the member is a teen
+            $birthday = date_create_from_format("Y-m-d", $user->getProfileData('birthday'));
+            $diff = date_diff($birthday, date_create_from_format("d.m.Y", "01.01." . $season->year));
+            if ($diff) {
+                if ($diff->y <= 18) {
+                    $userType = 'teens';
+                }
+            }
+
+            $report[$season->year][$userType]++;
         }
         uasort($report, function ($a, $b) {
             $aActive = $a['years'];
