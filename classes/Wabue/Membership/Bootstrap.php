@@ -12,7 +12,6 @@ use Elgg\DefaultPluginBootstrap;
 use Elgg\Hook;
 use ElggMenuItem;
 use ElggUser;
-use Wabue\Membership\Commands\ImportSeasons;
 use Wabue\Membership\Entities\Season;
 
 class Bootstrap extends DefaultPluginBootstrap
@@ -28,11 +27,6 @@ class Bootstrap extends DefaultPluginBootstrap
     {
         elgg_register_plugin_hook_handler('register', 'menu:title', 'Wabue\Membership\Bootstrap::titleMenuHook');
         elgg_register_plugin_hook_handler('register', 'menu:season_participate', 'Wabue\Membership\Bootstrap::seasonParticpateMenuHook');
-
-        elgg_register_plugin_hook_handler('commands', 'cli', function ($hook, $type, $return) {
-            $return[] = ImportSeasons::class;
-            return $return;
-        });
     }
 
     public static function titleMenuHook(Hook $hook)
