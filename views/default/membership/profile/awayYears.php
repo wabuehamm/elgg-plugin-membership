@@ -19,14 +19,14 @@ $content .= elgg_view('object/elements/field', [
     'label' => elgg_echo('membership:profile:away_years:label'),
     'value' => elgg_format_element('span', [], Tools::calculateAwayYears($user)),
     'class' => 'group-profile-field',
-    'name' => 'member_since',
+    'name' => 'away_years_calculated',
 ]);
 
 $content .= elgg_view('object/elements/field', [
     'label' => elgg_echo('membership:profile:active_years:label'),
     'value' => elgg_format_element('span', [], Tools::calculateActiveYears($user)),
     'class' => 'group-profile-field',
-    'name' => 'member_since',
+    'name' => 'active_years',
 ]);
 
 echo elgg_view_module(

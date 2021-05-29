@@ -21,6 +21,7 @@ class Bootstrap extends DefaultPluginBootstrap
         elgg_extend_view('elements/components.css', 'elements/membership/components/progressbar.css');
         elgg_extend_view('elements/components.css', 'elements/membership/components/reporttable.css');
         elgg_extend_view('profile/wrapper', 'membership/profile/awayYears');
+        elgg_extend_view('profile/wrapper', 'membership/profile/hideVerein');
     }
 
     public function registerHooks()
