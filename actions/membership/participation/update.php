@@ -38,8 +38,11 @@ if (count($departments_participation) == 0) {
     $departments_participation = $departments_participation[0];
 }
 
-$departments_participation->setParticipationTypes(get_input('departments', []));
-$departments_participation->save();
+if (get_input('departments', []) != 0) {
+    $departments_participation->setParticipationTypes(get_input('departments', []));
+    $departments_participation->save();
+}
+
 
 /** @var Production[] $productions */
 $productions = $season->getProductions();
