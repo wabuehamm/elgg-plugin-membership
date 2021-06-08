@@ -55,8 +55,10 @@ foreach ($productions as $production) {
     } else {
         $production_participations = $production_participations[0];
     }
-    $production_participations->setParticipationTypes(get_input('production:' . $production->getGUID(), []));
-    $production_participations->save();
+    if (get_input('production:' . $production->getGUID()) != 0) {
+        $production_participations->setParticipationTypes(get_input('production:' . $production->getGUID(), []));
+        $production_participations->save();
+    }
 }
 
 return elgg_ok_response(

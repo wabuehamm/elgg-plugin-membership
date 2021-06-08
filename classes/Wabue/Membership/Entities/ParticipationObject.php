@@ -43,7 +43,10 @@ abstract class ParticipationObject extends ElggObject
      */
     public function addParticipationType($participationType)
     {
-        $this->setParticipationTypes(array_merge($this->getParticipationTypes(), [$participationType]));
+        if (! is_array($participationType)) {
+            $participationType = [$participationType];
+        }
+        $this->setParticipationTypes(array_unique($this->getParticipationTypes() + $participationType));
     }
 
     /**

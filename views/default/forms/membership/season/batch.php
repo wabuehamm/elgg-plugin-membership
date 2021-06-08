@@ -70,6 +70,12 @@ echo elgg_view_field([
     'value' => json_encode($columnKeys)
 ]);
 
+echo elgg_view_field([
+    '#type' => 'hidden',
+    'name' => 'rows',
+    'value' => '0'
+]);
+
 echo elgg_format_element(
     'div',
     [
@@ -94,7 +100,7 @@ echo elgg_format_element(
                 'tr',
                 [],
                 join('', $columns)
-            ),
+            )
         )
         .
         elgg_format_element('tbody')

@@ -40,6 +40,9 @@ return [
         'membership/season/update' => [
             'access' => 'admin',
         ],
+        'membership/season/batch' => [
+            'access' => 'admin'
+        ],
         'membership/season/production/update' => [
             'access' => 'admin',
         ],

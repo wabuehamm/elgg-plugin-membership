@@ -1,12 +1,14 @@
 const membershipAddLine = $ => {
     const row = $('<tr>')
     const columnKeys = ['_username'].concat($('div.membershipReport table').data('columns'))
+    const rowNum = $('.membershipReport table tbody tr').length
+    $('input[name=rows]')[0].value = rowNum + 1
 
     let memberInput = null
 
     for (const columnKey of columnKeys) {
         const columnInput = $('<input>')
-        columnInput.attr('name', `${columnKey}[]`)
+        columnInput.attr('name', `${rowNum}_${columnKey}`)
         if (columnKey === '_username') {
             columnInput.attr('type', 'text')
             columnInput.autocomplete({

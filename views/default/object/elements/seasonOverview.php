@@ -74,7 +74,7 @@ echo elgg_view_module(
     [
         'id' => 'season' . $entity->guid,
         'class' => $class,
-        'menu' => $entity->getLockdate() < time() ? null : elgg_view_menu(
+        'menu' => ($entity->getLockdate( ) < time() and ! elgg_is_admin_logged_in()) ? null : elgg_view_menu(
             'season_participate',
             [
                 'entity' => $entity
