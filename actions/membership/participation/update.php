@@ -41,6 +41,8 @@ if (count($departments_participation) == 0) {
 if (get_input('departments', []) != 0) {
     $departments_participation->setParticipationTypes(get_input('departments', []));
     $departments_participation->save();
+} else {
+    $departments_participation->setParticipationTypes([]);
 }
 
 
@@ -61,6 +63,8 @@ foreach ($productions as $production) {
     if (get_input('production:' . $production->getGUID()) != 0) {
         $production_participations->setParticipationTypes(get_input('production:' . $production->getGUID(), []));
         $production_participations->save();
+    } else {
+        $production_participations->setParticipationTypes([]);
     }
 }
 
