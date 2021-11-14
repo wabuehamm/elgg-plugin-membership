@@ -11,7 +11,7 @@ $owner_guid = elgg_get_page_owner_guid();
 
 Tools::assert(!is_null($entity));
 
-$departments = $entity->getDepartments();
+$departments = $entity->getDepartments(true);
 
 Tools::assert(!is_null($departments));
 
@@ -21,13 +21,15 @@ $content .= elgg_view_module(
     'info',
     elgg_echo('membership:participations:departments'),
     Tools::participationList(
-        $departments->getParticipationTypes(),
-        $departments->getParticipations($owner_guid)
+        $departments->getParticipationTypes(true),
+        $departments->getParticipations($owner_guid),
+        null,
+        true
     )
 );
 
 /** @var Production[] $productions */
-$productions = $entity->getProductions();
+$productions = $entity->getProductions(true);
 
 $module_content = '';
 
@@ -39,8 +41,10 @@ if (count($productions) == 0) {
         $module_content .= elgg_format_element('h3', [
         ], $production->getDisplayName());
         $module_content .= Tools::participationList(
-            $production->getParticipationTypes(),
-            $production->getParticipations($owner_guid)
+            $production->getParticipationTypes(true),
+            $production->getParticipations($owner_guid),
+            null,
+            true
         );
     }
 }

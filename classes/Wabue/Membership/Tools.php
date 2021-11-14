@@ -36,18 +36,18 @@ class Tools
         }
     }
 
-    public static function participationList(array $participationTypes, array $participations, callable $linkGenerator = null): string
+    public static function participationList(array $participationTypes, array $participations, callable $linkGenerator = null, bool $ignore_acl = false): string
     {
         $content = '';
-        if (count($participations) == 0) {
+        if (count($participations) == 0 or count($participationTypes) == 0) {
             $content .= elgg_echo('membership:participations:none');
         } else {
             $participation_lists = '';
             $all_participations = [];
             foreach ($participations as $participation) {
-                foreach ($participation->getParticipationTypes() as $key) {
+                foreach ($participation->getParticipationTypes($ignore_acl) as $key => $label) {
                     if (!array_key_exists($key, $all_participations)) {
-                        $all_participations[$key] = $participationTypes[$key];
+                        $all_participations[$key] = $label;
                     }
                 }
             }
@@ -88,8 +88,8 @@ class Tools
             'input/checkboxes',
             [
                 'name' => $part,
-                'options' => $participationTypes,
-                'value' => $participations,
+                'options' => array_flip($participationTypes),
+                'value' => array_flip($participations),
                 'align' => 'horizontal',
             ]
         );

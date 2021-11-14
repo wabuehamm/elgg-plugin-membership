@@ -4,6 +4,7 @@ namespace Wabue\Membership\Entities;
 
 use ElggObject;
 use ElggUser;
+use stdClass;
 
 /**
  * Class Season
@@ -15,6 +16,15 @@ use ElggUser;
  */
 class Season extends ElggObject
 {
+
+    public $acl = null;
+
+    public function __construct(stdClass $row = null)
+    {
+        parent::__construct($row);
+        $this->acl = \Wabue\Membership\Acl::factory();
+    }
+
     /**
      * @return int
      */
@@ -76,8 +86,16 @@ class Season extends ElggObject
         ]);
     }
 
-    public function getDepartments(): Departments
+    public function getDepartments($ignore_acl = false): ?Departments
     {
+        if (
+            ! $ignore_acl and count(
+                $this->acl->getAllowedDepartments(elgg_get_logged_in_user_entity()->username, $this->guid)
+            ) == 0
+        ) {
+            return null;
+        }
+
         $departments = elgg_get_entities([
             'type' => 'object',
             'subtype' => 'departments',
@@ -91,12 +109,22 @@ class Season extends ElggObject
         return $departments[0];
     }
 
-    public function getProductions(): Array
+    public function getProductions($ignore_acl = false): Array
     {
+        $valid_productions = null;
+
+        if (! $ignore_acl) {
+            $valid_productions = $this->acl->getAllowedProductions(
+                elgg_get_logged_in_user_entity()->username,
+                $this->guid
+            );
+        }
+
         return elgg_get_entities([
             'type' => 'object',
             'subtype' => 'production',
             'container_guid' => $this->guid,
+            'guids' => $valid_productions,
             'order_by_metadata' => [
                 'name' => 'title',
                 'direction' => 'ASC',

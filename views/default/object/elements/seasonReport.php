@@ -13,16 +13,106 @@ Tools::assert(!is_null($entity));
 
 $departments = $entity->getDepartments();
 
-Tools::assert(!is_null($departments));
+$acl = \Wabue\Membership\Acl::factory();
+
+$user = elgg_get_logged_in_user_entity()->username;
 
 $content = '';
 
-$commonContent = elgg_format_element(
-    'ul',
-    [],
-    elgg_format_element(
-        'li',
-        [],
+if (!is_null($departments)) {
+
+    $commonContent = "";
+
+    if ($acl->isParticipationAllowed($user, $entity->guid, 0, "_all")) {
+        $commonContent .= elgg_format_element(
+            'li',
+            [],
+            elgg_format_element(
+                'a',
+                [
+                    'href' => elgg_generate_url(
+                        'view:report',
+                        [
+                            'season_guid' => $entity->getGUID(),
+                        ]
+                    )
+                ],
+                elgg_echo('membership:reports:completeseason')
+            )
+        );
+    }
+
+    if ($acl->isParticipationAllowed($user, $entity->guid, 0, "_jubilee")) {
+        $commonContent .= elgg_format_element(
+            'li',
+            [],
+            elgg_format_element(
+                'a',
+                [
+                    'href' => elgg_generate_url(
+                        'view:jubileereport',
+                        [
+                            'season_guid' => $entity->getGUID()
+                        ]
+                    )
+                ],
+                elgg_echo('membership:reports:jubilees')
+            )
+        );
+    }
+
+    if ($acl->isParticipationAllowed($user, $entity->guid, 0, "_anniversary")) {
+        $commonContent .= elgg_format_element(
+            'li',
+            [],
+            elgg_format_element(
+                'a',
+                [
+                    'href' => elgg_generate_url(
+                        'view:anniversaryreport',
+                        [
+                            'season_guid' => $entity->getGUID()
+                        ]
+                    )
+                ],
+                elgg_echo('membership:reports:anniversary')
+            )
+        );
+    }
+
+    if ($acl->isParticipationAllowed($user, $entity->guid, 0, "_insurance")) {
+        $commonContent .= elgg_format_element(
+            'li',
+            [],
+            elgg_format_element(
+                'a',
+                [
+                    'href' => elgg_generate_url(
+                        'view:insurancereport',
+                        [
+                            'season_guid' => $entity->getGUID()
+                        ]
+                    )
+                ],
+                elgg_echo('membership:reports:insurance')
+            )
+        );
+    }
+
+    if ($commonContent != "") {
+        $content .= elgg_view_module(
+            'info',
+            elgg_echo('membership:reports:common'),
+            elgg_format_element(
+                'ul',
+                [],
+                $commonContent
+            )
+        );
+    }
+
+    $content .= elgg_view_module(
+        'info',
         elgg_format_element(
             'a',
             [
@@ -30,98 +120,30 @@ $commonContent = elgg_format_element(
                     'view:report',
                     [
                         'season_guid' => $entity->getGUID(),
+                        'participation_object_guids' => 0
                     ]
                 )
             ],
-            elgg_echo('membership:reports:completeseason')
-        )
-    ).
-    elgg_format_element(
-        'li',
-        [],
-        elgg_format_element(
-            'a',
-            [
-                'href' => elgg_generate_url(
-                    'view:jubileereport',
+            elgg_echo('membership:participations:departments')
+        ),
+        Tools::participationList(
+            $departments->getParticipationTypes(),
+            $departments->getParticipations(),
+            function ($participationType) use ($entity, $acl, $user) {
+                return elgg_generate_url(
+                    'view:report',
                     [
-                        'season_guid' => $entity->getGUID()
+                        'season_guid' => $entity->getGUID(),
+                        'participation_object_guids' => 0,
+                        'participation_types' => $participationType
                     ]
-                )
-            ],
-            elgg_echo('membership:reports:jubilees')
+                );
+            }
         )
-    ).
-    elgg_format_element(
-        'li',
-        [],
-        elgg_format_element(
-            'a',
-            [
-                'href' => elgg_generate_url(
-                    'view:anniversaryreport',
-                    [
-                        'season_guid' => $entity->getGUID()
-                    ]
-                )
-            ],
-            elgg_echo('membership:reports:anniversary')
-        )
-    ).
-    elgg_format_element(
-        'li',
-        [],
-        elgg_format_element(
-            'a',
-            [
-                'href' => elgg_generate_url(
-                    'view:insurancereport',
-                    [
-                        'season_guid' => $entity->getGUID()
-                    ]
-                )
-            ],
-            elgg_echo('membership:reports:insurance')
-        )
-    )
-);
+    );
 
-$content .= elgg_view_module(
-    'info',
-    elgg_echo('membership:reports:common'),
-    $commonContent
-);
+}
 
-$content .= elgg_view_module(
-    'info',
-    elgg_format_element(
-        'a',
-        [
-            'href' => elgg_generate_url(
-                'view:report',
-                [
-                    'season_guid' => $entity->getGUID(),
-                    'participation_object_guids' => 0
-                ]
-            )
-        ],
-        elgg_echo('membership:participations:departments')
-    ),
-    Tools::participationList(
-        $departments->getParticipationTypes(),
-        $departments->getParticipations(),
-        function ($participationType) use ($entity) {
-            return elgg_generate_url(
-                'view:report',
-                [
-                    'season_guid' => $entity->getGUID(),
-                    'participation_object_guids' => 0,
-                    'participation_types' => $participationType
-                ]
-            );
-        }
-    )
-);
 
 /** @var Production[] $productions */
 $productions = $entity->getProductions();
@@ -142,7 +164,7 @@ if (count($productions) == 0) {
 
         $productions_content .= elgg_format_element('a',
             [
-                href => elgg_generate_url(
+                "href" => elgg_generate_url(
                     'view:report',
                     [
                         'season_guid' => $entity->getGUID(),
@@ -184,37 +206,39 @@ if (count($productions) == 0) {
         );
     }
 
-    $module_content .= elgg_format_element(
-        'a',
-        [
-            'href' => elgg_generate_url(
-                'view:report',
-                [
-                    'season_guid' => $entity->getGUID(),
-                    'participation_object_guids' => join(',', $productions_guid)
-                ]
-            )
-        ],
-        elgg_format_element(
-            'h3',
-            [],
-            elgg_echo('membership:productions:all')
-        ));
+    if (count($productions) > 1) {
+        $module_content .= elgg_format_element(
+            'a',
+            [
+                'href' => elgg_generate_url(
+                    'view:report',
+                    [
+                        'season_guid' => $entity->getGUID(),
+                        'participation_object_guids' => join(',', $productions_guid)
+                    ]
+                )
+            ],
+            elgg_format_element(
+                'h3',
+                [],
+                elgg_echo('membership:productions:all')
+            ));
 
-    $module_content .= Tools::participationList(
-        $productions_participationTypes,
-        $productions_participations,
-        function ($participationType) use ($entity, $productions_guid) {
-            return elgg_generate_url(
-                'view:report',
-                [
-                    'season_guid' => $entity->getGUID(),
-                    'participation_object_guids' => join(',', $productions_guid),
-                    'participation_types' => $participationType
-                ]
-            );
-        }
-    );
+        $module_content .= Tools::participationList(
+            $productions_participationTypes,
+            $productions_participations,
+            function ($participationType) use ($entity, $productions_guid) {
+                return elgg_generate_url(
+                    'view:report',
+                    [
+                        'season_guid' => $entity->getGUID(),
+                        'participation_object_guids' => join(',', $productions_guid),
+                        'participation_types' => $participationType
+                    ]
+                );
+            }
+        );
+    }
 
     $module_content .= $productions_content;
 }

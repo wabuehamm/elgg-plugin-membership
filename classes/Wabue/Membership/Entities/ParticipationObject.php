@@ -3,12 +3,24 @@
 namespace Wabue\Membership\Entities;
 
 use ElggObject;
+use stdClass;
 
 /**
  * @property string participationTypes The types the member wishes to participate
  */
 abstract class ParticipationObject extends ElggObject
 {
+
+    public $acl = null;
+    private $_related_guid = null;
+    private $_resolved_types = [];
+
+    public function __construct(stdClass $row = null)
+    {
+        parent::__construct($row);
+        $this->acl = \Wabue\Membership\Acl::factory();
+    }
+
     protected function initializeAttributes()
     {
         parent::initializeAttributes();
@@ -18,9 +30,42 @@ abstract class ParticipationObject extends ElggObject
     /**
      * @return array
      */
-    public function getParticipationTypes()
+    public function getParticipationTypes($ignore_acl = false)
     {
-        return unserialize($this->participationTypes);
+        $return = [];
+        if (count(unserialize(unserialize($this->participationTypes))) == 0) {
+            return [];
+        }
+        if (is_null($this->_related_guid)) {
+            if ($this->subtype == "departments" or $this->subtype == "production") {
+                $this->_related_guid = $this->guid;
+                $this->_resolved_types = unserialize($this->participationTypes);
+            } else {
+                $related_entities = elgg_get_entities([
+                    "relationship_guid" => [$this->guid],
+                    "relationship" => "participate",
+                ]);
+                $this->_related_guid = $related_entities[0]->guid;
+                foreach (unserialize($this->participationTypes) as $particionType) {
+                    $this->_resolved_types[$particionType] = unserialize(
+                        $related_entities[0]->participationTypes
+                    )[$particionType];
+                }
+
+            }
+        }
+
+        foreach ($this->_resolved_types as $key => $value) {
+            if ($ignore_acl or $this->acl->isParticipationAllowed(
+                elgg_get_logged_in_user_entity()->username,
+                $this->container_guid,
+                $this->_related_guid,
+                $key
+            )) {
+                $return[$key] = $value;
+            }
+        }
+        return $return;
     }
 
     /**
@@ -28,10 +73,10 @@ abstract class ParticipationObject extends ElggObject
      * form fields
      * @return string The participation types as string
      */
-    public function getParticipationTypesAsString() {
+    public function getParticipationTypesAsString($ignore_acl = false) {
         $return = [];
 
-        foreach ($this->getParticipationTypes() as $key => $label) {
+        foreach ($this->getParticipationTypes($ignore_acl) as $key => $label) {
             array_push($return, "$key:$label");
         }
 

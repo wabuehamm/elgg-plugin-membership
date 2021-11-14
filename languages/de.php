@@ -76,6 +76,8 @@ return [
     'membership:reports:members' => 'Mitglieder',
     'membership:reports:title' => 'Bericht',
     'membership:reports:gatekeeper:error' => 'Du hast keinen Zugriff auf diesen Bericht',
+    'membership:reports:gatekeeper:errorredirect' => 'Du hast keinen Zugriff auf die Mitgliederberichte. Schau Dir doch vielleicht Deine <a href="%s">Teilnahmen</a> stattdessen an.',
+
 
     'membership:reports:completeseason' => 'Teilnahmen für die gesamte Saison anzeigen',
 

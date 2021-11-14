@@ -31,34 +31,34 @@ echo elgg_view_field([
 $content = '';
 
 /** @var Departments $departments */
-$departments = $season->getDepartments();
+$departments = $season->getDepartments(true);
 
 Tools::assert(!is_null($departments));
 Tools::assert($departments instanceof Departments);
 
-/** @var Participation $departments_participations */
-$departments_participations = $departments->getParticipations($owner_guid)[0];
+/** @var Participation $departments_participation */
+$departments_participation = $departments->getParticipations($owner_guid)[0];
 
 $content .= elgg_view_module(
     'info',
     elgg_echo('membership:departments'),
     Tools::participationUpdate(
         "departments",
-        array_flip($departments->getParticipationTypes()),
-        $departments_participations ? $departments_participations->getParticipationTypes() : []
+        $departments->getParticipationTypes(true),
+        $departments_participation ? $departments_participation->getParticipationTypes(true) : []
     )
 );
 
 /** @var Production[] $productions */
-$productions = $season->getProductions();
+$productions = $season->getProductions(true);
 
 $productions_content = '';
 
 foreach ($productions as $production) {
     Tools::assert($production instanceof Production);
 
-    /** @var Participation $production_participations */
-    $production_participations = $production->getParticipations($owner_guid)[0];
+    /** @var Participation $production_participation */
+    $production_participation = $production->getParticipations($owner_guid)[0];
 
     $productions_content .= elgg_format_element(
         'h3',
@@ -67,8 +67,8 @@ foreach ($productions as $production) {
     );
     $productions_content .= Tools::participationUpdate(
         "production:$production->guid",
-        array_flip($production->getParticipationTypes()),
-        $production_participations ? $production_participations->getParticipationTypes() : []
+        $production->getParticipationTypes(true),
+        $production_participation ? $production_participation->getParticipationTypes(true) : []
     );
 }
 

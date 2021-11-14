@@ -75,6 +75,7 @@ return [
     'membership:reports:members' => 'Members',
     'membership:reports:title' => 'Report',
     'membership:reports:gatekeeper:error' => 'Your user does not have access to this report',
+    'membership:reports:gatekeeper:errorredirect' => 'You do not have access to the membership reports. Please check out your <a href="%s">Participations</a> instead.',
 
     'membership:reports:completeseason' => 'Show participations for complete season',
 

@@ -25,47 +25,47 @@ $season = get_entity($season_guid);
 Tools::assert(!is_null($season));
 Tools::assert($season instanceof Season);
 
-$departments = $season->getDepartments();
-$departments_participation = $departments->getParticipations($owner_guid);
+$departments = $season->getDepartments(true);
+$departments_participations = $departments->getParticipations($owner_guid);
 
-if (count($departments_participation) == 0) {
+if (count($departments_participations) == 0) {
     $departments_participation = Participation::factory(
         $owner,
         $season,
         $departments
     );
 } else {
-    $departments_participation = $departments_participation[0];
+    $departments_participation = $departments_participations[0];
 }
 
 if (get_input('departments', []) != 0) {
     $departments_participation->setParticipationTypes(get_input('departments', []));
-    $departments_participation->save();
 } else {
     $departments_participation->setParticipationTypes([]);
 }
+$departments_participation->save();
 
 
 /** @var Production[] $productions */
-$productions = $season->getProductions();
+$productions = $season->getProductions(true);
 
 foreach ($productions as $production) {
     $production_participations = $production->getParticipations($owner_guid);
     if (count($production_participations) == 0) {
-        $production_participations = Participation::factory(
+        $production_participation = Participation::factory(
             $owner,
             $season,
             $production
         );
     } else {
-        $production_participations = $production_participations[0];
+        $production_participation = $production_participations[0];
     }
     if (get_input('production:' . $production->getGUID()) != 0) {
-        $production_participations->setParticipationTypes(get_input('production:' . $production->getGUID(), []));
-        $production_participations->save();
+        $production_participation->setParticipationTypes(get_input('production:' . $production->getGUID(), []));
     } else {
-        $production_participations->setParticipationTypes([]);
+        $production_participation->setParticipationTypes([]);
     }
+    $production_participation->save();
 }
 
 return elgg_ok_response(

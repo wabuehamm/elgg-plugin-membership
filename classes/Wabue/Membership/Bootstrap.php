@@ -28,6 +28,7 @@ class Bootstrap extends DefaultPluginBootstrap
     {
         elgg_register_plugin_hook_handler('register', 'menu:title', 'Wabue\Membership\Bootstrap::titleMenuHook');
         elgg_register_plugin_hook_handler('register', 'menu:season_participate', 'Wabue\Membership\Bootstrap::seasonParticpateMenuHook');
+        elgg_register_plugin_hook_handler('container_permissions_check', 'object', 'Wabue\Membership\Bootstrap::containerPermissionsCheckHook');
     }
 
     public static function titleMenuHook(Hook $hook)
@@ -83,6 +84,15 @@ class Bootstrap extends DefaultPluginBootstrap
         }
 
         return $hook->getValue();
+    }
+
+    public static function containerPermissionsCheckHook(Hook $hook)
+    {
+        /* @var ElggUser $user */
+        $user = $hook->getUserParam();
+        if ($hook->getParam('subtype') == 'participation' and $user->isEnabled()) {
+            return true;
+        }
     }
 
     public function init()

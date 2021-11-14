@@ -55,7 +55,7 @@ return [
             'path' => '/membership',
             'resource' => 'membership/season/overview',
             'middleware' => [
-                AdminGatekeeper::class,
+                ReportGatekeeper::class,
             ],
         ],
         'add:object:season' => [
