@@ -158,7 +158,7 @@ return [
             'walled' => false,
         ],
         'view:youngreport' => [
-            'path' => '/membership/reports/young',
+            'path' => '/membership/reports/young/{season_guid}',
             'resource' => 'membership/young',
             'middleware' => [
                 Gatekeeper::class,
@@ -166,7 +166,7 @@ return [
             ]
         ],
         'view:adultreport' => [
-            'path' => '/membership/reports/adult',
+            'path' => '/membership/reports/adult/{season_guid}',
             'resource' => 'membership/adult',
             'middleware' => [
                 Gatekeeper::class,

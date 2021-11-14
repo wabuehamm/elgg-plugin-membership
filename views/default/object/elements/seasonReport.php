@@ -107,7 +107,10 @@ if (!is_null($departments)) {
                 'a',
                 [
                     'href' => elgg_generate_url(
-                        'view:youngreport'
+                        'view:youngreport',
+                        [
+                            'season_guid' => $entity->getGUID()
+                        ]
                     )
                 ],
                 elgg_echo('membership:reports:young')
@@ -123,7 +126,10 @@ if (!is_null($departments)) {
                 'a',
                 [
                     'href' => elgg_generate_url(
-                        'view:adultreport'
+                        'view:adultreport',
+                        [
+                            'season_guid' => $entity->getGUID()
+                        ]
                     )
                 ],
                 elgg_echo('membership:reports:adult')
