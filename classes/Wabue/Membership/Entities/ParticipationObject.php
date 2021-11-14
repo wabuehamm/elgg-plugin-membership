@@ -27,11 +27,6 @@ abstract class ParticipationObject extends ElggObject
     private $_resolved_types = [];
 
     /**
-     * @var string The participation types of this participation object
-     */
-    private $_participationTypes = "";
-
-    /**
      * Fetch the acl singleton
      * @param stdClass|null $row
      * @throws \IOException
@@ -48,7 +43,8 @@ abstract class ParticipationObject extends ElggObject
     protected function initializeAttributes()
     {
         parent::initializeAttributes();
-        $this->_participationTypes = serialize([]);
+        // participationTypes is an additional entity attribute and is not defined here
+        $this->participationTypes = serialize([]);
     }
 
     /**
@@ -58,26 +54,27 @@ abstract class ParticipationObject extends ElggObject
      */
     public function getParticipationTypes(bool $ignore_acl = false)
     {
-        $return = [];
-        if (count(unserialize(unserialize($this->_participationTypes))) == 0) {
+        if (count(unserialize($this->participationTypes)) == 0) {
             return [];
         }
+
+        $return = [];
+
         if (is_null($this->_related_guid)) {
             if ($this->subtype == "departments" or $this->subtype == "production") {
                 $this->_related_guid = $this->guid;
-                $this->_resolved_types = unserialize($this->_participationTypes);
+                $this->_resolved_types = unserialize($this->participationTypes);
             } else {
                 $related_entities = elgg_get_entities([
                     "relationship_guid" => [$this->guid],
                     "relationship" => "participate",
                 ]);
                 $this->_related_guid = $related_entities[0]->guid;
-                foreach (unserialize($this->_participationTypes) as $particionType) {
+                foreach (unserialize($this->participationTypes) as $particionType) {
                     $this->_resolved_types[$particionType] = unserialize(
                         $related_entities[0]->participationTypes
                     )[$particionType];
                 }
-
             }
         }
 
@@ -124,11 +121,11 @@ abstract class ParticipationObject extends ElggObject
 
     /**
      * Set the valid participation types
-     * @param array $_participationTypes
+     * @param array $participationTypes
      */
-    public function setParticipationTypes(array $_participationTypes)
+    public function setParticipationTypes(array $participationTypes)
     {
-        $this->_participationTypes = serialize($_participationTypes);
+        $this->participationTypes = serialize($participationTypes);
     }
 
     /**

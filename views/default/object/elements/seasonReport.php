@@ -144,7 +144,6 @@ if (!is_null($departments)) {
 
 }
 
-
 /** @var Production[] $productions */
 $productions = $entity->getProductions();
 

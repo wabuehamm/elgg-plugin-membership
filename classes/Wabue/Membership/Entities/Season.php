@@ -130,9 +130,9 @@ class Season extends ElggObject
     /**
      * Get the productions of this season
      * @param bool $ignore_acl Ignore the ACL (e.g. when not on the report pages)
-     * @return Array The productions of this season
+     * @return array The productions of this season
      */
-    public function getProductions(bool $ignore_acl = false): Array
+    public function getProductions(bool $ignore_acl = false): array
     {
         $valid_productions = null;
 
@@ -141,6 +141,9 @@ class Season extends ElggObject
                 elgg_get_logged_in_user_entity()->username,
                 $this->guid
             );
+            if (in_array("*", $valid_productions)) {
+                $valid_productions = null;
+            }
         }
 
         return elgg_get_entities([
