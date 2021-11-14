@@ -7,7 +7,9 @@
 use Wabue\Membership\Entities\ParticipationObject;
 use Wabue\Membership\Tools;
 
-$report_array = Tools::generateAdultMembersReport();
+elgg_call(ELGG_IGNORE_ACCESS, function () use (&$report_array) {
+    $report_array = Tools::generateAdultMembersReport();
+});
 
 $columns = [
     elgg_echo('membership:reports:profileFields:displayname'),

@@ -15,9 +15,13 @@ Tools::assert(
     !is_null($season)
 );
 
-$report_array = Tools::generateInsuranceReport(
-    $season
-);
+$report_array = [];
+
+elgg_call(ELGG_IGNORE_ACCESS, function () use (&$report_array, $season) {
+    $report_array = Tools::generateInsuranceReport(
+        $season
+    );
+});
 
 echo elgg_view(
     'object/elements/insuranceReport',

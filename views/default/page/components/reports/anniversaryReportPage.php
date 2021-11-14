@@ -15,9 +15,13 @@ Tools::assert(
     !is_null($year)
 );
 
-$report_array = Tools::generateAnniversaryReport(
-    $year
-);
+$report_array = [];
+
+elgg_call(ELGG_IGNORE_ACCESS, function () use (&$report_array, $year) {
+    $report_array = Tools::generateAnniversaryReport(
+        $year
+    );
+});
 
 echo elgg_view(
     'object/elements/anniversaryReportTable',

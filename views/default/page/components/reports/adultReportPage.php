@@ -7,7 +7,11 @@
 use Wabue\Membership\Entities\ParticipationObject;
 use Wabue\Membership\Tools;
 
-$report_array = Tools::generateAdultMembersReport();
+$report_array = [];
+
+elgg_call(ELGG_IGNORE_ACCESS, function () use (&$report_array) {
+    $report_array = Tools::generateAdultMembersReport();
+});
 
 echo elgg_view(
     'object/elements/simpleReportTable',

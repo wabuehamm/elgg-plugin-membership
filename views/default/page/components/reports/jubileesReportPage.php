@@ -19,6 +19,7 @@ $report_array = Tools::generateJubileesReport(
     $year
 );
 
+
 echo elgg_view(
     'object/elements/jubileesReportTable',
     [

@@ -19,10 +19,14 @@ Tools::assert(
     !is_null($participationObjects)
 );
 
-$report_array = Tools::generateReport(
-    $participationObjects,
-    $participationTypes
-);
+$report_array = [];
+
+elgg_call(ELGG_IGNORE_ACCESS, function () use (&$report_array, $participationTypes, $participationObjects) {
+    $report_array = Tools::generateReport(
+        $participationObjects,
+        $participationTypes
+    );
+});
 
 $columns = [];
 
