@@ -187,6 +187,9 @@ class Acl
         string $participation
     ): bool
     {
+        if (get_user_by_username($username)->isAdmin()) {
+            return true;
+        }
         $area_rules = $this->getAllowedParticipations($username, $season_guid, $participation_type_guid);
         return in_array("*", $area_rules) or in_array($participation, $area_rules);
     }
@@ -206,6 +209,9 @@ class Acl
         array $participations
     ): bool
     {
+        if (get_user_by_username($username)->isAdmin()) {
+            return true;
+        }
         foreach ($season_guids as $season_guid) {
             $season_rules = $this->_getSeasonRules($username, $season_guid);
             if (count($participation_type_guids) == 0 and count($season_rules) > 0) {

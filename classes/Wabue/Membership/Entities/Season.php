@@ -106,6 +106,9 @@ class Season extends ElggObject
      */
     public function getDepartments(bool $ignore_acl = false): ?Departments
     {
+        if (elgg_is_admin_logged_in()) {
+            $ignore_acl = true;
+        }
         if (
             ! $ignore_acl and count(
                 $this->acl->getAllowedDepartments(elgg_get_logged_in_user_entity()->username, $this->guid)
@@ -134,6 +137,10 @@ class Season extends ElggObject
      */
     public function getProductions(bool $ignore_acl = false): array
     {
+        if (elgg_is_admin_logged_in()) {
+            $ignore_acl = true;
+        }
+
         $valid_productions = null;
 
         if (! $ignore_acl) {

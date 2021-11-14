@@ -39,7 +39,7 @@ for ($i = 0; $i < $rows; $i++) {
                 }
             }
             foreach ($participations as $guid => $types) {
-                foreach ([$departments, $productions] as $participationObject) {
+                foreach (array_merge([$departments], $productions) as $participationObject) {
                     if ($participationObject->guid == $guid) {
                         $participation = $participationObject->getParticipations($user->guid);
                         if (count($participation) > 0) {
