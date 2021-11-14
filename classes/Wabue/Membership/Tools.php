@@ -15,8 +15,6 @@ use Zend\Mime\Part;
 class Tools
 {
 
-    const JUBILEE_YEARS = [5, 10, 15, 20];
-
     /**
      * Validate a given assertion and throw a BadRequestException if it's not
      * valid. Used for basic sanity and security checks, which should be valid
@@ -36,6 +34,14 @@ class Tools
         }
     }
 
+    /**
+     * Create a list of participations
+     * @param array $participationTypes The participation types to display
+     * @param array $participations The participations to display
+     * @param callable|null $linkGenerator A callable that gets the key of the participation and generates a link from it
+     * @param bool $ignore_acl Ignore the ACL (e.g. when not on report views)
+     * @return string The list of participations as a HTML UL list
+     */
     public static function participationList(array $participationTypes, array $participations, callable $linkGenerator = null, bool $ignore_acl = false): string
     {
         $content = '';
@@ -82,6 +88,13 @@ class Tools
         return $content;
     }
 
+    /**
+     * Create a checkbox list of participations
+     * @param string $part The name of the checkboxes
+     * @param array $participationTypes The participation types to display
+     * @param array $participations The participations to display
+     * @return string The content as a buch of checkboxes
+     */
     public static function participationUpdate(string $part, array $participationTypes, array $participations): string
     {
         return elgg_view(
@@ -360,13 +373,11 @@ class Tools
         $report = [];
         foreach ($allUnbannedUsers as $user) {
             $activeYears = self::calculateActiveYears($user, $year);
-            //if (in_array($activeYears, self::JUBILEE_YEARS)) {
             $report[$user->getDisplayName()] = [
                 'member_since' => $user->getProfileData('member_since'),
                 'away_years' => self::calculateAwayYears($user),
                 'active_years' => $activeYears
             ];
-            //}
         }
         uasort($report, function ($a, $b) {
             $aActive = $a['active_years'];

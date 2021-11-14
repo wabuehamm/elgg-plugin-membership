@@ -2,11 +2,6 @@
 
 namespace Wabue\Membership;
 
-/**
- * Plugin Bootstrap
- * Check out http://learn.elgg.org/en/stable/guides/plugins/bootstrap.html for details
- */
-
 use Elgg\Collections\Collection;
 use Elgg\DefaultPluginBootstrap;
 use Elgg\Hook;
@@ -14,16 +9,30 @@ use ElggMenuItem;
 use ElggUser;
 use Wabue\Membership\Entities\Season;
 
+/**
+ * Membership bootstrap class
+ */
 class Bootstrap extends DefaultPluginBootstrap
 {
+
+    /**
+     * Extend some views
+     */
     public function extendViews()
     {
+        // Season report progressbar CSS
         elgg_extend_view('elements/components.css', 'elements/membership/components/progressbar.css');
+        // Report table CSS
         elgg_extend_view('elements/components.css', 'elements/membership/components/reporttable.css');
+        // Add calculated membership statistics
         elgg_extend_view('profile/wrapper', 'membership/profile/awayYears');
+        // Hide the internal membership profile fields
         elgg_extend_view('profile/wrapper', 'membership/profile/hideVerein');
     }
 
+    /**
+     * Register hooks (see the hook functions for details)
+     */
     public function registerHooks()
     {
         elgg_register_plugin_hook_handler('register', 'menu:title', 'Wabue\Membership\Bootstrap::titleMenuHook');
@@ -31,6 +40,11 @@ class Bootstrap extends DefaultPluginBootstrap
         elgg_register_plugin_hook_handler('container_permissions_check', 'object', 'Wabue\Membership\Bootstrap::containerPermissionsCheckHook');
     }
 
+    /**
+     * Add the membership buttons to the profile menu
+     * @param Hook $hook
+     * @return mixed|null
+     */
     public static function titleMenuHook(Hook $hook)
     {
         $user = $hook->getEntityParam();
@@ -64,6 +78,11 @@ class Bootstrap extends DefaultPluginBootstrap
         return $return;
     }
 
+    /**
+     * Add the participate button to the seasons menu
+     * @param Hook $hook
+     * @return Collection|mixed
+     */
     public static function seasonParticpateMenuHook(Hook $hook)
     {
         $entity = $hook->getEntityParam();
@@ -86,6 +105,11 @@ class Bootstrap extends DefaultPluginBootstrap
         return $hook->getValue();
     }
 
+    /**
+     * Override the report gatekeeper for the participation selections
+     * @param Hook $hook
+     * @return bool|void
+     */
     public static function containerPermissionsCheckHook(Hook $hook)
     {
         /* @var ElggUser $user */
@@ -95,6 +119,9 @@ class Bootstrap extends DefaultPluginBootstrap
         }
     }
 
+    /**
+     * Initialize the plugin
+     */
     public function init()
     {
         parent::init();

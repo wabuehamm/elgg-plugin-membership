@@ -7,8 +7,11 @@ namespace Wabue\Membership\Entities;
  * Used for participation in non-production tasks
  * @package Wabue\Membership
  */
-
 class Departments extends ParticipationObject {
+
+    /**
+     * Initialize the entity
+     */
     protected function initializeAttributes()
     {
         parent::initializeAttributes();

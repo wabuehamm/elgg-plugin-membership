@@ -26,6 +26,7 @@ class Season extends ElggObject
     }
 
     /**
+     * Get the year of this production
      * @return int
      */
     public function getYear(): int
@@ -34,6 +35,7 @@ class Season extends ElggObject
     }
 
     /**
+     * Set the year of this producition
      * @param int $year
      */
     public function setYear(int $year)
@@ -41,6 +43,9 @@ class Season extends ElggObject
         $this->year = $year;
     }
 
+    /**
+     * Initialize the entity
+     */
     protected function initializeAttributes()
     {
         parent::initializeAttributes();
@@ -48,6 +53,7 @@ class Season extends ElggObject
     }
 
     /**
+     * Get the date where entries to this season are locked for non-admins
      * @return int
      */
     public function getLockdate(): int
@@ -56,6 +62,7 @@ class Season extends ElggObject
     }
 
     /**
+     * Set the date where entries to this season are locked for non-admins
      * @param int $lockdate
      */
     public function setLockdate(int $lockdate)
@@ -64,6 +71,7 @@ class Season extends ElggObject
     }
 
     /**
+     * Get the end date of this season
      * @return int
      */
     public function getEnddate(): int
@@ -72,6 +80,7 @@ class Season extends ElggObject
     }
 
     /**
+     * Set the end date for this season
      * @param int $enddate
      */
     public function setEnddate(int $enddate)
@@ -79,6 +88,10 @@ class Season extends ElggObject
         $this->enddate = $enddate;
     }
 
+    /**
+     * Generate the display name of this season
+     * @return string
+     */
     public function getDisplayName(): string
     {
         return elgg_echo("membership:season:title", [
@@ -86,7 +99,12 @@ class Season extends ElggObject
         ]);
     }
 
-    public function getDepartments($ignore_acl = false): ?Departments
+    /**
+     * Get the departments participation object of this season
+     * @param bool $ignore_acl Ignore the ACL (e.g. when not on the report pages)
+     * @return Departments|null The departments participation object
+     */
+    public function getDepartments(bool $ignore_acl = false): ?Departments
     {
         if (
             ! $ignore_acl and count(
@@ -109,7 +127,12 @@ class Season extends ElggObject
         return $departments[0];
     }
 
-    public function getProductions($ignore_acl = false): Array
+    /**
+     * Get the productions of this season
+     * @param bool $ignore_acl Ignore the ACL (e.g. when not on the report pages)
+     * @return Array The productions of this season
+     */
+    public function getProductions(bool $ignore_acl = false): Array
     {
         $valid_productions = null;
 
@@ -158,7 +181,15 @@ class Season extends ElggObject
         return $didParticipate;
     }
 
-    public static function factory($year, $enddate, $lockdate, $participationTypes): Season
+    /**
+     * Create a new season object
+     * @param int $year The season's year
+     * @param int $enddate The end date
+     * @param int $lockdate The locking date
+     * @param array $participationTypes An array of valid participation types for the departments participation object
+     * @return Season
+     */
+    public static function factory(int $year, int $enddate, int $lockdate, array $participationTypes): Season
     {
         $season = new Season();
         $season->owner_guid = 0;

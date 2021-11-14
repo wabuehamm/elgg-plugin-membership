@@ -6,47 +6,73 @@ use ElggObject;
 use stdClass;
 
 /**
- * @property string participationTypes The types the member wishes to participate
+ * A base class for productions and departments which can record a specific participations
  */
 abstract class ParticipationObject extends ElggObject
 {
 
-    public $acl = null;
+    /**
+     * @var \Wabue\Membership\Acl|null The ACL singleton
+     */
+    private $_acl = null;
+
+    /**
+     * @var null A cache for storing the "parent" (related) GUID of this participation object
+     */
     private $_related_guid = null;
+
+    /**
+     * @var array A cache for the resolved participation types
+     */
     private $_resolved_types = [];
 
+    /**
+     * @var string The participation types of this participation object
+     */
+    private $_participationTypes = "";
+
+    /**
+     * Fetch the acl singleton
+     * @param stdClass|null $row
+     * @throws \IOException
+     */
     public function __construct(stdClass $row = null)
     {
         parent::__construct($row);
-        $this->acl = \Wabue\Membership\Acl::factory();
-    }
-
-    protected function initializeAttributes()
-    {
-        parent::initializeAttributes();
-        $this->participationTypes = serialize([]);
+        $this->_acl = \Wabue\Membership\Acl::factory();
     }
 
     /**
-     * @return array
+     * Initialize the participation types
      */
-    public function getParticipationTypes($ignore_acl = false)
+    protected function initializeAttributes()
+    {
+        parent::initializeAttributes();
+        $this->_participationTypes = serialize([]);
+    }
+
+    /**
+     * Get the valid participation types of this participation object
+     * @param bool $ignore_acl Ignore ACL checks (e.g. if not on the report view)
+     * @return array The valid participation types
+     */
+    public function getParticipationTypes(bool $ignore_acl = false)
     {
         $return = [];
-        if (count(unserialize(unserialize($this->participationTypes))) == 0) {
+        if (count(unserialize(unserialize($this->_participationTypes))) == 0) {
             return [];
         }
         if (is_null($this->_related_guid)) {
             if ($this->subtype == "departments" or $this->subtype == "production") {
                 $this->_related_guid = $this->guid;
-                $this->_resolved_types = unserialize($this->participationTypes);
+                $this->_resolved_types = unserialize($this->_participationTypes);
             } else {
                 $related_entities = elgg_get_entities([
                     "relationship_guid" => [$this->guid],
                     "relationship" => "participate",
                 ]);
                 $this->_related_guid = $related_entities[0]->guid;
-                foreach (unserialize($this->participationTypes) as $particionType) {
+                foreach (unserialize($this->_participationTypes) as $particionType) {
                     $this->_resolved_types[$particionType] = unserialize(
                         $related_entities[0]->participationTypes
                     )[$particionType];
@@ -56,7 +82,7 @@ abstract class ParticipationObject extends ElggObject
         }
 
         foreach ($this->_resolved_types as $key => $value) {
-            if ($ignore_acl or $this->acl->isParticipationAllowed(
+            if ($ignore_acl or $this->_acl->isParticipationAllowed(
                 elgg_get_logged_in_user_entity()->username,
                 $this->container_guid,
                 $this->_related_guid,
@@ -71,9 +97,10 @@ abstract class ParticipationObject extends ElggObject
     /**
      * Return the participation types in serialized form suitable for
      * form fields
+     * @param bool $ignore_acl Ignore ACL checks (e.g. if not on the report view)
      * @return string The participation types as string
      */
-    public function getParticipationTypesAsString($ignore_acl = false) {
+    public function getParticipationTypesAsString(bool $ignore_acl = false) {
         $return = [];
 
         foreach ($this->getParticipationTypes($ignore_acl) as $key => $label) {
@@ -84,7 +111,8 @@ abstract class ParticipationObject extends ElggObject
     }
 
     /**
-     * @param array $participationType
+     * Add a participation type to the list of valid participation types
+     * @param $participationType
      */
     public function addParticipationType($participationType)
     {
@@ -95,13 +123,19 @@ abstract class ParticipationObject extends ElggObject
     }
 
     /**
-     * @param array $participationTypes
+     * Set the valid participation types
+     * @param array $_participationTypes
      */
-    public function setParticipationTypes(array $participationTypes)
+    public function setParticipationTypes(array $_participationTypes)
     {
-        $this->participationTypes = serialize($participationTypes);
+        $this->_participationTypes = serialize($_participationTypes);
     }
 
+    /**
+     * Get the participations of this participation object
+     * @param null $owner_guid
+     * @return \ElggEntity[]|int|mixed
+     */
     public function getParticipations($owner_guid = null)
     {
         $season_guid = $this->container_guid;

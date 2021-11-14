@@ -17,7 +17,7 @@ class ReportGatekeeper
     private $_aclClass;
 
     /**
-     * ReportGatekeeper constructor.
+     * Get the ACL singleton
      */
     public function __construct()
     {
@@ -26,7 +26,7 @@ class ReportGatekeeper
 
 
     /**
-     * Gatekeeper
+     * Check wether the request is allowed
      *
      * @param Request $request Request
      *
