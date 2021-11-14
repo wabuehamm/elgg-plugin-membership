@@ -470,11 +470,12 @@ class Tools
 
             // Check if the member is a teen
             $birthday = date_create_from_format("Y-m-d", $user->getProfileData('birthday'));
+            if (!$birthday) {
+                $birthday = date_create_from_format("d.m.Y", $user->getProfileData('birthday'));
+            }
             $diff = date_diff($birthday, date_create_from_format("d.m.Y", "01.01." . $season->year));
-            if ($diff) {
-                if ($diff->y <= 18) {
-                    $userType = 'teens';
-                }
+            if ($diff and $diff->y < 18) {
+                $userType = 'teens';
             }
 
             $report[$season->year][$userType]++;
@@ -484,6 +485,46 @@ class Tools
             $bActive = $b['years'];
             return $bActive - $aActive;
         });
+        return $report;
+    }
+
+    public static function generateYoungMembersReport() {
+        /** @var ElggUser[] $allUnbannedUsers */
+        $allUnbannedUsers = elgg_get_entities([
+            'type' => 'user',
+            'subtype' => 'user',
+            'metadata_name_value_pairs' => [
+                [
+                    'name' => 'banned',
+                    'value' => 'no',
+                    'operand' => '='
+                ]
+            ],
+            'limit' => '0'
+        ]);
+        $report = [];
+        foreach ($allUnbannedUsers as $user) {
+            // Check if the member is a teen
+            $birthday = date_create_from_format("Y-m-d", $user->getProfileData('birthday'));
+            if (!$birthday) {
+                $birthday = date_create_from_format("d.m.Y", $user->getProfileData('birthday'));
+            }
+            $diff = date_diff($birthday, new \DateTime());
+            if ($diff and $diff->y < 18) {
+                array_push($report, [
+                    $user->getDisplayName(),
+                    $user->getProfileData("street"),
+                    $user->getProfileData("zip"),
+                    $user->getProfileData("city"),
+                    $user->getProfileData("telephone"),
+                    $user->getProfileData("mobile"),
+                    $user->email,
+                    $birthday->format('Y-m-d'),
+                    $diff->y
+                ]);
+            }
+        }
+
         return $report;
     }
 }

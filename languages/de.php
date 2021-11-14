@@ -93,6 +93,11 @@ return [
     'membership:reports:common' => 'Allgemein',
     'membership:reports:jubilees' => 'Jubiläen',
     'membership:reports:anniversary' => 'Hochzeitstag',
+    'membership:reports:young' => 'Junge Mitglieder',
+
+    'membership:reports:age' => 'Alter',
+
+    'membership:simpleReport:noData' => 'Keine Einträge gefunden',
 
     'membership:season:batch' => 'Masseneintrag',
     'membership:season:batch:title' => 'Masseneintrag für Saison %s',

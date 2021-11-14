@@ -157,6 +157,14 @@ return [
             'resource' => 'membership/membercard',
             'walled' => false,
         ],
+        'view:youngreport' => [
+            'path' => '/membership/reports/young',
+            'resource' => 'membership/young',
+            'middleware' => [
+                Gatekeeper::class,
+                ReportGatekeeper::class
+            ]
+        ]
     ],
     'widgets' => [
         // Register custom widgets here

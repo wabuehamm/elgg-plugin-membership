@@ -99,6 +99,22 @@ if (!is_null($departments)) {
         );
     }
 
+    if ($acl->isParticipationAllowed($user, $entity->guid, 0, "_young")) {
+        $commonContent .= elgg_format_element(
+            'li',
+            [],
+            elgg_format_element(
+                'a',
+                [
+                    'href' => elgg_generate_url(
+                        'view:youngreport'
+                    )
+                ],
+                elgg_echo('membership:reports:young')
+            )
+        );
+    }
+
     if ($commonContent != "") {
         $content .= elgg_view_module(
             'info',

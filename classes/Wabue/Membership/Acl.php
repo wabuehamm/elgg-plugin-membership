@@ -34,6 +34,7 @@ namespace Wabue\Membership;
  * * _anniversary: Anniversary report
  * * _insurance: Insurance report
  * * _all: All participants of the season
+ * * _young: All members below the age of 18
  *
  * Roles should be at the top of the DSL text and are configured like this:
  *

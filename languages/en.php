@@ -91,6 +91,11 @@ return [
     'membership:reports:common' => 'Common',
     'membership:reports:jubilees' => 'Jubilees',
     'membership:reports:anniversary' => 'Anniversary',
+    'membership:reports:young' => 'Young members',
+
+    'membership:reports:age' => 'Age',
+
+    'membership:simpleReport:noData' => 'No entries found',
 
     'membership:season:batch' => 'Batch-Entry',
     'membership:season:batch:title' => 'Batch-Entry for Season %s',
