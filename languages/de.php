@@ -94,6 +94,7 @@ return [
     'membership:reports:jubilees' => 'Jubiläen',
     'membership:reports:anniversary' => 'Hochzeitstag',
     'membership:reports:young' => 'Junge Mitglieder',
+    'membership:reports:adult' => 'Erwachsene Mitglieder',
 
     'membership:reports:age' => 'Alter',
 

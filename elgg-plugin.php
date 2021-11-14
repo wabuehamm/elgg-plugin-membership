@@ -164,6 +164,14 @@ return [
                 Gatekeeper::class,
                 ReportGatekeeper::class
             ]
+        ],
+        'view:adultreport' => [
+            'path' => '/membership/reports/adult',
+            'resource' => 'membership/adult',
+            'middleware' => [
+                Gatekeeper::class,
+                ReportGatekeeper::class
+            ]
         ]
     ],
     'widgets' => [

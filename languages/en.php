@@ -92,6 +92,7 @@ return [
     'membership:reports:jubilees' => 'Jubilees',
     'membership:reports:anniversary' => 'Anniversary',
     'membership:reports:young' => 'Young members',
+    'membership:reports:adult' => 'Adult members',
 
     'membership:reports:age' => 'Age',
 

@@ -115,6 +115,22 @@ if (!is_null($departments)) {
         );
     }
 
+    if ($acl->isParticipationAllowed($user, $entity->guid, 0, "_adult")) {
+        $commonContent .= elgg_format_element(
+            'li',
+            [],
+            elgg_format_element(
+                'a',
+                [
+                    'href' => elgg_generate_url(
+                        'view:adultreport'
+                    )
+                ],
+                elgg_echo('membership:reports:adult')
+            )
+        );
+    }
+
     if ($commonContent != "") {
         $content .= elgg_view_module(
             'info',
