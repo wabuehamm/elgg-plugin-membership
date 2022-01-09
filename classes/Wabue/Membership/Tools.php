@@ -137,7 +137,7 @@ class Tools
                     }
                 } else {
                     foreach ($participationTypes as $filterParticipationType) {
-                        if (in_array($filterParticipationType, array_values($participation->getParticipationTypes()))) {
+                        if (in_array($filterParticipationType, array_keys($participation->getParticipationTypes()))) {
                             array_push($reportParticipations, $filterParticipationType);
                         }
                     }
@@ -597,7 +597,7 @@ class Tools
             if (!$birthday) {
                 $birthday = date_create_from_format("d.m.Y", $user->getProfileData('birthday'));
             }
-            $diff = date_diff($birthday, date_create_from_format("d.m.Y", "01.01." . $year));
+            $diff = date_diff($birthday, date_create_from_format("d.m.Y", "31.12." . $year));
             if ($diff and in_array($diff->y, [50, 60, 70, 75, 80, 85, 90, 95, 100, 105, 110])) {
                 array_push($report, [
                     $user->getDisplayName(),

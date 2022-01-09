@@ -46,3 +46,7 @@ div.membershipReport table tfoot .links a{
     padding: 2px 8px;
     border-radius: 5px;
 }
+
+.elgg-main.elgg-body.elgg-layout-body.clearfix {
+    width: 100%;
+}
