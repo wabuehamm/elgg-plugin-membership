@@ -7,6 +7,7 @@ use Elgg\DefaultPluginBootstrap;
 use Elgg\Hook;
 use ElggMenuItem;
 use ElggUser;
+use Wabue\Membership\Entities\CopySeasonCommand;
 use Wabue\Membership\Entities\Season;
 
 /**
@@ -38,6 +39,17 @@ class Bootstrap extends DefaultPluginBootstrap
         elgg_register_plugin_hook_handler('register', 'menu:title', 'Wabue\Membership\Bootstrap::titleMenuHook');
         elgg_register_plugin_hook_handler('register', 'menu:season_participate', 'Wabue\Membership\Bootstrap::seasonParticpateMenuHook');
         elgg_register_plugin_hook_handler('container_permissions_check', 'object', 'Wabue\Membership\Bootstrap::containerPermissionsCheckHook');
+    }
+
+    /**
+     * Register cli commands
+     */
+    public function registerCommands()
+    {
+        elgg_register_plugin_hook_handler('commands', 'cli', function($hook, $type, $return) {
+            $return[] = Cli\CopySeasonCommand::class;
+            return $return;
+        });
     }
 
     /**
@@ -127,6 +139,7 @@ class Bootstrap extends DefaultPluginBootstrap
         parent::init();
         $this->extendViews();
         $this->registerHooks();
+        $this->registerCommands();
     }
 
 }
