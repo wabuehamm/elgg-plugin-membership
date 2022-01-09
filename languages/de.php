@@ -95,6 +95,7 @@ return [
     'membership:reports:anniversary' => 'Hochzeitstag',
     'membership:reports:young' => 'Junge Mitglieder',
     'membership:reports:adult' => 'Erwachsene Mitglieder',
+    'membership:reports:birthdayjubilees' => 'Geburtstagsjubiläen',
 
     'membership:reports:age' => 'Alter',
 
@@ -119,6 +120,7 @@ return [
     'membership:membercard:forbidden' => 'Der Aufruf eines fremden Mitgliederausweises ist nicht erlaubt',
 
     'membership:anniversaryReport:noAnniversaries' => 'Keine Jubiläen gefunden',
+    'membership:birthdayjubilees:noJubilees' => 'Keine Jubiläen gefunden',
     'membership:jubileesReport:noJubilees' => 'Keine Jubliare gefunden',
 
     'membership:reports:insurance:title' => 'Versicherungsbericht',

@@ -172,7 +172,15 @@ return [
                 Gatekeeper::class,
                 ReportGatekeeper::class
             ]
-        ]
+        ],
+        'view:birthdayjubileereport' => [
+            'path' => '/membership/reports/birthdayjubilee/{season_guid}',
+            'resource' => 'membership/birthdayjubilee',
+            'middleware' => [
+                Gatekeeper::class,
+                ReportGatekeeper::class
+            ]
+        ],
     ],
     'widgets' => [
         // Register custom widgets here

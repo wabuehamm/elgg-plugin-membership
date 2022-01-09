@@ -575,5 +575,45 @@ class Tools
 
         return $report;
     }
+
+    public static function generateBirthdayJubileeReport(int $year) {
+        $allUnbannedUsers = elgg_get_entities([
+            'type' => 'user',
+            'subtype' => 'user',
+            'metadata_name_value_pairs' => [
+                [
+                    'name' => 'banned',
+                    'value' => 'no',
+                    'operand' => '='
+                ]
+            ],
+            'limit' => '0'
+        ]);
+
+        $report = [];
+
+        foreach ($allUnbannedUsers as $user) {
+            $birthday = date_create_from_format("Y-m-d", $user->getProfileData('birthday'));
+            if (!$birthday) {
+                $birthday = date_create_from_format("d.m.Y", $user->getProfileData('birthday'));
+            }
+            $diff = date_diff($birthday, date_create_from_format("d.m.Y", "01.01." . $year));
+            if ($diff and in_array($diff->y, [50, 60, 70, 75, 80, 85, 90, 95, 100, 105, 110])) {
+                array_push($report, [
+                    $user->getDisplayName(),
+                    $user->getProfileData("street"),
+                    $user->getProfileData("zip"),
+                    $user->getProfileData("city"),
+                    $user->getProfileData("telephone"),
+                    $user->getProfileData("mobile"),
+                    $user->email,
+                    $birthday->format('Y-m-d'),
+                    $diff->y
+                ]);
+            }
+        }
+
+        return $report;
+    }
 }
 

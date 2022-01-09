@@ -19,6 +19,8 @@ $user = elgg_get_logged_in_user_entity()->username;
 
 $content = '';
 
+# General and department reports for the season
+
 if (!is_null($departments)) {
 
     $commonContent = "";
@@ -137,6 +139,25 @@ if (!is_null($departments)) {
         );
     }
 
+    if ($acl->isParticipationAllowed($user, $entity->guid, 0, "_birthdayjubilees")) {
+        $commonContent .= elgg_format_element(
+            'li',
+            [],
+            elgg_format_element(
+                'a',
+                [
+                    'href' => elgg_generate_url(
+                        'view:birthdayjubileereport',
+                        [
+                            'season_guid' => $entity->getGUID(),
+                        ]
+                    )
+                ],
+                elgg_echo('membership:reports:birthdayjubilees')
+            )
+        );
+    }
+
     if ($commonContent != "") {
         $content .= elgg_view_module(
             'info',
@@ -181,6 +202,8 @@ if (!is_null($departments)) {
     );
 
 }
+
+# Production level reports
 
 /** @var Production[] $productions */
 $productions = $entity->getProductions();

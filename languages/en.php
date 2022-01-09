@@ -93,6 +93,7 @@ return [
     'membership:reports:anniversary' => 'Anniversary',
     'membership:reports:young' => 'Young members',
     'membership:reports:adult' => 'Adult members',
+    'membership:reports:birthdayjubilees' => 'Birthday Jubilees',
 
     'membership:reports:age' => 'Age',
 
@@ -117,6 +118,7 @@ return [
     'membership:membercard:forbidden' => 'Viewing another members membership card is forbidden',
 
     'membership:anniversaryReport:noAnniversaries' => 'No anniversaries found',
+    'membership:birthdayjubilees:noJubilees' => 'No jubilees found',
     'membership:jubileesReport:noJubilees' => 'No jubilees found',
 
     'membership:reports:insurance:title' => 'Insurance report',
