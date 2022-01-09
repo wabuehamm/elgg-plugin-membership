@@ -196,10 +196,10 @@ class Season extends ElggObject
      * @param int $year The season's year
      * @param int $enddate The end date
      * @param int $lockdate The locking date
-     * @param array $participationTypes An array of valid participation types for the departments participation object
+     * @param string $participationTypes An array of valid participation types for the departments participation object
      * @return Season
      */
-    public static function factory(int $year, int $enddate, int $lockdate, array $participationTypes): Season
+    public static function factory(int $year, int $enddate, int $lockdate, string $participationTypes): Season
     {
         $season = new Season();
         $season->owner_guid = 0;
