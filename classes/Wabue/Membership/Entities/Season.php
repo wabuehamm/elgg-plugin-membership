@@ -173,7 +173,7 @@ class Season extends ElggObject
      */
     public function didMemberParticipate($member): bool {
         $didParticipate = false;
-        if (count($this->getDepartments()->getParticipations($member->getGUID())) > 0) {
+        if (count($this->getDepartments(true)->getParticipations($member->getGUID())) > 0) {
             $didParticipate = true;
         }
 
