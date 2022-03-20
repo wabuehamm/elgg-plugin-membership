@@ -463,7 +463,7 @@ class Tools
             /* @var Participation[] $participations */
             $participations = $season->getDepartments()->getParticipations($user->getGUID());
             foreach ($participations as $participation) {
-                if (in_array('vs', $participation->getParticipationTypes())) {
+                if (array_key_exists('vs', $participation->getParticipationTypes())) {
                     $userType = 'board';
                 }
             }
