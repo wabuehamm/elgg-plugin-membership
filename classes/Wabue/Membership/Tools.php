@@ -132,7 +132,7 @@ class Tools
                 $reportParticipations = [];
 
                 if (count($participationTypes) == 0) {
-                    foreach ($participation->getParticipationTypes() as $participationType) {
+                    foreach ($participation->getParticipationTypes() as $participationType => $label) {
                         array_push($reportParticipations, $participationType);
                     }
                 } else {
