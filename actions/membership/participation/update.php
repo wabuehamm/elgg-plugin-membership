@@ -40,11 +40,10 @@ if (count($departments_participations) == 0) {
 
 if (get_input('departments', []) != 0) {
     $departments_participation->setParticipationTypes(get_input('departments', []));
+    $departments_participation->save();
 } else {
-    $departments_participation->setParticipationTypes([]);
+    $departments_participation->delete();
 }
-$departments_participation->save();
-
 
 /** @var Production[] $productions */
 $productions = $season->getProductions(true);
@@ -62,10 +61,10 @@ foreach ($productions as $production) {
     }
     if (get_input('production:' . $production->getGUID()) != 0) {
         $production_participation->setParticipationTypes(get_input('production:' . $production->getGUID(), []));
+        $production_participation->save();
     } else {
-        $production_participation->setParticipationTypes([]);
+        $production_participation->delete();
     }
-    $production_participation->save();
 }
 
 return elgg_ok_response(
