@@ -136,4 +136,8 @@ return [
     'membership:settings:insuranceMember:label' => 'Membership',
     'membership:settings:insuranceMember:help' => 'Insurance membership information',
 
+    'membership:lockuser:reason' => 'Not active in the current season',
+    'membership:settings:lockblocklist:label' => 'Never lock these users',
+    'membership:settings:lockblocklist:help' => 'Do not automatically lock the specified users when the current seasons lockdate is due.'
+
 ];

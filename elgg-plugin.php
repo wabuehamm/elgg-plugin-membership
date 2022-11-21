@@ -220,7 +220,8 @@ return [
             "telephone",
             "mobile",
             "birthday"
-        ]
+        ],
+        'lockBlocklist' => "admin\nroot\nadministrator"
     ],
     'user_settings' => [
         // Register user settings for your plugin here

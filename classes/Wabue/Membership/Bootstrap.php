@@ -7,7 +7,8 @@ use Elgg\DefaultPluginBootstrap;
 use Elgg\Hook;
 use ElggMenuItem;
 use ElggUser;
-use Wabue\Membership\Entities\CopySeasonCommand;
+use Psr\Log\LogLevel;
+use Wabue\Membership\Entities\Production;
 use Wabue\Membership\Entities\Season;
 
 /**
@@ -39,6 +40,7 @@ class Bootstrap extends DefaultPluginBootstrap
         elgg_register_plugin_hook_handler('register', 'menu:title', 'Wabue\Membership\Bootstrap::titleMenuHook');
         elgg_register_plugin_hook_handler('register', 'menu:season_participate', 'Wabue\Membership\Bootstrap::seasonParticpateMenuHook');
         elgg_register_plugin_hook_handler('container_permissions_check', 'object', 'Wabue\Membership\Bootstrap::containerPermissionsCheckHook');
+        elgg_register_plugin_hook_handler('cron', 'daily', 'Wabue\Membership\Bootstrap::dailyCron');
     }
 
     /**
@@ -128,6 +130,96 @@ class Bootstrap extends DefaultPluginBootstrap
         $user = $hook->getUserParam();
         if ($hook->getParam('subtype') == 'participation' and $user->isEnabled()) {
             return true;
+        }
+    }
+
+    /**
+     * A hook for running daily tasks
+     * @param Hook $hook Cron hook
+     * @return void
+     */
+    public static function dailyCron(Hook $hook) {
+        Bootstrap::lockUsers();
+    }
+
+    /**
+     * Lock all users not participating in the most current active season
+     * @return void
+     */
+    private static function lockUsers() {
+        $lockBlockList = preg_split(
+            '/\r\n/',
+            elgg_get_plugin_setting(
+                'lockBlocklist', 'membership'
+            )
+        );
+        /** @var ElggUser[] $allUnbannedUsers */
+        $allUnbannedUsers = elgg_get_entities([
+            'type' => 'user',
+            'subtype' => 'user',
+            'metadata_name_value_pairs' => [
+                [
+                    'name' => 'banned',
+                    'value' => 'no',
+                    'operand' => '='
+                ]
+            ],
+            'limit' => '0'
+        ]);
+        /** @var Season[] $mostCurrentSeason */
+        $mostCurrentSeason = elgg_get_entities([
+            'type' => 'object',
+            'subtype' => 'season',
+            'metadata_name_value_pairs' => [
+                [
+                    'name' => 'lockdate',
+                    'value' => time(),
+                    'operand' => '<'
+                ],
+                [
+                    'name' => 'enddate',
+                    'value' => time(),
+                    'operand' => '>'
+                ]
+            ],
+            'metadata_name_value_pairs_operator' => 'AND',
+            'limit' => '1'
+        ]);
+
+        if (count($mostCurrentSeason) == 0) {
+            elgg_log("[Lock Users] No current season to lock found", LogLevel::NOTICE);
+            return;
+        }
+
+        $currentSeason = $mostCurrentSeason[0];
+
+        elgg_log("[Lock Users] Current season is " . $currentSeason->getDisplayName(), LogLevel::NOTICE);
+
+        $lockList = [];
+
+        foreach ($allUnbannedUsers as $user) {
+            if (in_array($user->username, $lockBlockList)) {
+                continue;
+            }
+
+            if ($currentSeason->getDepartments()->getParticipations($user->getGUID())) {
+                continue;
+            }
+
+            /** @var Production $production */
+            foreach ($currentSeason->getProductions() as $production) {
+                if ($production->getParticipations($user->getGUID())) {
+                    continue 2;
+                }
+            }
+
+            $lockList[] = $user;
+        }
+
+        foreach ($lockList as $userToLock) {
+            elgg_log("Locking user " . $userToLock->username, LogLevel::NOTICE);
+            $userToLock->ban(elgg_echo('membership:lockuser:reason'));
+            $userToLock->save();
         }
     }
 

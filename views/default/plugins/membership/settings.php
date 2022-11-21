@@ -8,6 +8,7 @@ $acl = elgg_get_plugin_setting('acl', 'membership');
 $insuranceAddress = elgg_get_plugin_setting('insuranceAddress', 'membership');
 $insuranceMember = elgg_get_plugin_setting('insuranceMember', 'membership');
 $insuranceTheatre = elgg_get_plugin_setting('insuranceTheatre', 'membership');
+$lockBlocklist = elgg_get_plugin_setting('lockBlocklist', 'membership');
 $fields = [
     [
         '#type' => 'longtext',
@@ -55,6 +56,14 @@ $fields = [
         'editor' => false,
         'name' => 'params[insuranceMember]',
         'value' => $insuranceMember
+    ],
+    [
+        '#type' => 'longtext',
+        '#label' => elgg_echo('membership:settings:lockblocklist:label'),
+        '#help' => elgg_echo('membership:settings:lockblocklist:help'),
+        'editor' => false,
+        'name' => 'params[lockBlocklist]',
+        'value' => $lockBlocklist
     ]
 ];
 
