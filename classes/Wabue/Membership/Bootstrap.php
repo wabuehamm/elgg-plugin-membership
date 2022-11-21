@@ -50,6 +50,7 @@ class Bootstrap extends DefaultPluginBootstrap
     {
         elgg_register_plugin_hook_handler('commands', 'cli', function($hook, $type, $return) {
             $return[] = Cli\CopySeasonCommand::class;
+            $return[] = Cli\UnlockAllUsers::class;
             return $return;
         });
     }
@@ -187,13 +188,13 @@ class Bootstrap extends DefaultPluginBootstrap
         ]);
 
         if (count($mostCurrentSeason) == 0) {
-            elgg_log("[Lock Users] No current season to lock found", LogLevel::NOTICE);
+            echo "[Lock Users] No current season to lock found" . PHP_EOL;
             return;
         }
 
         $currentSeason = $mostCurrentSeason[0];
 
-        elgg_log("[Lock Users] Current season is " . $currentSeason->getDisplayName(), LogLevel::NOTICE);
+        echo "[Lock Users] Current season is " . $currentSeason->getDisplayName() . PHP_EOL;
 
         $lockList = [];
 
@@ -217,7 +218,7 @@ class Bootstrap extends DefaultPluginBootstrap
         }
 
         foreach ($lockList as $userToLock) {
-            elgg_log("Locking user " . $userToLock->username, LogLevel::NOTICE);
+            echo "Locking user " . $userToLock->username . PHP_EOL;
             $userToLock->ban(elgg_echo('membership:lockuser:reason'));
             $userToLock->save();
         }
