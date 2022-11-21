@@ -61,7 +61,7 @@ return [
 
     'membership:participations:participate' => 'Teilnehmen',
 
-    'membership:participations:season:title' => 'In der Saision %s teilnehmen',
+    'membership:participations:season:title' => 'In der Saison %s teilnehmen',
 
     'membership:participations:saved' => 'Teilnahmen gespeichert',
 
