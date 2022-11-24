@@ -45,8 +45,9 @@ foreach ($participationObjects as $participationObject) {
         array_push($line, $label);
     }
 }
-
-fputcsv($f, $line);
+if (count($line) > 0) {
+    fputcsv($f, $line);
+}
 
 foreach ($report as $username => $user_report) {
     $line = [];

@@ -7,8 +7,6 @@ use Elgg\DefaultPluginBootstrap;
 use Elgg\Hook;
 use ElggMenuItem;
 use ElggUser;
-use Psr\Log\LogLevel;
-use Wabue\Membership\Entities\Production;
 use Wabue\Membership\Entities\Season;
 
 /**
@@ -154,70 +152,16 @@ class Bootstrap extends DefaultPluginBootstrap
                 'lockBlocklist', 'membership'
             )
         );
-        /** @var ElggUser[] $allUnbannedUsers */
-        $allUnbannedUsers = elgg_get_entities([
-            'type' => 'user',
-            'subtype' => 'user',
-            'metadata_name_value_pairs' => [
-                [
-                    'name' => 'banned',
-                    'value' => 'no',
-                    'operand' => '='
-                ]
-            ],
-            'limit' => '0'
-        ]);
-        /** @var Season[] $mostCurrentSeason */
-        $mostCurrentSeason = elgg_get_entities([
-            'type' => 'object',
-            'subtype' => 'season',
-            'metadata_name_value_pairs' => [
-                [
-                    'name' => 'lockdate',
-                    'value' => time(),
-                    'operand' => '<'
-                ],
-                [
-                    'name' => 'enddate',
-                    'value' => time(),
-                    'operand' => '>'
-                ]
-            ],
-            'metadata_name_value_pairs_operator' => 'AND',
-            'limit' => '1'
-        ]);
-
-        if (count($mostCurrentSeason) == 0) {
+        $lockList = Tools::getMissingMembers();
+        if (!$lockList) {
             echo "[Lock Users] No current season to lock found" . PHP_EOL;
             return;
         }
 
-        $currentSeason = $mostCurrentSeason[0];
-
-        echo "[Lock Users] Current season is " . $currentSeason->getDisplayName() . PHP_EOL;
-
-        $lockList = [];
-
-        foreach ($allUnbannedUsers as $user) {
-            if (in_array($user->username, $lockBlockList)) {
-                continue;
-            }
-
-            if ($currentSeason->getDepartments()->getParticipations($user->getGUID())) {
-                continue;
-            }
-
-            /** @var Production $production */
-            foreach ($currentSeason->getProductions() as $production) {
-                if ($production->getParticipations($user->getGUID())) {
-                    continue 2;
-                }
-            }
-
-            $lockList[] = $user;
-        }
-
         foreach ($lockList as $userToLock) {
+            if (in_array($userToLock->username, $lockBlockList)) {
+                continue;
+            }
             echo "Locking user " . $userToLock->username . PHP_EOL;
             $userToLock->ban(elgg_echo('membership:lockuser:reason'));
             $userToLock->save();

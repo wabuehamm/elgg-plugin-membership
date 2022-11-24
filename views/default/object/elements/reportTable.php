@@ -29,6 +29,9 @@ $reportProfileFields = elgg_get_plugin_setting("reportProfileFields", "membershi
 <div class="membershipReport">
     <table>
         <thead>
+        <?php
+            if (count($participationObjects) > 0) {
+        ?>
         <tr>
             <th colspan="<?php echo count(array_merge($basicInfoFields, $reportProfileFields)); ?>"></th>
             <?php
@@ -37,6 +40,9 @@ $reportProfileFields = elgg_get_plugin_setting("reportProfileFields", "membershi
             }
             ?>
         </tr>
+        <?php
+            }
+        ?>
         <tr>
             <?php
             foreach (array_merge($basicInfoFields, $reportProfileFields) as $key) {

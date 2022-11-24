@@ -121,6 +121,14 @@ return [
                 'participation_types' => '',
             ]
         ],
+        'view:missingreport' => [
+            'path' => '/membership/reports/missing/{season_guid}',
+            'resource' => 'membership/missingReport',
+            'middleware' => [
+                Gatekeeper::class,
+                ReportGatekeeper::class
+            ],
+        ],
         'view:jubileereport' => [
             'path' => '/membership/reports/jubilees/{season_guid}',
             'resource' => 'membership/jubilees',

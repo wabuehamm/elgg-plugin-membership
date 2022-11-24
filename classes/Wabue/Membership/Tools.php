@@ -9,8 +9,10 @@ use ElggUser;
 use Psr\Log\LogLevel;
 use Wabue\Membership\Entities\Participation;
 use Wabue\Membership\Entities\ParticipationObject;
+use Wabue\Membership\Entities\Production;
 use Wabue\Membership\Entities\Season;
 use Zend\Mime\Part;
+use function DI\get;
 
 class Tools
 {
@@ -175,6 +177,48 @@ class Tools
         }
 
         usort($report, function ($a, $b) {
+            return strcmp($a['_userInfo']['name'], $b['_userInfo']['name']);
+        });
+
+        return $report;
+    }
+
+    /**
+     * Generate a report of missing members from the given season
+     *
+     * @param Season $season season to check
+     * @return array report data
+     */
+    public static function generateMissingReport(Season $season): array
+    {
+        $report = [];
+        $reportProfileFields = elgg_get_plugin_setting("reportProfileFields", "membership", []);
+
+        /** @var ElggUser[] $missingMembers */
+        $missingMembers = self::getMissingMembers($season);
+
+        if (!$missingMembers) {
+            return [];
+        }
+
+        foreach ($missingMembers as $missingMember) {
+            $username_parts = preg_split("/\./", $missingMember->username);
+            $name = $username_parts[count($username_parts) - 1];
+            $givenName = join(' ', array_slice($username_parts, 0, count($username_parts) - 1));
+            $reportLine = [
+                "displayname" => $missingMember->getDisplayName(),
+                "name" => ucfirst($name),
+                "givenname" => ucfirst($givenName),
+                "username" => $missingMember->username,
+                "email" => $missingMember->email,
+            ];
+            foreach ($reportProfileFields as $reportProfileField) {
+                $reportLine[$reportProfileField] = $missingMember->getProfileData($reportProfileField);
+            }
+            $report[$missingMember->username] = ['_userInfo' => $reportLine];
+        }
+
+        uksort($report, function ($a, $b) {
             return strcmp($a['_userInfo']['name'], $b['_userInfo']['name']);
         });
 
@@ -614,6 +658,74 @@ class Tools
         }
 
         return $report;
+    }
+
+    /**
+     * Get the missing members from the given or the most current season
+     * @param Season|null $currentSeason season (leave null to use current season)
+     * @return array|null A list of missing members or null if current season can not be found
+     */
+    public static function getMissingMembers(Season $currentSeason = null) {
+        /** @var ElggUser[] $allUnbannedUsers */
+        $allUnbannedUsers = elgg_get_entities([
+            'type' => 'user',
+            'subtype' => 'user',
+            'metadata_name_value_pairs' => [
+                [
+                    'name' => 'banned',
+                    'value' => 'no',
+                    'operand' => '='
+                ]
+            ],
+            'limit' => '0'
+        ]);
+        if (!$currentSeason) {
+            /** @var Season[] $mostCurrentSeason */
+            $mostCurrentSeason = elgg_get_entities([
+                'type' => 'object',
+                'subtype' => 'season',
+                'metadata_name_value_pairs' => [
+                    [
+                        'name' => 'lockdate',
+                        'value' => time(),
+                        'operand' => '<'
+                    ],
+                    [
+                        'name' => 'enddate',
+                        'value' => time(),
+                        'operand' => '>'
+                    ]
+                ],
+                'metadata_name_value_pairs_operator' => 'AND',
+                'limit' => '1'
+            ]);
+
+            if (count($mostCurrentSeason) == 0) {
+                return null;
+            }
+
+            $currentSeason = $mostCurrentSeason[0];
+
+        }
+
+        $missingMembers = [];
+
+        foreach ($allUnbannedUsers as $user) {
+            if ($currentSeason->getDepartments()->getParticipations($user->getGUID())) {
+                continue;
+            }
+
+            /** @var Production $production */
+            foreach ($currentSeason->getProductions() as $production) {
+                if ($production->getParticipations($user->getGUID())) {
+                    continue 2;
+                }
+            }
+
+            $missingMembers[] = $user;
+        }
+
+        return $missingMembers;
     }
 }
 

@@ -141,4 +141,7 @@ return [
     'membership:lockuser:reason' => 'Nicht aktiv in der aktuellen Saison',
     'membership:settings:lockblocklist:label' => 'Benutzer nie automatisch sperren',
     'membership:settings:lockblocklist:help' => 'Die angegebenen Benutzer werden nicht automatisch gesperrt, wenn das Sperrdatum der aktuellen Saison erreicht wurde.',
+
+    'membership:reports:missing' => 'Mitglieder ohne Teilnahme',
+    'membership:reports:missing:title' => 'Mitglieder ohne Teilnahme in Saison %s',
 ];

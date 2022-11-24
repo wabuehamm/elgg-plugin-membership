@@ -138,6 +138,8 @@ return [
 
     'membership:lockuser:reason' => 'Not active in the current season',
     'membership:settings:lockblocklist:label' => 'Never lock these users',
-    'membership:settings:lockblocklist:help' => 'Do not automatically lock the specified users when the current seasons lockdate is due.'
+    'membership:settings:lockblocklist:help' => 'Do not automatically lock the specified users when the current seasons lockdate is due.',
 
+    'membership:reports:missing' => 'Missing members',
+    'membership:reports:missing:title' => 'Members missing from season %s',
 ];
