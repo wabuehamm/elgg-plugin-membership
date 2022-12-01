@@ -258,7 +258,7 @@ class Acl
      */
     private function _evalAcl($dsl): void
     {
-        $acl = preg_split('/\r\n/', $dsl);
+        $acl = preg_split('/\r?\n/', $dsl);
 
         foreach ($acl as $line) {
 

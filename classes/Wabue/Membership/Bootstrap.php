@@ -147,7 +147,7 @@ class Bootstrap extends DefaultPluginBootstrap
      */
     private static function lockUsers() {
         $lockBlockList = preg_split(
-            '/\r\n/',
+            '/\r?\n/',
             elgg_get_plugin_setting(
                 'lockBlocklist', 'membership'
             )
