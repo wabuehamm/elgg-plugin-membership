@@ -78,11 +78,17 @@ abstract class ParticipationObject extends ElggObject
             }
         }
 
+        $acl_id = $this->_related_guid;
+        $departments_guid = $this->getContainerEntity()->getDepartments()->guid;
+        if ($this->subtype == 'departments' or $this->_related_guid == $departments_guid) {
+            $acl_id = 0;
+        }
+
         foreach ($this->_resolved_types as $key => $value) {
             if ($ignore_acl or $this->_acl->isParticipationAllowed(
                 elgg_get_logged_in_user_entity()->username,
                 $this->container_guid,
-                $this->_related_guid,
+                $acl_id,
                 $key
             )) {
                 $return[$key] = $value;
