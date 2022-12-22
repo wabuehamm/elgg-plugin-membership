@@ -1,7 +1,7 @@
 {
 	"name": "membership",
 	"description": "Elgg plugin vor membership management of the Waldbuehne Heessen",
-	"version": "0.11.2",
+	"version": "0.12.0",
 	"homepage": "https://waldbuehne-heessen.de",
 	"license": "expat",
 	"author": {
