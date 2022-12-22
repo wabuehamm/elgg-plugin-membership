@@ -722,6 +722,13 @@ class Tools
                 }
             }
 
+            $senior_since = $user->getProfileData('senior_since');
+            if ($senior_since && (intval($senior_since)) <= intval(strftime('%Y'))) {
+                continue;
+            }
+
+            if ($user->getProfileData('senior_since'))
+
             $missingMembers[] = $user;
         }
 
