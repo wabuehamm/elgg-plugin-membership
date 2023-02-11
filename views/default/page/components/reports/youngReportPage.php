@@ -17,6 +17,8 @@ echo elgg_view(
     'object/elements/simpleReportTable',
     [
         'columns' => [
+            elgg_echo('membership:reports:profileFields:givenname'),
+            elgg_echo('membership:reports:profileFields:name'),
             elgg_echo('membership:reports:profileFields:displayname'),
             elgg_echo('membership:reports:profileFields:street'),
             elgg_echo('membership:reports:profileFields:zip'),

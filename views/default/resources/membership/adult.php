@@ -3,12 +3,19 @@
 use Wabue\Membership\Entities\Season;
 use Wabue\Membership\Tools;
 
+$season_guid = elgg_extract('season_guid', $vars, null);
+
+Tools::assert(
+    !is_null($season_guid)
+);
+
 elgg_register_menu_item('title', [
     'name' => 'export_csv',
     'href' => elgg_generate_url(
         'view:adultreport',
         [
-            'view' => 'csv'
+            'view' => 'csv',
+            'season_guid' => $season_guid,
         ]
     ),
     'icon' => 'file-csv',

@@ -12,6 +12,8 @@ elgg_call(ELGG_IGNORE_ACCESS, function () use (&$report_array) {
 });
 
 $columns = [
+    elgg_echo('membership:reports:profileFields:givenname'),
+    elgg_echo('membership:reports:profileFields:name'),
     elgg_echo('membership:reports:profileFields:displayname'),
     elgg_echo('membership:reports:profileFields:street'),
     elgg_echo('membership:reports:profileFields:zip'),
@@ -28,17 +30,7 @@ header('Content-Type: text/csv');
 echo elgg_view(
     'object/elements/simpleReportTable',
     [
-        'columns' => [
-            elgg_echo('membership:reports:profileFields:displayname'),
-            elgg_echo('membership:reports:profileFields:street'),
-            elgg_echo('membership:reports:profileFields:zip'),
-            elgg_echo('membership:reports:profileFields:city'),
-            elgg_echo('membership:reports:profileFields:telephone'),
-            elgg_echo('membership:reports:profileFields:mobile'),
-            elgg_echo('membership:reports:profileFields:email'),
-            elgg_echo('membership:reports:profileFields:birthday'),
-            elgg_echo('membership:reports:age'),
-        ],
+        'columns' => $columns,
         'report' => $report_array
     ]
 );

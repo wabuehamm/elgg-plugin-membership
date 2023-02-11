@@ -151,9 +151,7 @@ class Tools
                     self::assert(!is_null($owner));
                     self::assert($owner instanceof ElggUser);
                     if (!array_key_exists($owner->username, $report)) {
-                        $username_parts = preg_split("/\./", $owner->username);
-                        $name = $username_parts[count($username_parts) - 1];
-                        $givenName = join(' ', array_slice($username_parts, 0, count($username_parts) - 1));
+                        [$givenName, $name] = self::splitName($owner->username);
                         $userInfo = [
                             "displayname" => $owner->getDisplayName(),
                             "name" => ucfirst($name),
@@ -559,7 +557,10 @@ class Tools
             }
             $diff = date_diff($birthday, new \DateTime());
             if ($diff and $diff->y < 18) {
+                [$givenName, $name] = self::splitName($user->username);
                 array_push($report, [
+                    ucfirst($givenName),
+                    ucfirst($name),
                     $user->getDisplayName(),
                     $user->getProfileData("street"),
                     $user->getProfileData("zip"),
@@ -603,7 +604,10 @@ class Tools
             }
             $diff = date_diff($birthday, new \DateTime());
             if ($diff and $diff->y >= 18) {
+                [$givenName, $name] = self::splitName($user->username);
                 array_push($report, [
+                    ucfirst($givenName),
+                    ucfirst($name),
                     $user->getDisplayName(),
                     $user->getProfileData("street"),
                     $user->getProfileData("zip"),
@@ -733,6 +737,20 @@ class Tools
         }
 
         return $missingMembers;
+    }
+
+    /**
+     * Guess the given name and name based on the username
+     *
+     * @param string $username The username
+     * @return array The given name and the name as an array
+     */
+    public static function splitName(string $username): array
+    {
+        $username_parts = preg_split("/\./", $username);
+        $name = $username_parts[count($username_parts) - 1];
+        $givenName = join(' ', array_slice($username_parts, 0, count($username_parts) - 1));
+        return [$givenName, $name];
     }
 }
 
