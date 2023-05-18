@@ -179,7 +179,7 @@ class Season extends ElggObject
 
         if (!$didParticipate) {
             /** @var Production[] $productions */
-            $productions = $this->getProductions();
+            $productions = $this->getProductions(true);
             foreach ($productions as $production) {
                 if (count($production->getParticipations($member->getGUID())) > 0) {
                     $didParticipate = true;
