@@ -670,17 +670,10 @@ class Tools
      * @return array|null A list of missing members or null if current season can not be found
      */
     public static function getMissingMembers(Season $currentSeason = null) {
-        /** @var ElggUser[] $allUnbannedUsers */
-        $allUnbannedUsers = elgg_get_entities([
+        /** @var ElggUser[] $allUsers */
+        $allUsers = elgg_get_entities([
             'type' => 'user',
             'subtype' => 'user',
-            'metadata_name_value_pairs' => [
-                [
-                    'name' => 'banned',
-                    'value' => 'no',
-                    'operand' => '='
-                ]
-            ],
             'limit' => '0'
         ]);
         if (!$currentSeason) {
@@ -714,7 +707,7 @@ class Tools
 
         $missingMembers = [];
 
-        foreach ($allUnbannedUsers as $user) {
+        foreach ($allUsers as $user) {
             if ($currentSeason->getDepartments()->getParticipations($user->getGUID())) {
                 continue;
             }
