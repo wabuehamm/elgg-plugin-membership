@@ -724,7 +724,9 @@ class Tools
                 continue;
             }
 
-            if ($user->getProfileData('senior_since'))
+            if ($user->getProfileData('deathday')) {
+                continue;
+            }
 
             $missingMembers[] = $user;
         }
