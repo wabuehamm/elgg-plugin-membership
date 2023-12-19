@@ -34,7 +34,7 @@ foreach ($participationObjects as $participationObject) {
     $line = array_merge($line, array_fill(0, count($columns[$participationObject->getGUID()]) - 1, ''));
 }
 
-fputcsv($f, $line);
+fputcsv($f, $line, ";");
 
 $line = [];
 foreach (array_merge($basicInfoFields, $reportProfileFields) as $key) {
@@ -46,7 +46,7 @@ foreach ($participationObjects as $participationObject) {
     }
 }
 if (count($line) > 0) {
-    fputcsv($f, $line);
+    fputcsv($f, $line, ";");
 }
 
 foreach ($report as $username => $user_report) {
@@ -63,7 +63,7 @@ foreach ($report as $username => $user_report) {
             }
         }
     }
-    fputcsv($f, $line);
+    fputcsv($f, $line, ";");
 }
 
 rewind($f);

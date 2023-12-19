@@ -18,12 +18,14 @@ if (count($report) == 0) {
 $f = fopen('php://memory', 'r+');
 fputcsv(
     $f,
-    $columns
+    $columns,
+    ";"
 );
 foreach ($report as $row) {
     fputcsv(
         $f,
-        $row
+        $row,
+        ";"
     );
 }
 

@@ -26,7 +26,8 @@ fputcsv(
         elgg_echo('membership:reports:profileFields:displayname'),
         elgg_echo('membership:reports:profileFields:years'),
         elgg_echo('membership:reports:profileFields:anniversary'),
-    ]
+    ],
+    ";"
 );
 foreach ($report as $displayName => $user_report) {
     fputcsv(
@@ -35,7 +36,8 @@ foreach ($report as $displayName => $user_report) {
             $displayName,
             $user_report['years'],
             $user_report['anniversary'],
-        ]
+        ],
+        ";"
     );
 }
 
