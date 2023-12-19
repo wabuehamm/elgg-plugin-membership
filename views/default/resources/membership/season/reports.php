@@ -10,6 +10,9 @@ if (in_array('*', $valid_seasons)) {
     $valid_seasons = null;
 }
 
+$selected_season = get_input('season', null);
+
+/** @var \Wabue\Membership\Entities\Season[] $season_entities */
 $season_entities = elgg_get_entities([
     'type' => 'object',
     'subtype' => 'season',
@@ -21,10 +24,32 @@ $season_entities = elgg_get_entities([
     ]
 ]);
 
+$season = $season_entities[0];
+
+if ($selected_season == null) {
+    $selected_season = $season_entities[0]->year;
+}
+
+echo '<div class="seasonList">';
+
+foreach ($season_entities as $index => $season_entity) {
+    if ($season_entity->year == $selected_season) {
+        $season = $season_entity;
+        echo $season_entity->year;
+    } else {
+        echo '<a href="' . elgg_generate_url('default:object:season', ['season' => $season_entity->year]). '">' . $season_entity->year . '</a>';
+    }
+    if ($index < count($season_entities) - 1) {
+        echo ' | ';
+    }
+}
+
+echo '</div>';
+
 $reports = elgg_view(
     'page/components/membership/reports',
     [
-        'entities' => $season_entities,
+        'entities' => [$season],
         'no_entities' => elgg_echo('membership:no_seasons')
     ]
 );

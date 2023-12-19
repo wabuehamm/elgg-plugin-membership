@@ -1,3 +1,7 @@
+div.seasonList {
+    text-align: center;
+}
+
 div.membershipReport {
     overflow: auto;
 }
