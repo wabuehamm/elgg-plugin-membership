@@ -603,7 +603,7 @@ class Tools
                 $birthday = date_create_from_format("d.m.Y", $user->getProfileData('birthday'));
             }
             $diff = date_diff($birthday, new \DateTime());
-            if ($diff and $diff->y >= 18) {
+            if ($diff and $diff->y >= 16) {
                 [$givenName, $name] = self::splitName($user->username);
                 array_push($report, [
                     ucfirst($givenName),
