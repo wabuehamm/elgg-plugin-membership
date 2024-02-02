@@ -365,8 +365,8 @@ class Tools
         $seniorSince = $user->getProfileData('senior_since');
         $yearsSinceSenior = 0;
 
-        if ($seniorSince != null) {
-            $yearsSinceSenior = $year ? $year : intval(date("Y")) - intval($seniorSince) + 1;
+        if ($seniorSince) {
+            $yearsSinceSenior = intval(date("Y")) - intval($seniorSince);
         }
 
         return $startAwayYears + $numberOfSeasons - count(elgg_get_entities($options)) - $yearsSinceSenior;
