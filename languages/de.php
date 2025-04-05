@@ -12,6 +12,8 @@ return [
     'membership:title' => 'Mitgliederverwaltung',
     'membership:overview:tabs:reports' => 'Berichte',
     'membership:overview:tabs:seasons' => 'Saisons',
+    'membership:overview:noseasons:title' => 'Keine Saisons',
+    'membership:overview:noseasons:body' => 'Es wurden noch keine Saisons angelegt.',
 
     'membership:seasons' => 'Saisons',
     'membership:season:add' => 'Saison hinzufügen',

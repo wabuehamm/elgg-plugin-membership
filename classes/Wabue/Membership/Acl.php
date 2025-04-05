@@ -188,7 +188,7 @@ class Acl
         string $participation
     ): bool
     {
-        if (get_user_by_username($username)->isAdmin()) {
+        if (elgg_get_user_by_username($username)->isAdmin()) {
             return true;
         }
         $area_rules = $this->getAllowedParticipations($username, $season_guid, $participation_type_guid);
@@ -210,7 +210,7 @@ class Acl
         array $participations
     ): bool
     {
-        if (get_user_by_username($username)->isAdmin()) {
+        if (elgg_get_user_by_username($username)->isAdmin()) {
             return true;
         }
         foreach ($season_guids as $season_guid) {

@@ -85,9 +85,7 @@ elgg_register_menu_item('title', [
 $body = elgg_view_layout(
     'default',
     [
-        'title' => elgg_echo('membership:reports:title', [
-            $participationTypes[$participationTypes]
-        ]),
+        'title' => elgg_echo('membership:reports:title'),
         'content' => elgg_view(
             'page/components/reports/reportPage',
             [

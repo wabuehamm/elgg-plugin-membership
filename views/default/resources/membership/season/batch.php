@@ -20,7 +20,7 @@ $form = elgg_view_form(
     ]
 );
 
-elgg_require_js('membership/batch');
+elgg_import_esm('membership/batch');
 
 $body = elgg_view_layout(
     'default',

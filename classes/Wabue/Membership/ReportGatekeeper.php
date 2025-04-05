@@ -2,7 +2,7 @@
 
 namespace Wabue\Membership;
 
-use Elgg\HttpException;
+use Elgg\Exceptions\HttpException;
 use Elgg\Request;
 use ElggUser;
 

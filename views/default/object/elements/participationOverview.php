@@ -63,7 +63,7 @@ $content .= elgg_format_element(
     )
 );
 
-elgg_require_js('membership/progressbar');
+elgg_import_esm('membership/progressbar');
 
 echo elgg_view('object/elements/summary', [
     'entity' => $entity,

@@ -4,6 +4,8 @@ namespace Wabue\Membership;
 
 use Elgg\Collections\Collection;
 use Elgg\DefaultPluginBootstrap;
+use Elgg\Event;
+use Elgg\PluginBootstrapInterface;
 use Elgg\Hook;
 use ElggMenuItem;
 use ElggUser;
@@ -12,7 +14,7 @@ use Wabue\Membership\Entities\Season;
 /**
  * Membership bootstrap class
  */
-class Bootstrap extends DefaultPluginBootstrap
+class Bootstrap extends DefaultPluginBootstrap implements PluginBootstrapInterface
 {
 
     /**
@@ -35,10 +37,10 @@ class Bootstrap extends DefaultPluginBootstrap
      */
     public function registerHooks()
     {
-        elgg_register_plugin_hook_handler('register', 'menu:title', 'Wabue\Membership\Bootstrap::titleMenuHook');
-        elgg_register_plugin_hook_handler('register', 'menu:season_participate', 'Wabue\Membership\Bootstrap::seasonParticpateMenuHook');
-        elgg_register_plugin_hook_handler('container_permissions_check', 'object', 'Wabue\Membership\Bootstrap::containerPermissionsCheckHook');
-        elgg_register_plugin_hook_handler('cron', 'daily', 'Wabue\Membership\Bootstrap::dailyCron');
+        elgg_register_event_handler('register', 'menu:title', 'Wabue\Membership\Bootstrap::titleMenuHook');
+        elgg_register_event_handler('register', 'menu:season_participate', 'Wabue\Membership\Bootstrap::seasonParticpateMenuHook');
+        elgg_register_event_handler('container_permissions_check', 'object', 'Wabue\Membership\Bootstrap::containerPermissionsCheckHook');
+        elgg_register_event_handler('cron', 'daily', 'Wabue\Membership\Bootstrap::dailyCron');
     }
 
     /**
@@ -46,7 +48,8 @@ class Bootstrap extends DefaultPluginBootstrap
      */
     public function registerCommands()
     {
-        elgg_register_plugin_hook_handler('commands', 'cli', function($hook, $type, $return) {
+        elgg_register_event_handler('commands', 'cli', function(Event $event) {
+            $return = $event->getValue();
             $return[] = Cli\CopySeasonCommand::class;
             $return[] = Cli\UnlockAllUsers::class;
             return $return;
@@ -58,7 +61,7 @@ class Bootstrap extends DefaultPluginBootstrap
      * @param Hook $hook
      * @return mixed|null
      */
-    public static function titleMenuHook(Hook $hook)
+    public static function titleMenuHook(Event $hook)
     {
         $user = $hook->getEntityParam();
         if (!($user instanceof ElggUser) || !$user->canEdit()) {
@@ -96,7 +99,7 @@ class Bootstrap extends DefaultPluginBootstrap
      * @param Hook $hook
      * @return Collection|mixed
      */
-    public static function seasonParticpateMenuHook(Hook $hook)
+    public static function seasonParticpateMenuHook(Event $hook)
     {
         $entity = $hook->getEntityParam();
 
@@ -123,7 +126,7 @@ class Bootstrap extends DefaultPluginBootstrap
      * @param Hook $hook
      * @return bool|void
      */
-    public static function containerPermissionsCheckHook(Hook $hook)
+    public static function containerPermissionsCheckHook(Event $hook)
     {
         /* @var ElggUser $user */
         $user = $hook->getUserParam();
@@ -137,7 +140,7 @@ class Bootstrap extends DefaultPluginBootstrap
      * @param Hook $hook Cron hook
      * @return void
      */
-    public static function dailyCron(Hook $hook) {
+    public static function dailyCron(Event $hook) {
         Bootstrap::lockUsers();
     }
 

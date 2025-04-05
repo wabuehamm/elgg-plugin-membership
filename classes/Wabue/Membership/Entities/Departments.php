@@ -18,14 +18,14 @@ class Departments extends ParticipationObject {
         $this->attributes['subtype'] = 'departments';
     }
 
-    public function getURL()
+    public function getURL(): string
     {
-        return false;
+        return "";
     }
 
-    public function getIconURL($params = [])
+    public function getIconURL($params = []): string
     {
-        return null;
+        return "";
     }
 
     public function getDisplayName(): string

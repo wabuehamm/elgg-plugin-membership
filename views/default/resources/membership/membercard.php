@@ -20,7 +20,7 @@ $username = elgg_extract('username', $vars, null);
 Tools::assert(!is_null($username));
 
 /** @var ElggUser $member */
-$member = get_user_by_username($username);
+$member = elgg_get_user_by_username($username);
 
 if ($member == false) {
     showError(elgg_echo('membership:membercard:notfound'));
