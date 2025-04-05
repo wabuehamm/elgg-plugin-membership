@@ -11,6 +11,8 @@ return [
     'membership:title' => 'Membership management',
     'membership:overview:tabs:reports' => 'Reports',
     'membership:overview:tabs:seasons' => 'Seasons',
+    'membership:overview:noseasons:title' => 'No seasons',
+    'membership:overview:noseasons:body' => 'No seasons set up yet.',
 
     'membership:seasons' => 'Seasons',
     'membership:season:add' => 'Add season',

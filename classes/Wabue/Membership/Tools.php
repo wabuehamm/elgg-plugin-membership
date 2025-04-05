@@ -2,7 +2,7 @@
 
 namespace Wabue\Membership;
 
-use Elgg\BadRequestException;
+use Elgg\Exceptions\Http\BadRequestException;
 use Elgg\Cache\SimpleCache;
 use Elgg\Database\QueryBuilder;
 use ElggUser;
@@ -31,7 +31,7 @@ class Tools
     {
         if (!$assertion) {
             $tmpException = new BadRequestException($message, $code);
-            elgg_log("BadRequestException: Assertion failed." . $tmpException->getTraceAsString(), LogLevel::ERROR);
+            elgg_log("BadRequestException: Assertion failed." . $tmpException->getTraceAsString(), \Psr\Log\LogLevel::ERROR);
             throw $tmpException;
         }
     }
@@ -466,6 +466,10 @@ class Tools
             if (!$anniversary) {
                 $anniversary = date_create_from_format("Y-m-d", $user->getProfileData('anniversary'));
             }
+            if (!$anniversary) {
+                // Anniversary date was not set
+                continue;
+            }
             $diff = date_diff($anniversary, date_create_from_format("d.m.Y", "01.01.$year"));
             if ($diff) {
                 $report[$user->getDisplayName()] = [
@@ -528,6 +532,10 @@ class Tools
             if (!$birthday) {
                 $birthday = date_create_from_format("d.m.Y", $user->getProfileData('birthday'));
             }
+            if (!$birthday) {
+                // Birthday not set
+                continue;
+            }
             $diff = date_diff($birthday, date_create_from_format("d.m.Y", "01.01." . $season->year));
             if ($diff and $diff->y < 18) {
                 $userType = 'teens';
@@ -567,6 +575,10 @@ class Tools
             $birthday = date_create_from_format("Y-m-d", $user->getProfileData('birthday'));
             if (!$birthday) {
                 $birthday = date_create_from_format("d.m.Y", $user->getProfileData('birthday'));
+            }
+            if (!$birthday) {
+                // Birthday not set
+                continue;
             }
             $diff = date_diff($birthday, new \DateTime());
             if ($diff and $diff->y < 18) {
@@ -615,6 +627,10 @@ class Tools
             if (!$birthday) {
                 $birthday = date_create_from_format("d.m.Y", $user->getProfileData('birthday'));
             }
+            if (!$birthday) {
+                // Birthday not set
+                continue;
+            }
             $diff = date_diff($birthday, new \DateTime());
             if ($diff and $diff->y >= 16) {
                 [$givenName, $name] = self::splitName($user->username);
@@ -660,6 +676,10 @@ class Tools
             $birthday = date_create_from_format("Y-m-d", $user->getProfileData('birthday'));
             if (!$birthday) {
                 $birthday = date_create_from_format("d.m.Y", $user->getProfileData('birthday'));
+            }
+            if (!$birthday) {
+                // Birthday not set
+                continue;
             }
             $diff = date_diff($birthday, date_create_from_format("d.m.Y", "31.12." . $year));
             if ($diff and in_array($diff->y, [50, 60, 70, 75, 80]) || $diff->y >= 85) {

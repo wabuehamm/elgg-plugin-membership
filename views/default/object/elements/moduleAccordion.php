@@ -19,12 +19,13 @@ echo elgg_format_element(
     ],
     elgg_view_icon(
         'minus',
-        'hidden minus-icon'
+        [
+            'class' => 'hidden minus-icon',
+        ]
     ) .
     elgg_view_icon(
         'plus',
-        'plus-icon'
     ) .' '
 );
 
-elgg_require_js('membership/moduleAccordion');
+elgg_import_esm('membership/moduleAccordion');
