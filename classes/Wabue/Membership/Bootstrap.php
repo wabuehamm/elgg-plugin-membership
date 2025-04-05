@@ -35,10 +35,10 @@ class Bootstrap extends DefaultPluginBootstrap
      */
     public function registerHooks()
     {
-        elgg_register_plugin_hook_handler('register', 'menu:title', 'Wabue\Membership\Bootstrap::titleMenuHook');
-        elgg_register_plugin_hook_handler('register', 'menu:season_participate', 'Wabue\Membership\Bootstrap::seasonParticpateMenuHook');
-        elgg_register_plugin_hook_handler('container_permissions_check', 'object', 'Wabue\Membership\Bootstrap::containerPermissionsCheckHook');
-        elgg_register_plugin_hook_handler('cron', 'daily', 'Wabue\Membership\Bootstrap::dailyCron');
+        elgg_register_event_handler('register', 'menu:title', 'Wabue\Membership\Bootstrap::titleMenuHook');
+        elgg_register_event_handler('register', 'menu:season_participate', 'Wabue\Membership\Bootstrap::seasonParticpateMenuHook');
+        elgg_register_event_handler('container_permissions_check', 'object', 'Wabue\Membership\Bootstrap::containerPermissionsCheckHook');
+        elgg_register_event_handler('cron', 'daily', 'Wabue\Membership\Bootstrap::dailyCron');
     }
 
     /**
@@ -46,7 +46,7 @@ class Bootstrap extends DefaultPluginBootstrap
      */
     public function registerCommands()
     {
-        elgg_register_plugin_hook_handler('commands', 'cli', function($hook, $type, $return) {
+        elgg_register_event_handler('commands', 'cli', function($hook, $type, $return) {
             $return[] = Cli\CopySeasonCommand::class;
             $return[] = Cli\UnlockAllUsers::class;
             return $return;
