@@ -49,6 +49,8 @@ return [
     'membership:settings:production:participations:help' => 'Standard-Teilnahmebereiche für eine Produktion in einer Saison (ein Bereich pro Zeile in der Form Schlüssel:Bezeichnung)',
     'membership:settings:acl:label' => 'Zugriff zu Teilnahmeberichten',
     'membership:settings:acl:help' => 'Regeln für den Zugriff auf die Teilnahmeberichte (vgl. ReportGatekeeper-Quelltext)',
+    'membership:settings:hideParticipations:label' => 'Teilnahmebereiche verstecken',
+    'membership:settings:hideParticipations:help' => 'Teilnahmebereiche für nicht-Administratoren verstecken',
 
     'membership:errors:wrongParticipationTypes' => 'Die angegebene Liste von Teilnahmebereichen ist nicht gültig. Bitte überprüfe, dass diese in der Form Schlüssel:Bezeichnung eingegeben worden ist',
 

@@ -47,6 +47,10 @@ class Tools
     public static function participationList(array $participationTypes, array $participations, callable $linkGenerator = null, bool $ignore_acl = false): string
     {
         $content = '';
+        $hideParticipations = preg_split(
+            '/\r?\n/',
+            elgg_get_plugin_setting('hideParticipations', 'membership')
+        );
         if (count($participations) == 0 or count($participationTypes) == 0) {
             $content .= elgg_echo('membership:participations:none');
         } else {
@@ -60,6 +64,9 @@ class Tools
                 }
             }
             foreach ($all_participations as $key => $label) {
+                if (in_array($key, $hideParticipations) && !elgg_is_admin_logged_in()) {
+                    continue;
+                }
                 $link = null;
                 if ($linkGenerator) {
                     $link = call_user_func($linkGenerator, $key);

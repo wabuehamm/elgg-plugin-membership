@@ -48,6 +48,8 @@ return [
     'membership:settings:production:participations:help' => 'Default participation types for new productions in a season (one type per line in the form of key:label)',
     'membership:settings:acl:label' => 'Access to membership reports',
     'membership:settings:acl:help' => 'Rules to grant access to the membership reports. See ReportGatekeeper code',
+    'membership:settings:hideParticipations:label' => 'Hide participations',
+    'membership:settings:hideParticipations:help' => 'Hide participations from non-admins',
 
     'membership:errors:wrongParticipationTypes' => 'The provided list of participation types is not valid. Please ensure a value of one type per line in the form of key:label',
 

@@ -78,6 +78,11 @@ abstract class ParticipationObject extends ElggObject
             }
         }
 
+        $hideParticipations = preg_split(
+            '/\r?\n/',
+            elgg_get_plugin_setting('hideParticipations', 'membership')
+        );
+
         $acl_id = $this->_related_guid;
         $departments_guid = $this->getContainerEntity()->getDepartments()->guid;
         if ($this->subtype == 'departments' or $this->_related_guid == $departments_guid) {
@@ -85,6 +90,9 @@ abstract class ParticipationObject extends ElggObject
         }
 
         foreach ($this->_resolved_types as $key => $value) {
+            if (in_array($key, $hideParticipations) && !elgg_is_admin_logged_in()) {
+                continue;
+                }
             if ($ignore_acl or $this->_acl->isParticipationAllowed(
                 elgg_get_logged_in_user_entity()->username,
                 $this->container_guid,

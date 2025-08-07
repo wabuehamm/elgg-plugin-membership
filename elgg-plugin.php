@@ -229,7 +229,8 @@ return [
             "mobile",
             "birthday"
         ],
-        'lockBlocklist' => "admin\nroot\nadministrator"
+        'lockBlocklist' => "admin\nroot\nadministrator",
+        'hideParticipations' => "so"
     ],
     'user_settings' => [
         // Register user settings for your plugin here
