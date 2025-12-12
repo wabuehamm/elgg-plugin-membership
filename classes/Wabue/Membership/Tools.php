@@ -459,7 +459,13 @@ class Tools
         ]);
         $report = [];
         foreach ($allUnbannedUsers as $user) {
+            if ($user->getProfileData('deathday') != '') {
+                continue;
+            }
             $anniversary = date_create_from_format("d.m.Y", $user->getProfileData('anniversary'));
+            if (!$anniversary) {
+                $anniversary = date_create_from_format("Y-m-d", $user->getProfileData('anniversary'));
+            }
             $diff = date_diff($anniversary, date_create_from_format("d.m.Y", "01.01.$year"));
             if ($diff) {
                 $report[$user->getDisplayName()] = [
@@ -648,12 +654,15 @@ class Tools
         $report = [];
 
         foreach ($allUnbannedUsers as $user) {
+            if ($user->getProfileData('deathday') != '') {
+                continue;
+            }
             $birthday = date_create_from_format("Y-m-d", $user->getProfileData('birthday'));
             if (!$birthday) {
                 $birthday = date_create_from_format("d.m.Y", $user->getProfileData('birthday'));
             }
             $diff = date_diff($birthday, date_create_from_format("d.m.Y", "31.12." . $year));
-            if ($diff and in_array($diff->y, [50, 60, 70, 75, 80, 85, 90, 95, 100, 105, 110])) {
+            if ($diff and in_array($diff->y, [50, 60, 70, 75, 80]) || $diff->y >= 85) {
                 array_push($report, [
                     $user->getDisplayName(),
                     $user->getProfileData("street"),
