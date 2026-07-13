@@ -65,7 +65,8 @@ $reportProfileFields = elgg_get_plugin_setting("reportProfileFields", "membershi
             }
             foreach ($participationObjects as $participationObject) {
                 foreach (array_keys($columns[$participationObject->getGUID()]) as $key) {
-                    if (in_array($key, $user_report[$participationObject->getDisplayName()])) {
+                    if (array_key_exists($participationObject->getDisplayName(), $user_report) &&
+                            in_array($key, $user_report[$participationObject->getDisplayName()])) {
                         echo '<td style="text-align:center">' . elgg_view_icon('check') . '</td>';
                     } else {
                         echo '<td></td>';
