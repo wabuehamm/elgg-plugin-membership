@@ -223,7 +223,7 @@ class Tools
             $report[$missingMember->username] = ['_userInfo' => $reportLine];
         }
 
-        uksort($report, function ($a, $b) {
+        usort($report, function ($a, $b) {
             return strcmp($a['_userInfo']['name'], $b['_userInfo']['name']);
         });
 
