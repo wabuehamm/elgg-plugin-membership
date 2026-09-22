@@ -14,6 +14,7 @@ class CopySeasonCommand extends \Elgg\Cli\Command
 
     protected function configure()
     {
+        $this->setName(CopySeasonCommand::$defaultName);
         $this->setHelp("This command allows to copy all participations from season to another one.");
         $this->setDescription('Copy a season to another one');
         $this->addArgument('sourceSeason', InputArgument::REQUIRED, 'Year of source season');

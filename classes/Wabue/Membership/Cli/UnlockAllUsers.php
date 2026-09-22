@@ -14,6 +14,7 @@ class UnlockAllUsers extends \Elgg\Cli\Command
 
     protected function configure()
     {
+        $this->setName(UnlockAllUsers::$defaultName);
         $this->setHelp("This command allows to unlock all users in the system.");
         $this->setDescription('Unlock all users');
     }
