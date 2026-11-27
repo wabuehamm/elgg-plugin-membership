@@ -56,10 +56,12 @@ foreach ($report as $username => $user_report) {
     }
     foreach ($participationObjects as $participationObject) {
         foreach (array_keys($columns[$participationObject->getGUID()]) as $key) {
-            if (in_array($key, $user_report[$participationObject->getDisplayName()])) {
-                array_push($line, 'X');
-            } else {
-                array_push($line, '');
+            if (array_key_exists($participationObject->getDisplayName(), $user_report)) {
+                if (in_array($key, $user_report[$participationObject->getDisplayName()])) {
+                    array_push($line, 'X');
+                } else {
+                    array_push($line, '');
+                }
             }
         }
     }
